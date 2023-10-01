@@ -1,5 +1,9 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top">
   <button mat-button color="accent" class="fs-5 app-brand">WorkMingle</button>
+  <span class="flex-grow-1"></span>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
+    <button mat-stroked-button routerLink="/register">Register</button>
+  </div>
 </mat-toolbar>
 
 <mat-sidenav-container class="mat-sidenav-container">
@@ -7,7 +11,7 @@
                class="mat-sidenav" #matSidenav>
     <mat-nav-list>
       <mat-list-item>Home</mat-list-item>
-      <mat-list-item>Home</mat-list-item>
+      <mat-list-item routerLink="/register">Register</mat-list-item>
     </mat-nav-list>
   </mat-sidenav>
 
