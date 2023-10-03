@@ -1,0 +1,24 @@
+.mat-sidenav {
+  width: 250px;
+}
+
+.mat-sidenav-content {
+  min-height: calc(100vh - 56px) !important;
+  margin-top: 56px !important;
+}
+
+.header-mat-icon-toggle-btn {
+  padding: 10px 12px 12px 12px !important;
+}
+
+.header-page-title {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+@media (min-width: 600px) {
+  .mat-sidenav-content {
+    min-height: calc(100vh - 64px) !important;
+    margin-top: 64px !important;
+  }
+}
