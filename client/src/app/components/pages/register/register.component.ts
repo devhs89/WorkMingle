@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
       state: [''],
       city: [''],
       postcode: [''],
+      termsAndConditions: [false, Validators.requiredTrue]
     });
   }
 
