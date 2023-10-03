@@ -1,0 +1,36 @@
+<mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top">
+  <button mat-button color="accent" class="fs-5 app-brand">WorkMingle</button>
+  <span class="flex-grow-1"></span>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
+    <button mat-stroked-button routerLink="/login">Login</button>
+    <button mat-stroked-button routerLink="/register">Register</button>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="mat-sidenav-container">
+  <mat-sidenav [fixedTopGap]="(breakpointObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
+               class="mat-sidenav" #matSidenav>
+    <mat-nav-list>
+      <mat-list-item>Home</mat-list-item>
+      <mat-list-item routerLink="/login">Login</mat-list-item>
+      <mat-list-item routerLink="/register">Register</mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="d-flex flex-column mat-sidenav-content">
+    <header class="bg-primary-subtle container-fluid">
+      <div class="d-flex align-items-center">
+        <div>
+          <button mat-icon-button (click)="matSidenav.toggle()" class="header-mat-icon-toggle-btn">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+        <div class="mx-1 mx-sm-2 header-page-title">{{(pageTitleService.pageTitle$ | async)}}</div>
+      </div>
+    </header>
+    <div class="flex-grow-1 py-5">
+      <router-outlet></router-outlet>
+    </div>
+    <footer class="container-fluid bg-primary h-25">Footer</footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>
