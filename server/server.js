@@ -1,18 +1,18 @@
 const express = require('express');
 require('dotenv').config();
+const mongoose = require('mongoose');
+
 const app = express();
 app.use(express.static('public'));
 
 const port = process.env.PORT || 3000;
 const mongoURI = process.env.MONGODB_URI;
 
-app.listen(port, function(){
-    console.log('App started on port '+port);
+app.listen(port, function () {
+  console.log('App started on port ' + port);
 });
 
-const mongoose = require('mongoose');
-
-mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
@@ -20,6 +20,6 @@ db.once('open', () => {
 });
 
 app.get('/', (req, res) => {
-    res.json({ message: 'Hello, World!' });
+  res.json({message: 'Hello, World!'});
 });
 
