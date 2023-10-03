@@ -39,4 +39,4 @@ WorkMingle offers advanced search features as part of a subscription service. To
 
 - Bhavna, Bhavna
 - Harpreet Singh
-- [Group Member 3 Name, if applicable]
+- Sravya Sree Adavi
