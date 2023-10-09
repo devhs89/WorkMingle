@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Title} from "@angular/platform-browser";
 import {PageTitleService} from "../../../services/page-title.service";
+import {AccountService} from "../../../services/account.service";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import {PageTitleService} from "../../../services/page-title.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup = new FormGroup<any>({});
 
-  constructor(private titleService: Title, private pageTitleService: PageTitleService, private fb: FormBuilder) {
+  constructor(private titleService: Title, private pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService) {
   }
 
   ngOnInit(): void {
@@ -28,6 +29,8 @@ export class LoginComponent implements OnInit {
       // Perform login logic here
       // Example: Send a login request to the server
       console.log(this.loginForm.value);
+      this.accountService.loginUser(this.loginForm.value)
+        .subscribe({next: (resp) => console.log(resp)});
     }
   }
 }
