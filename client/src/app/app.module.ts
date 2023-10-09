@@ -20,6 +20,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
+import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatRippleModule} from "@angular/material/core";
 
 @NgModule({
   declarations: [
@@ -35,6 +37,7 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatSnackBarModule,
     MatSidenavModule,
     MatToolbarModule,
     MatIconModule,
@@ -45,7 +48,8 @@ import {HttpClientModule} from "@angular/common/http";
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRippleModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
