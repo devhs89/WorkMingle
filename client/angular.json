@@ -70,7 +70,8 @@
               "browserTarget": "WorkMingle:build:production"
             },
             "development": {
-              "browserTarget": "WorkMingle:build:development"
+              "browserTarget": "WorkMingle:build:development",
+              "proxyConfig": "src/proxy.conf.mjs"
             }
           },
           "defaultConfiguration": "development"
