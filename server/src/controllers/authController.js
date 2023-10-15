@@ -45,14 +45,6 @@ const register = async (req, res) => {
   });
 }
 
-
-// Other routes for login, authentication, etc.
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
-
-
 const login = (req, res) => {
   res.send('You have reached the login endpoint');
 };
