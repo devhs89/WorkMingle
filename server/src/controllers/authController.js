@@ -3,50 +3,58 @@ const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-// Import your Mongoose model
 const AppUser = require('../models/AppUser');
-
 app.use(bodyParser.json());
-
 const secretKey = 'your-secret-key';
-
 const bcrypt = require('bcrypt');
-const saltRounds = 10; // The number of salt rounds to use for hashing
+const saltRounds = 10;
 
 const register = async (req, res) => {
   const {
     email, password, firstName, lastName, country, state, city, postcode, termsAndConditions,
   } = req.body;
 
-  // Check if the email is already in use
   const userExists = await AppUser.findOne({email})
   if (userExists) {
     return res.status(400).json({message: 'Email already in use'});
   }
 
-  // Hash the password
   bcrypt.hash(password, saltRounds, async (hashErr, hashedPassword) => {
     if (hashErr) {
       return res.status(500).json({message: 'Error hashing password'});
     }
 
-    // Create a new user with the hashed password
     const newUser = new AppUser({
       email, password: hashedPassword, firstName, lastName, country, state, city, postcode, termsAndConditions,
     });
 
-    // Save the user to the database
     const saved = await newUser.save();
-
-    // Generate a JWT for the newly registered user
     const token = jwt.sign({userId: newUser._id}, secretKey, {expiresIn: '1h'});
-
-    res.json({token, user: {...newUser.toObject(), password: undefined}}); // Omit the password in the response for security
+    res.json({token, user: {...newUser.toObject(), password: undefined}});
   });
 }
 
-const login = (req, res) => {
-  res.send('You have reached the login endpoint');
-};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await AppUser.findOne({ email });
+
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: 'Invalid email or password' });
+    }
+
+    if (result) {
+      const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+      res.json({ token, user: { ...user.toObject(), password: undefined } });
+    } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+    }
+  });
+}
 
 module.exports = {register, login};
