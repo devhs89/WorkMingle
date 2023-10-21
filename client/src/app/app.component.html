@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top">
-  <button mat-button color="accent" class="fs-5 app-brand">WorkMingle</button>
+  <button mat-button color="accent" class="fs-5 app-brand" routerLink="/">WorkMingle</button>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
     <button mat-stroked-button routerLink="/login">Login</button>
@@ -11,7 +11,7 @@
   <mat-sidenav [fixedTopGap]="(breakpointObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
                class="mat-sidenav" #matSidenav>
     <mat-nav-list>
-      <mat-list-item>Home</mat-list-item>
+      <mat-list-item routerLink="/home">Home</mat-list-item>
       <mat-list-item routerLink="/login">Login</mat-list-item>
       <mat-list-item routerLink="/register">Register</mat-list-item>
     </mat-nav-list>
