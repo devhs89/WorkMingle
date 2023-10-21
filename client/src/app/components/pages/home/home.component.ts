@@ -12,10 +12,10 @@ export class HomeComponent {
   locationFormCtrl = new FormControl<unknown>('', [Validators.required, Validators.pattern('[A-Za-z0-9\s]+')]);
 
   constructor(private pageTitleService: PageTitleService) {
-    this.pageTitleService.setTitle('Find Your Dream Job');
+    pageTitleService.setWindowTitle('Home');
+    pageTitleService.setPageTitle('Find Your Dream Job');
   }
 
   searchJobs() {
-
   }
 }

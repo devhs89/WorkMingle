@@ -8,9 +8,10 @@ import {PageTitleService} from "../../../services/page-title.service";
 })
 export class PageNotFoundComponent implements OnInit {
   constructor(private pageTitleService: PageTitleService) {
+    pageTitleService.setWindowTitle('Error 404');
+    pageTitleService.setPageTitle('Page Not Found');
   }
 
   ngOnInit(): void {
-    this.pageTitleService.setTitle('Page Not Found');
   }
 }
