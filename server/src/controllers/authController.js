@@ -35,7 +35,26 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  // TODO: to be implemented
+  const { email, password } = req.body;
+
+  const user = await AppUser.findOne({ email });
+
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: 'Invalid email or password' });
+    }
+
+    if (result) {
+      const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
+      res.json({ token, user: { ...user.toObject(), password: undefined } });
+    } else {
+      res.status(401).json({ message: 'Invalid email or password' });
+    }
+  });
 }
 
 module.exports = {register, login};
