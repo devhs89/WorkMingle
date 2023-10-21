@@ -1,10 +1,7 @@
 ﻿const winston = require('winston');
-const express = require('express');
 const winstonDailyRotateFile = require('winston-daily-rotate-file');
 const path = require("path");
 const {combine, timestamp, json} = winston.format;
-const app = express();
-
 
 const errorDailyRotateFile = new winstonDailyRotateFile({
   frequency: '1d',
