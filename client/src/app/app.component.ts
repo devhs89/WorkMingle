@@ -10,10 +10,10 @@ import {PageTitleService} from "./services/page-title.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  protected breakpointObservable$: Observable<BreakpointState> | null = null;
+  protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
 
   constructor(protected pageTitleService: PageTitleService, private breakpointsService: MediaBreakpointService) {
-    this.breakpointObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
+    this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 
   ngOnInit(): void {
