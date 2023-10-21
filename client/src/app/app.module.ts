@@ -22,6 +22,7 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatRippleModule} from "@angular/material/core";
+import {JobsListComponent} from './components/pages/jobs-list/jobs-list.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {MatRippleModule} from "@angular/material/core";
     LoginComponent,
     ProfileComponent,
     PageNotFoundComponent,
+    JobsListComponent,
   ],
   imports: [
     BrowserModule,
