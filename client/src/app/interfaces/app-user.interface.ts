@@ -1,4 +1,4 @@
-export interface AppUser {
+export interface AppUserInterface {
   email: string;
   password: string;
   firstName: string;
