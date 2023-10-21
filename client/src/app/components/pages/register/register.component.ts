@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {Title} from "@angular/platform-browser";
 import {PageTitleService} from "../../../services/page-title.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccountService} from "../../../services/account.service";
@@ -12,12 +11,12 @@ import {AccountService} from "../../../services/account.service";
 export class RegisterComponent implements OnInit {
   public registrationForm: FormGroup = new FormGroup({});
 
-  constructor(private titleService: Title, private pageTitle: PageTitleService, private fb: FormBuilder, private accountService: AccountService) {
+  constructor(private pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService) {
+    pageTitleService.setWindowTitle('Register');
+    pageTitleService.setPageTitle('Register');
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Register');
-    this.pageTitle.setTitle('Register');
     this.registrationForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/)]],
@@ -33,7 +32,6 @@ export class RegisterComponent implements OnInit {
 
   onWmRfSubmit() {
     if (this.registrationForm?.valid) {
-      // Handle form submission here
       console.log(this.registrationForm.value);
       this.accountService.registerUser(this.registrationForm.value).subscribe({
         next: (response) => {
