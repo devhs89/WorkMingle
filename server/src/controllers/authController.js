@@ -1,10 +1,5 @@
-const express = require('express');
-const bodyParser = require('body-parser');
 const jwt = require('jsonwebtoken');
-const app = express();
-
 const AppUser = require('../models/AppUser');
-app.use(bodyParser.json());
 const secretKey = 'your-secret-key';
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
@@ -35,26 +30,31 @@ const register = async (req, res) => {
 }
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const {email, password} = req.body;
 
-  const user = await AppUser.findOne({ email });
+  const user = await AppUser.findOne({email});
 
   if (!user) {
-    return res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({message: 'Invalid email or password'});
   }
 
   bcrypt.compare(password, user.password, (err, result) => {
     if (err) {
-      return res.status(500).json({ message: 'Invalid email or password' });
+      return res.status(500).json({message: 'Invalid email or password'});
     }
 
     if (result) {
-      const token = jwt.sign({ userId: user._id }, secretKey, { expiresIn: '1h' });
-      res.json({ token, user: { ...user.toObject(), password: undefined } });
+      const token = jwt.sign({userId: user._id}, secretKey, {expiresIn: '1h'});
+      res.json({token, user: {...user.toObject(), password: undefined}});
     } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+      res.status(401).json({message: 'Invalid email or password'});
     }
   });
 }
 
-module.exports = {register, login};
+const profile = (req, res) => {
+  const user = req.userId;
+  res.json({user});
+}
+
+module.exports = {register, login, profile};
