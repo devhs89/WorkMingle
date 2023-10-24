@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken');
 // Middleware to authenticate user
 const authenticateUser = (req, res, next) => {
   // Get the token from the header
-  const token = req.header('Authorization').search(' ')[1];
+  const authHeader = req.header('Authorization');
+  const token = authHeader.search('Bearer ') === 0 ? authHeader.replace('Bearer ', '') : authHeader;
   if (!token) {
     return res.status(401).json({message: 'Unauthorized'});
   }
