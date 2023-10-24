@@ -1,33 +1,48 @@
 const express = require("express");
-require('dotenv').config();
+const ignore = require('dotenv').config();
 const bodyParser = require('body-parser');
 const mongoose = require("mongoose");
 const logWithWinston = require("./src/util/winstonLogger");
-try {
-  const express = require('express');
-  const authRoutes = require('./src/routes/authRoutes');
+const authRoutes = require('./src/routes/authRoutes');
 
+try {
+  // Create a new Express application.
   const app = express();
+
+  // Serve static content for the app from the "public" directory.
   app.use(express.static('public'));
 
-  app.use(bodyParser.json())
-
+  // Get the listening port
   const port = process.env.PORT || 3000;
+
+  // Get the MongoDB URI
   const mongoURI = process.env.MONGODB_URI;
 
+  // Parse request payload to JSON
+  app.use(bodyParser.json());
+
+  // Set up mongoose connection
   mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true});
+
+  // Connection to MongoDB
   const db = mongoose.connection;
+
+  // On MongoDB connection error, log the error
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+  // On successful MongoDB connection, log the success message
   db.once('open', () => {
     console.log('Connected to MongoDB');
   });
 
-// Middleware to handle authentication routes
+  // Add authentication middleware to handle authentication routes
   app.use('/api/auth', authRoutes);
 
+  // Start server on the specified port
   app.listen(port, function () {
     console.log(`App started on port http://localhost:${port}/`);
   });
 } catch (e) {
+  // Log any exceptions
   logWithWinston.error(e.message);
 }
