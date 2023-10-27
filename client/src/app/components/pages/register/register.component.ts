@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AccountService} from "../../../services/account.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
-import {SnackBarService} from "../../../services/snack-bar.service";
+import {ToasterService} from "../../../services/toaster.service";
 import {TokenPayloadInterface} from "../../../interfaces/token-payload.interface";
 
 @Component({
@@ -18,7 +18,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private _registerUserSubscription: Subscription | null = null;
   private _saveLoginTokenSubscription: Subscription | null = null;
 
-  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private router: Router, private snackBarService: SnackBarService) {
+  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private router: Router, private snackBarService: ToasterService) {
     pageTitleService.setWindowTitle('Register');
     pageTitleService.setPageTitle('Register');
   }
@@ -43,7 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         next: (jsonData) =>
           jsonData.token ? this._storeLoginToken(jsonData) : this.snackBarService.showSnackBar({message: 'Registration failed'}),
         error: (httpErrResp) =>
-          this.snackBarService.showSnackBar({message: httpErrResp.error.message})
+          this.snackBarService.openSnackbar({message: httpErrResp.error.message, type: "error"}),
       });
       this._subscriptions.push(this._registerUserSubscription);
     }

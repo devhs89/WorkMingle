@@ -20,9 +20,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {HttpClientModule} from "@angular/common/http";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatRippleModule} from "@angular/material/core";
 import {JobsListComponent} from './components/pages/jobs-list/jobs-list.component';
+import {ToastComponent} from './components/shared/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {JobsListComponent} from './components/pages/jobs-list/jobs-list.componen
     ProfileComponent,
     PageNotFoundComponent,
     JobsListComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,6 +57,7 @@ import {JobsListComponent} from './components/pages/jobs-list/jobs-list.componen
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 600000, horizontalPosition: 'end', verticalPosition: 'bottom'}}
   ],
   bootstrap: [AppComponent]
 })

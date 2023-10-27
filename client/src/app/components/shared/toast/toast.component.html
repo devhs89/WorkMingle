@@ -1,0 +1,6 @@
+<div class="d-flex justify-content-between align-items-center w-100 {{customClasses}}">
+  <span matSnackBarLabel>{{data.message}}</span>
+  <span matSnackBarActions>
+    <button mat-button matSnackBarAction (click)="_toastRef.dismissWithAction()">Dismiss</button>
+  </span>
+</div>

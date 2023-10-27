@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {PageTitleService} from "../../../services/page-title.service";
 import {AccountService} from "../../../services/account.service";
-import {SnackBarService} from "../../../services/snack-bar.service";
+import {ToasterService} from "../../../services/toaster.service";
 
 @Component({
   selector: 'app-login',
@@ -12,7 +12,7 @@ import {SnackBarService} from "../../../services/snack-bar.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup = new FormGroup<any>({});
 
-  constructor(private pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private snackBarService: SnackBarService) {
+  constructor(private pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private snackBarService: ToasterService) {
     pageTitleService.setWindowTitle('Login');
     pageTitleService.setPageTitle('Login');
   }
