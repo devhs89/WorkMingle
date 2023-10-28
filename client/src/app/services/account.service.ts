@@ -37,6 +37,21 @@ export class AccountService implements OnInit {
     }));
   }
 
+  getUserProfile() {
+    return this.httpClient.post<AppUserInterface>('/api/auth/profile', {});
+  }
+
+  updateUser(appUser: AppUserInterface) {
+    return this.httpClient.put<TokenPayloadInterface>('/api/auth/update', appUser, {
+      headers: {'Content-Type': 'application/json'}
+    });
+  }
+
+  logoutUser() {
+    this._removeLoginToken();
+    this._emitLogout();
+  }
+
   private _saveLoginToken = (tokenPayload: TokenPayloadInterface) => localStorage.setItem('tokenPayload', JSON.stringify(tokenPayload));
 
   private _getLoginToken = () => localStorage.getItem('tokenPayload');
