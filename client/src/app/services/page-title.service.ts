@@ -13,7 +13,7 @@ export class PageTitleService {
   }
 
   public setPageTitle(title: string): void {
-    this.pageTitle.next(title ?? 'WorkMingle');
+    this.pageTitle.next(title);
   }
 
   public setWindowTitle(windowTitle: string): void {

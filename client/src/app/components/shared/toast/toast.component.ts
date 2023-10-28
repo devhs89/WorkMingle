@@ -7,8 +7,26 @@ import {MAT_SNACK_BAR_DATA, MatSnackBarRef} from "@angular/material/snack-bar";
   styleUrls: ['./toast.component.scss']
 })
 export class ToastComponent {
-  customClasses: string = '';
+  iconName: string = 'close';
 
-  constructor(protected _toastRef: MatSnackBarRef<ToastComponent>, @Inject(MAT_SNACK_BAR_DATA) protected data: { message: string }) {
+  constructor(protected _toastRef: MatSnackBarRef<ToastComponent>, @Inject(MAT_SNACK_BAR_DATA) protected data: {
+    message: string,
+    type: 'success' | 'error' | 'default'
+  }) {
+    this.setIconFeedback();
+  }
+
+  setIconFeedback() {
+    switch (this.data.type) {
+      case 'success':
+        this.iconName = 'check_circle';
+        break;
+      case 'error':
+        this.iconName = 'error';
+        break;
+      default:
+        this.iconName = 'close';
+        break;
+    }
   }
 }

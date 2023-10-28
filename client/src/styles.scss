@@ -1,39 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../scss/custom-variables";
 
 html, body {
- height: 100% !important;
+  height: 100% !important;
 }
 
 body {
- margin: 0;
- font-family: Roboto, "Helvetica Neue", sans-serif !important;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
 }
 
 div.sub-navbar {
- min-height: 48px;
+  min-height: 48px;
 }
 
-.toast-success > * {
- background-color: var(--bs-success) !important;
- color: var(--bs-light) !important;
+.toast-success > div {
+  background-color: $green-50 !important;
 }
 
-.toast-error > * {
- background-color: var(--bs-danger) !important;
- color: var(--bs-light) !important;
+.toast-success * {
+  color: $green-500 !important;
 }
 
-.toast-warning > * {
- background-color: var(--bs-warning) !important;
- color: var(--bs-light) !important;
+.toast-error > div {
+  background-color: $red-100 !important;
 }
 
-.toast-info > * {
- background-color: var(--bs-info) !important;
- color: var(--bs-light) !important;
-}
-
-.toast-default > * {
- background-color: var(--bs-dark) !important;
- color: var(--bs-light) !important;
+.toast-error * {
+  color: $red-A700 !important;
 }

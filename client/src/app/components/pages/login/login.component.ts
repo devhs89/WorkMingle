@@ -12,7 +12,7 @@ import {ToasterService} from "../../../services/toaster.service";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup = new FormGroup<any>({});
 
-  constructor(private pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private snackBarService: ToasterService) {
+  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private snackBarService: ToasterService) {
     pageTitleService.setWindowTitle('Login');
     pageTitleService.setPageTitle('Login');
   }
@@ -29,8 +29,8 @@ export class LoginComponent implements OnInit {
       console.log(this.loginForm.value);
       this.accountService.loginUser(this.loginForm.value)
         .subscribe({
-          next: (resp) => console.log(resp),
-          error: (err) => this.snackBarService.showSnackBar({message: err.message})
+          next: () => this.snackBarService.openSnackbar({message: 'Welcome to WorkMingle', type: "success"}),
+          error: (err) => this.snackBarService.openSnackbar({message: err.message, type: "error"})
         });
     }
   }

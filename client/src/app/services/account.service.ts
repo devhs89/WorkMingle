@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppUserInterface} from "../interfaces/app-user.interface";
-import {of} from "rxjs";
 import {TokenPayloadInterface} from "../interfaces/token-payload.interface";
 
 @Injectable({
@@ -24,12 +23,5 @@ export class AccountService {
     });
   }
 
-  saveLoginToken(token: string) {
-    try {
-      localStorage.setItem('loginToken', token);
-      return of(true);
-    } catch (e) {
-      return of(false);
-    }
-  }
+  saveLoginToken = (token: string) => localStorage.setItem('loginToken', token);
 }

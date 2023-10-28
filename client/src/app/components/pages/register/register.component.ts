@@ -5,7 +5,6 @@ import {AccountService} from "../../../services/account.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
 import {ToasterService} from "../../../services/toaster.service";
-import {TokenPayloadInterface} from "../../../interfaces/token-payload.interface";
 
 @Component({
   selector: 'app-register',
@@ -16,7 +15,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   protected registrationForm: FormGroup = new FormGroup({});
   private _subscriptions: Subscription[] = [];
   private _registerUserSubscription: Subscription | null = null;
-  private _saveLoginTokenSubscription: Subscription | null = null;
 
   constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private router: Router, private snackBarService: ToasterService) {
     pageTitleService.setWindowTitle('Register');
@@ -40,8 +38,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
   onWmRfSubmit() {
     if (this.registrationForm?.valid) {
       this._registerUserSubscription = this.accountService.registerUser(this.registrationForm.value).subscribe({
-        next: (jsonData) =>
-          jsonData.token ? this._storeLoginToken(jsonData) : this.snackBarService.showSnackBar({message: 'Registration failed'}),
+        next: (jsonData) => {
+          if (jsonData.token) {
+            this.accountService.saveLoginToken(jsonData.token);
+            this.router.navigate(['/']).then(() => this.snackBarService.openSnackbar({
+              message: 'Registration successful',
+              type: "success"
+            }));
+          } else {
+            this.snackBarService.openSnackbar({
+              message: 'Registration failed',
+              type: "error"
+            });
+          }
+        },
         error: (httpErrResp) =>
           this.snackBarService.openSnackbar({message: httpErrResp.error.message, type: "error"}),
       });
@@ -51,13 +61,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  private _storeLoginToken(jsonData: TokenPayloadInterface) {
-    this._saveLoginTokenSubscription = this.accountService.saveLoginToken(jsonData.token).subscribe({
-      next: (success) => this.router.navigate([success ? '/' : '/login'])
-        .finally(() => this.snackBarService.showSnackBar({message: 'Registration successful'})),
-    });
-    this._subscriptions.push(this._saveLoginTokenSubscription);
   }
 }
