@@ -3,6 +3,7 @@ import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
+import {AccountService} from "./services/account.service";
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ import {PageTitleService} from "./services/page-title.service";
 export class AppComponent implements OnInit {
   protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
 
-  constructor(protected pageTitleService: PageTitleService, private breakpointsService: MediaBreakpointService) {
+  constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService) {
     this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 

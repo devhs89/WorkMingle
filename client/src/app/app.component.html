@@ -1,17 +1,21 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top">
-  <button mat-button color="accent" class="fs-5 app-brand" routerLink="/">WorkMingle</button>
+  <button mat-button class="app-brand fs-5" color="accent" routerLink="/">WorkMingle</button>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2">
-    <button mat-stroked-button routerLink="/home">Home</button>
-    <button mat-stroked-button routerLink="/jobs">Jobs</button>
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/jobs">Jobs</button>
   </div>
   <span class="flex-grow-1"></span>
-  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu"
-       *ngIf="!(xSmallMediaObservable$ | async)?.matches">
-    <button mat-stroked-button routerLink="/login">Login</button>
-    <button mat-stroked-button routerLink="/register">Register</button>
-  </div>
-  <div *ngIf="(xSmallMediaObservable$ | async)?.matches">
-    <button mat-stroked-button routerLink="/login">Login</button>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
+    <ng-container *ngIf="(accountService.tokenPayload$ | async) as tokenPayload; else notLoggedIn">
+      <button mat-button routerLink="/profile">{{tokenPayload?.user?.firstName}}
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </ng-container>
+    <ng-template #notLoggedIn>
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/register" *ngIf="!(xSmallMediaObservable$ | async)?.matches">Register
+      </button>
+    </ng-template>
   </div>
 </mat-toolbar>
 
@@ -21,8 +25,14 @@
     <mat-nav-list>
       <mat-list-item routerLink="/home">Home</mat-list-item>
       <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
-      <mat-list-item routerLink="/login">Login</mat-list-item>
-      <mat-list-item routerLink="/register">Register</mat-list-item>
+      <mat-divider class="mx-1"></mat-divider>
+      <ng-container *ngIf="(accountService.tokenPayload$ | async); else notLoggedIn">
+        <mat-list-item routerLink="/profile">Profile</mat-list-item>
+      </ng-container>
+      <ng-template #notLoggedIn>
+        <mat-list-item routerLink="/login">Login</mat-list-item>
+        <mat-list-item routerLink="/register">Register</mat-list-item>
+      </ng-template>
     </mat-nav-list>
   </mat-sidenav>
 

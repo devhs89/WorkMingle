@@ -1,4 +1,4 @@
 export interface TokenPayloadInterface {
   token: string;
-  userDetails: { firstName: string, lastName: string };
+  user: { firstName: string, lastName: string };
 }

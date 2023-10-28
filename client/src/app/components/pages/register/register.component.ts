@@ -40,7 +40,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this._registerUserSubscription = this.accountService.registerUser(this.registrationForm.value).subscribe({
         next: (jsonData) => {
           if (jsonData.token) {
-            this.accountService.saveLoginToken(jsonData.token);
             this.router.navigate(['/']).then(() => this.snackBarService.openSnackbar({
               message: 'Registration successful',
               type: "success"
