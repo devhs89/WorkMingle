@@ -50,8 +50,15 @@
     <div class="flex-grow-1 py-5">
       <router-outlet></router-outlet>
     </div>
-    <footer class="container-fluid bg-primary h-25">
-
+    <footer class="container-fluid text-bg-primary">
+      <div class="d-flex align-items-center justify-content-center my-3">
+        <div class="text-center">
+          <div class="fs-5">WorkMingle</div>
+          <div class="fs-6"><small>
+            <fa-icon [icon]="faCopyright"></fa-icon>
+            2021 WorkMingle</small></div>
+        </div>
+      </div>
     </footer>
   </mat-sidenav-content>
 </mat-sidenav-container>

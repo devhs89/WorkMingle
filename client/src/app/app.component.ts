@@ -4,6 +4,7 @@ import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
+import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
 
 @Component({
   selector: 'app-root',
@@ -19,4 +20,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  protected readonly faCopyright = faCopyright;
 }
