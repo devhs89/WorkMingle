@@ -24,6 +24,7 @@ import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/materia
 import {MatRippleModule} from "@angular/material/core";
 import {JobsListComponent} from './components/pages/jobs-list/jobs-list.component';
 import {ToastComponent} from './components/shared/toast/toast.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {ToastComponent} from './components/shared/toast/toast.component';
     ReactiveFormsModule,
     MatCardModule,
     MatCheckboxModule,
-    MatRippleModule
+    MatRippleModule,
+    FontAwesomeModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
