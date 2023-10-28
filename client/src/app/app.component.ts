@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
+import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
 
 @Component({
   selector: 'app-root',
@@ -22,4 +23,5 @@ export class AppComponent implements OnInit {
   }
 
   protected readonly faCopyright = faCopyright;
+  protected readonly faCircleUser = faCircleUser;
 }

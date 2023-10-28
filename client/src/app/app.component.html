@@ -7,8 +7,8 @@
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
     <ng-container *ngIf="(accountService.tokenPayload$ | async) as tokenPayload; else notLoggedIn">
-      <button mat-button routerLink="/profile">{{tokenPayload?.user?.firstName}}
-        <mat-icon>account_circle</mat-icon>
+      <button mat-button routerLink="/profile">
+        <fa-icon [icon]="faCircleUser" class="fs-5"></fa-icon>
       </button>
     </ng-container>
     <ng-template #notLoggedIn>
@@ -19,7 +19,7 @@
   </div>
 </mat-toolbar>
 
-<mat-sidenav-container class="mat-sidenav-container">
+<mat-sidenav-container class="mat-sidenav-container text-bg-light">
   <mat-sidenav [fixedTopGap]="(xSmallMediaObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
                class="mat-sidenav" #matSidenav>
     <mat-nav-list>
@@ -37,7 +37,7 @@
   </mat-sidenav>
 
   <mat-sidenav-content class="d-flex flex-column mat-sidenav-content">
-    <header class="bg-primary-subtle container-fluid">
+    <header class="text-bg-primary container-fluid">
       <div class="d-flex align-items-center sub-navbar">
         <div *ngIf="(xSmallMediaObservable$ | async)?.matches">
           <button mat-icon-button (click)="matSidenav.toggle()" class="header-mat-icon-toggle-btn">
@@ -50,11 +50,11 @@
     <div class="flex-grow-1 py-5">
       <router-outlet></router-outlet>
     </div>
-    <footer class="container-fluid text-bg-primary">
+    <footer class="container-fluid text-bg-primary mat-elevation-z6">
       <div class="d-flex align-items-center justify-content-center my-3">
         <div class="text-center">
-          <div class="fs-5">WorkMingle</div>
-          <div class="fs-6"><small>
+          <div>WorkMingle</div>
+          <div class="font-monospace text-light-emphasis"><small>
             <fa-icon [icon]="faCopyright"></fa-icon>
             2021 WorkMingle</small></div>
         </div>
