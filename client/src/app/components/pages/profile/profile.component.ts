@@ -35,7 +35,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   getUserProfile() {
     this._getUserProfileSubscription = this.accountService.getUserProfile().subscribe({
       next: (jsonData) => {
-        this.profileForm.patchValue(jsonData);
+        this.profileForm.patchValue({
+          email: jsonData.email,
+          firstName: jsonData.firstName,
+          lastName: jsonData.lastName,
+          country: jsonData.country,
+          state: jsonData.state,
+          city: jsonData.city,
+          postcode: jsonData.postcode
+        });
       },
       error: (httpErrResp) => this.toasterService.openSnackbar({message: httpErrResp.error.message, type: "error"})
     });
