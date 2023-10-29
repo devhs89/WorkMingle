@@ -1,23 +1,16 @@
-const jwt = require('jsonwebtoken');
+const {readJwtToken, verifyJwtToken} = require("../util/auth-token");
 
 // Middleware to authenticate user
 const authenticateUser = (req, res, next) => {
-  // Get the token from the header
-  const authHeader = req.header('Authorization');
-  const token = authHeader.search('Bearer ') === 0 ? authHeader.replace('Bearer ', '') : authHeader;
+  // Get the token from the request header
+  const token = readJwtToken({authHeader: req.headers['authorization']});
   if (!token) {
     return res.status(401).json({message: 'Unauthorized'});
   }
 
   try {
-    // Get the secret key from the environment variables
-    const secretKey = process.env.SECRET_SIGNING_KEY;
-    if (!secretKey) {
-      return res.status(500).json({message: 'Internal server error'});
-    }
-
     // Verify the token
-    const {userId} = jwt.verify(token, secretKey);
+    const {userId} = verifyJwtToken({token});
     req.userId = userId;
     next();
   } catch (err) {
