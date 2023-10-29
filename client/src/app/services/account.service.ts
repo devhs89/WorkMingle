@@ -20,21 +20,19 @@ export class AccountService implements OnInit {
   }
 
   registerUser(appUser: AppUserInterface) {
-    return this.httpClient.post<TokenPayloadInterface>('/api/auth/register', appUser, {
-      headers: {'Content-Type': 'application/json'}
-    }).pipe(tap((tokenPayload) => {
-      this._saveLoginToken(tokenPayload);
-      this._emitLogin(tokenPayload);
-    }));
+    return this.httpClient.post<TokenPayloadInterface>('/api/auth/register', appUser)
+      .pipe(tap((tokenPayload) => {
+        this._saveLoginToken(tokenPayload);
+        this._emitLogin(tokenPayload);
+      }));
   }
 
   loginUser(credentials: { email: string, password: string }) {
-    return this.httpClient.post<TokenPayloadInterface>('/api/auth/login', credentials, {
-      headers: {'Content-Type': 'application/json'}
-    }).pipe(tap((tokenPayload) => {
-      this._saveLoginToken(tokenPayload);
-      this._emitLogin(tokenPayload);
-    }));
+    return this.httpClient.post<TokenPayloadInterface>('/api/auth/login', credentials)
+      .pipe(tap((tokenPayload) => {
+        this._saveLoginToken(tokenPayload);
+        this._emitLogin(tokenPayload);
+      }));
   }
 
   getUserProfile() {
@@ -42,9 +40,7 @@ export class AccountService implements OnInit {
   }
 
   updateUser(appUser: AppUserInterface) {
-    return this.httpClient.put<TokenPayloadInterface>('/api/auth/update', appUser, {
-      headers: {'Content-Type': 'application/json'}
-    });
+    return this.httpClient.put<TokenPayloadInterface>('/api/auth/update', appUser);
   }
 
   logoutUser() {
