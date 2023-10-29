@@ -13,7 +13,7 @@ export class AccountService implements OnInit {
 
   constructor(private httpClient: HttpClient) {
     const tokenPayload = this._getLoginToken();
-    if (tokenPayload) this._emitLogin(JSON.parse(tokenPayload) ?? null);
+    if (tokenPayload) this._emitLogin(tokenPayload);
   }
 
   ngOnInit(): void {
@@ -48,9 +48,9 @@ export class AccountService implements OnInit {
     this._emitLogout();
   }
 
-  private _saveLoginToken = (tokenPayload: TokenPayloadInterface) => localStorage.setItem('tokenPayload', JSON.stringify(tokenPayload));
+  private _getLoginToken = () => JSON.parse(localStorage.getItem('tokenPayload') ?? 'null');
 
-  private _getLoginToken = () => localStorage.getItem('tokenPayload');
+  private _saveLoginToken = (tokenPayload: TokenPayloadInterface) => localStorage.setItem('tokenPayload', JSON.stringify(tokenPayload));
 
   private _removeLoginToken = () => localStorage.removeItem('tokenPayload');
 
