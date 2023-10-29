@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from "../../../services/account.service";
 import {Subscription} from "rxjs";
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   profileForm: FormGroup = new FormGroup({});
   private _subscriptions: Subscription[] = [];
   private _getUserProfileSubscription: Subscription | null = null;
@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       city: [''],
       postcode: [''],
     });
-    this.getUserProfile();
   }
 
   getUserProfile() {
@@ -42,12 +41,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
           country: jsonData.country,
           state: jsonData.state,
           city: jsonData.city,
-          postcode: jsonData.postcode
+          postcode: jsonData.postcode,
         });
       },
       error: (httpErrResp) => this.toasterService.openSnackbar({message: httpErrResp.error.message, type: "error"})
     });
     this._subscriptions.push(this._getUserProfileSubscription);
+  }
+
+  ngAfterViewInit(): void {
+    this.getUserProfile();
   }
 
   onWmPfUpdateSubmit() {

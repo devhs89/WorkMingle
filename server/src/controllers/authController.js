@@ -68,11 +68,11 @@ const profile = (req, res) => {
   const userId = req.userId;
 
   // Get the user details from the database
-  AppUser.findById(userId, {password: 0}).then((user) => {
-    if (!user) return res.status(401).json({message: 'Unauthorized'});
+  AppUser.findById(userId, {password: 0}).then((resp) => {
+    if (!resp) return res.status(401).json({message: 'Unauthorized'});
 
     // Return the user details
-    res.json({userDetails: {...user._doc, password: undefined}});
+    res.json({...resp._doc, password: undefined});
   }).catch(() => {
     res.status(500).json({message: 'Internal server error'});
   });
