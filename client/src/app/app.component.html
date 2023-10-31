@@ -11,14 +11,19 @@
       <button mat-icon-button routerLink="/profile">
         <fa-icon [icon]="faCircleUser"></fa-icon>
       </button>
-      <button mat-icon-button routerLink="/profile">
+      <button mat-icon-button (click)="logoutHandler()">
         <fa-icon [icon]="faRightFromBracket"></fa-icon>
       </button>
     </ng-container>
     <ng-template #notLoggedIn>
-      <button mat-button routerLink="/login">Login</button>
-      <button mat-button routerLink="/register" *ngIf="!(xSmallMediaObservable$ | async)?.matches">Register
+      <button mat-icon-button routerLink="/login"
+              *ngIf="(xSmallMediaObservable$ | async)?.matches; else wordedNavManu">
+        <fa-icon [icon]="faRightToBracket"></fa-icon>
       </button>
+    </ng-template>
+    <ng-template #wordedNavManu>
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/register">Register</button>
     </ng-template>
   </div>
 </mat-toolbar>

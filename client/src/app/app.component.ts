@@ -7,6 +7,8 @@ import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
 import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
+import {Router} from "@angular/router";
+import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBracket";
 
 @Component({
   selector: 'app-root',
@@ -18,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private _getUserProfileSubscription: Subscription | null = null;
   private _subscriptions: Subscription[] = [];
 
-  constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService) {
+  constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService, protected router: Router) {
     this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 
@@ -31,6 +33,11 @@ export class AppComponent implements OnInit, OnDestroy {
     this._subscriptions.push(this._getUserProfileSubscription);
   }
 
+  logoutHandler() {
+    this.accountService.logoutUser();
+    this.router.navigate(['/']);
+  }
+
   ngOnDestroy(): void {
     this._subscriptions.forEach(s => s.unsubscribe());
   }
@@ -38,4 +45,5 @@ export class AppComponent implements OnInit, OnDestroy {
   protected readonly faCopyright = faCopyright;
   protected readonly faCircleUser = faCircleUser;
   protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faRightToBracket = faRightToBracket;
 }
