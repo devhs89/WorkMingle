@@ -6,6 +6,7 @@ import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
 import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
+import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
 
 @Component({
   selector: 'app-root',
@@ -36,4 +37,5 @@ export class AppComponent implements OnInit, OnDestroy {
 
   protected readonly faCopyright = faCopyright;
   protected readonly faCircleUser = faCircleUser;
+  protected readonly faRightFromBracket = faRightFromBracket;
 }
