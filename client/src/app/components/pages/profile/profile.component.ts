@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AccountService} from "../../../services/account.service";
 import {Subscription} from "rxjs";
 import {ToasterService} from "../../../services/toaster.service";
-import {Router} from "@angular/router";
+import {PageTitleService} from "../../../services/page-title.service";
 
 @Component({
   selector: 'app-profile',
@@ -16,7 +16,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   private _getUserProfileSubscription: Subscription | null = null;
   private _updateUserSubscription: Subscription | null = null;
 
-  constructor(private fb: FormBuilder, private accountService: AccountService, private router: Router, private toasterService: ToasterService) {
+  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private accountService: AccountService, private toasterService: ToasterService) {
+    pageTitleService.setPageTitle('Profile');
+    pageTitleService.setWindowTitle('Profile');
   }
 
   ngOnInit(): void {
@@ -55,7 +57,25 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onWmPfUpdateSubmit() {
     if (this.profileForm.valid) {
-
+      const updatedProfile = this.profileForm.value;
+      this._updateUserSubscription = this.accountService.updateUser(updatedProfile).subscribe({
+        next: (jsonData) => {
+          this.profileForm.patchValue({
+            email: jsonData.email,
+            firstName: jsonData.firstName,
+            lastName: jsonData.lastName,
+            country: jsonData.country,
+            state: jsonData.state,
+            city: jsonData.city,
+            postcode: jsonData.postcode,
+          });
+          this.toasterService.openSnackbar({message: 'Profile updated successfully', type: 'success'});
+        },
+        error: (httpErrResp) => {
+          this.toasterService.openSnackbar({message: httpErrResp.error.message, type: 'error'});
+        }
+      });
+      this._subscriptions.push(this._updateUserSubscription);
     }
   }
 

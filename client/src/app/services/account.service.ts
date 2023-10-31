@@ -40,7 +40,7 @@ export class AccountService implements OnInit {
   }
 
   updateUser(appUser: AppUserInterface) {
-    return this.httpClient.put<TokenPayloadInterface>('/api/auth/update', appUser);
+    return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
   }
 
   logoutUser() {
