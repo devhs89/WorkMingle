@@ -4,6 +4,8 @@ import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable, Subscription} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
+import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
+import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
 
 @Component({
   selector: 'app-root',
@@ -31,4 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._subscriptions.forEach(s => s.unsubscribe());
   }
+
+  protected readonly faCopyright = faCopyright;
+  protected readonly faCircleUser = faCircleUser;
 }

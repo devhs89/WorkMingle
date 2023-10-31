@@ -26,6 +26,7 @@ import {JobsListComponent} from './components/pages/jobs-list/jobs-list.componen
 import {ToastComponent} from './components/shared/toast/toast.component';
 import {JwtTokenInterceptor} from "./interceptors/jwt-token.interceptor";
 import {GenericInterceptor} from "./interceptors/generic.interceptor";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import {GenericInterceptor} from "./interceptors/generic.interceptor";
     ReactiveFormsModule,
     MatCardModule,
     MatCheckboxModule,
-    MatRippleModule
+    MatRippleModule,
+    FontAwesomeModule
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
