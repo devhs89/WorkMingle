@@ -51,7 +51,7 @@ const login = async (req, res) => {
 
     // Compare the password
     bcrypt.compare(password, user.password, (err, result) => {
-      if (err) return res.status(500).json({message: 'Invalid email or password'});
+      if (err) return res.status(500).json({message: 'Internal server error'});
 
       if (result) {
         // Create a JWT token
@@ -61,6 +61,7 @@ const login = async (req, res) => {
         // Return the token and the user details
         return res.json({token, user: {firstName: user.firstName, lastName: user.lastName}});
       }
+      return res.status(401).json({message: 'Invalid email or password'});
     });
   } catch (e) {
     return res.status(500).json({message: 'Internal server error'});
@@ -77,10 +78,31 @@ const profile = async (req, res) => {
     if (!resp) return res.status(401).json({message: 'Unauthorized'});
 
     // Return the user details
-    res.json(resp._doc ? {...resp._doc, password: undefined} : {...resp, password: undefined});
+    res.json({...resp._doc, password: undefined});
   } catch (e) {
     return res.status(500).json({message: 'Internal server error'});
   }
 };
 
-module.exports = {register, login, profile};
+// Profile Update endpoint
+const updateProfile = async (req, res) => {
+  try {
+    // Get the user ID from the request
+    const userId = req.userId;
+    const {firstName, lastName, country, state, city, postcode} = req.body;
+
+    // Update the user profile
+    const updatedProfile = await AppUser.findOneAndUpdate({_id: userId}, {
+      firstName: firstName, lastName: lastName, country: country, state: state, city: city, postcode: postcode,
+    }, {new: true});
+    if (!updatedProfile) return res.status(401).json({message: 'Unauthorized'});
+
+    // Return a success response
+    return res.json({...updatedProfile._doc, password: undefined});
+  } catch (e) {
+    return res.status(500).json({message: 'Internal server error'});
+  }
+};
+
+
+module.exports = {register, login, profile, updateProfile};

@@ -1,5 +1,5 @@
 const express = require('express');
-const {register, login, profile} = require("../controllers/authController");
+const {register, login, profile, updateProfile} = require("../controllers/authController");
 const authenticateUser = require("../middlewares/authMiddleware");
 const router = express.Router();
 
@@ -11,5 +11,8 @@ router.post('/login', login);
 
 // Profile route with authentication middleware
 router.post('/profile', authenticateUser, profile);
+
+// Profile update route with authentication middleware
+router.post('/update-profile', authenticateUser, updateProfile);
 
 module.exports = router;
