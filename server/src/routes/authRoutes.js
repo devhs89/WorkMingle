@@ -13,6 +13,6 @@ router.post('/login', login);
 router.post('/profile', authenticateUser, profile);
 
 // Profile update route with authentication middleware
-router.post('/update-profile', authenticateUser, updateProfile);
+router.put('/update-profile', authenticateUser, updateProfile);
 
 module.exports = router;
