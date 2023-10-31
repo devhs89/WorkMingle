@@ -1,12 +1,13 @@
-<mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top fs-5">
-  <button mat-button class="app-brand" color="accent" routerLink="/">WorkMingle</button>
-  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2">
+<mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top fs-5-5">
+  <button mat-button class="app-brand fs-5" color="accent" routerLink="/">WorkMingle</button>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2"
+       *ngIf="!(xSmallMediaObservable$ | async)?.matches">
     <button mat-button routerLink="/home">Home</button>
     <button mat-button routerLink="/jobs">Jobs</button>
   </div>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
-    <ng-container *ngIf="(accountService.tokenPayload$ | async) as tokenPayload; else notLoggedIn">
+    <ng-container *ngIf="(accountService.tokenPayload$ | async)?.token; else notLoggedIn">
       <button mat-icon-button routerLink="/profile">
         <fa-icon [icon]="faCircleUser"></fa-icon>
       </button>
@@ -47,7 +48,7 @@
             <mat-icon>menu</mat-icon>
           </button>
         </div>
-        <div class="mx-1 mx-sm-2 fs-5 header-page-title">{{(pageTitleService.pageTitle$ | async)}}</div>
+        <div class="mx-1 mx-sm-2 header-page-title">{{(pageTitleService.pageTitle$ | async)}}</div>
       </div>
     </header>
     <div class="flex-grow-1 py-5">
