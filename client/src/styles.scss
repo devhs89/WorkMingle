@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import "../scss/custom-variables";
 
 html, body {
   height: 100% !important;
@@ -7,4 +7,24 @@ html, body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+div.sub-navbar {
+  min-height: 48px;
+}
+
+.toast-success > div {
+  background-color: $green-50 !important;
+}
+
+.toast-success * {
+  color: $green-500 !important;
+}
+
+.toast-error > div {
+  background-color: $red-100 !important;
+}
+
+.toast-error * {
+  color: $red-A700 !important;
 }

@@ -19,9 +19,13 @@ import {MatInputModule} from "@angular/material/input";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatCardModule} from "@angular/material/card";
 import {MatCheckboxModule} from "@angular/material/checkbox";
-import {HttpClientModule} from "@angular/common/http";
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 import {MatRippleModule} from "@angular/material/core";
+import {JobsListComponent} from './components/pages/jobs-list/jobs-list.component';
+import {ToastComponent} from './components/shared/toast/toast.component';
+import {JwtTokenInterceptor} from "./interceptors/jwt-token.interceptor";
+import {GenericInterceptor} from "./interceptors/generic.interceptor";
 
 @NgModule({
   declarations: [
@@ -31,6 +35,8 @@ import {MatRippleModule} from "@angular/material/core";
     LoginComponent,
     ProfileComponent,
     PageNotFoundComponent,
+    JobsListComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +59,12 @@ import {MatRippleModule} from "@angular/material/core";
   ],
   providers: [
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {duration: 600000, horizontalPosition: 'end', verticalPosition: 'bottom'}
+    },
+    {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true},
   ],
   bootstrap: [AppComponent]
 })

@@ -1,26 +1,45 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top">
-  <button mat-button color="accent" class="fs-5 app-brand">WorkMingle</button>
+  <button mat-button class="app-brand fs-5" color="accent" routerLink="/">WorkMingle</button>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2">
+    <button mat-button routerLink="/home">Home</button>
+    <button mat-button routerLink="/jobs">Jobs</button>
+  </div>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
-    <button mat-stroked-button routerLink="/login">Login</button>
-    <button mat-stroked-button routerLink="/register">Register</button>
+    <ng-container *ngIf="(accountService.tokenPayload$ | async) as tokenPayload; else notLoggedIn">
+      <button mat-button routerLink="/profile">{{tokenPayload?.user?.firstName}}
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </ng-container>
+    <ng-template #notLoggedIn>
+      <button mat-button routerLink="/login">Login</button>
+      <button mat-button routerLink="/register" *ngIf="!(xSmallMediaObservable$ | async)?.matches">Register
+      </button>
+    </ng-template>
   </div>
 </mat-toolbar>
 
 <mat-sidenav-container class="mat-sidenav-container">
-  <mat-sidenav [fixedTopGap]="(breakpointObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
+  <mat-sidenav [fixedTopGap]="(xSmallMediaObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
                class="mat-sidenav" #matSidenav>
     <mat-nav-list>
-      <mat-list-item>Home</mat-list-item>
-      <mat-list-item routerLink="/login">Login</mat-list-item>
-      <mat-list-item routerLink="/register">Register</mat-list-item>
+      <mat-list-item routerLink="/home">Home</mat-list-item>
+      <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
+      <mat-divider class="mx-1"></mat-divider>
+      <ng-container *ngIf="(accountService.tokenPayload$ | async); else notLoggedIn">
+        <mat-list-item routerLink="/profile">Profile</mat-list-item>
+      </ng-container>
+      <ng-template #notLoggedIn>
+        <mat-list-item routerLink="/login">Login</mat-list-item>
+        <mat-list-item routerLink="/register">Register</mat-list-item>
+      </ng-template>
     </mat-nav-list>
   </mat-sidenav>
 
   <mat-sidenav-content class="d-flex flex-column mat-sidenav-content">
     <header class="bg-primary-subtle container-fluid">
-      <div class="d-flex align-items-center">
-        <div>
+      <div class="d-flex align-items-center sub-navbar">
+        <div *ngIf="(xSmallMediaObservable$ | async)?.matches">
           <button mat-icon-button (click)="matSidenav.toggle()" class="header-mat-icon-toggle-btn">
             <mat-icon>menu</mat-icon>
           </button>

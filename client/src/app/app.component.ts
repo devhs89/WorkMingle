@@ -1,23 +1,34 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable} from "rxjs";
-import {Title} from "@angular/platform-browser";
+import {Observable, Subscription} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
+import {AccountService} from "./services/account.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
-  protected breakpointObservable$: Observable<BreakpointState> | null = null;
+export class AppComponent implements OnInit, OnDestroy {
+  protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
+  private _getUserProfileSubscription: Subscription | null = null;
+  private _subscriptions: Subscription[] = [];
 
-  constructor(private titleService: Title, protected pageTitleService: PageTitleService, private breakpointsService: MediaBreakpointService) {
-    this.breakpointObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
+  constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService) {
+    this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Home | WorkMingle');
+    this._getUserProfileSubscription = this.accountService.getUserProfile().subscribe({
+      error: () => {
+        this.accountService.logoutUser();
+      }
+    });
+    this._subscriptions.push(this._getUserProfileSubscription);
+  }
+
+  ngOnDestroy(): void {
+    this._subscriptions.forEach(s => s.unsubscribe());
   }
 }
