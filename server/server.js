@@ -3,7 +3,7 @@ const ignore = require('dotenv').config();
 const bodyParser = require('body-parser');
 const logWithWinston = require("./src/util/winston-logger");
 const dbInit = require('./src/data/db-init');
-const authRoutes = require('./src/routes/authRoutes');
+const authRoutes = require('./src/routes/auth-routes');
 
 try {
   // Create a new Express application.
