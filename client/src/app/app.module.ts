@@ -26,7 +26,7 @@ import {JobsListComponent} from './components/pages/jobs-list/jobs-list.componen
 import {ToastComponent} from './components/shared/toast/toast.component';
 import {JwtTokenInterceptor} from "./interceptors/jwt-token.interceptor";
 import {GenericInterceptor} from "./interceptors/generic.interceptor";
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [
@@ -63,7 +63,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     {provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: {appearance: 'outline', color: 'primary'}},
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: {duration: 600000, horizontalPosition: 'end', verticalPosition: 'bottom'}
+      useValue: {duration: 5000, horizontalPosition: 'end', verticalPosition: 'bottom'}
     },
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true},
