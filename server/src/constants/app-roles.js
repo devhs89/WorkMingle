@@ -1,4 +1,4 @@
-const AppRoles = {
+const appRoles = {
   admin: {
     name: 'Admin', normalizedName: 'ADMIN',
   }, user: {
@@ -8,4 +8,4 @@ const AppRoles = {
   }
 };
 
-module.exports = AppRoles;
+module.exports = appRoles;
