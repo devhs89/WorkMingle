@@ -24,9 +24,6 @@ const dbInit = async () => {
   // Seed application roles
   await seedAppRoles();
 
-  // Close the MongoDB connection
-  db.close();
-
   // Return the database connection
   return db;
 };

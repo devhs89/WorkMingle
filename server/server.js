@@ -13,9 +13,7 @@ try {
   const port = process.env.PORT || 3000;
 
   // Connect to MongoDB
-  dbInit().then(() => {
-    console.log('Database initialized');
-  });
+  dbInit().then((db) => console.log(`Database connected on ${db.port}`));
 
   // Serve static content for the app from the "public" directory.
   app.use(express.static('public'));
