@@ -1,7 +1,7 @@
 const AppUser = require('../models/AppUser');
 const bcrypt = require('bcrypt');
 const {writeJwtToken} = require("../util/auth-token");
-const logWithWinston = require("../util/winstonLogger");
+const logWithWinston = require("../util/winston-logger");
 const saltRounds = 10;
 
 // Registration endpoint

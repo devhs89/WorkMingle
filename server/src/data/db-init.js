@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const seedAppRoles = require("./initial-seed");
-const logWithWinston = require("../util/winstonLogger");
+const logWithWinston = require("../util/winston-logger");
 const ignore = require('dotenv').config();
 
 const dbInit = async () => {

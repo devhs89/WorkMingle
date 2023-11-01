@@ -1,6 +1,6 @@
 const AppRole = require('../models/AppRole');
 const AppRoles = require("../constants/app-roles");
-const logWithWinston = require("../util/winstonLogger");
+const logWithWinston = require("../util/winston-logger");
 
 // Seed application roles
 const seedAppRoles = async () => {

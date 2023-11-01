@@ -1,7 +1,7 @@
 const express = require("express");
 const ignore = require('dotenv').config();
 const bodyParser = require('body-parser');
-const logWithWinston = require("./src/util/winstonLogger");
+const logWithWinston = require("./src/util/winston-logger");
 const dbInit = require('./src/data/db-init');
 const authRoutes = require('./src/routes/authRoutes');
 
