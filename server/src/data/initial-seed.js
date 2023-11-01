@@ -1,4 +1,4 @@
-const AppRole = require('../models/AppRole');
+const AppRole = require('../models/app-role');
 const AppRoles = require("../constants/app-roles");
 const logWithWinston = require("../util/winston-logger");
 
