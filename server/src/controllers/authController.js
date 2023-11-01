@@ -1,6 +1,7 @@
 const AppUser = require('../models/AppUser');
 const bcrypt = require('bcrypt');
 const {writeJwtToken} = require("../util/auth-token");
+const logWithWinston = require("../util/winstonLogger");
 const saltRounds = 10;
 
 // Registration endpoint
@@ -21,7 +22,7 @@ const register = async (req, res) => {
 
       // Create a new user
       const newUser = new AppUser({
-        email, password: hashedPassword, firstName, lastName, country, state, city, postcode, termsAndConditions,
+        email, password: hashedPassword, firstName, lastName, country, state, city, postcode, termsAndConditions
       });
 
       // Save the user to the database
@@ -35,7 +36,8 @@ const register = async (req, res) => {
       return res.json({token: payload, user: {firstName: firstName, lastName: lastName}});
     });
   } catch (e) {
-    return res.status(500).json({message: 'Internal server error'});
+    res.status(500).json({message: 'Internal server error'});
+    logWithWinston.error(e.message);
   }
 };
 
@@ -64,7 +66,8 @@ const login = async (req, res) => {
       return res.status(401).json({message: 'Invalid email or password'});
     });
   } catch (e) {
-    return res.status(500).json({message: 'Internal server error'});
+    logWithWinston.error(e.message);
+    res.status(500).json({message: 'Internal server error'});
   }
 };
 
@@ -80,7 +83,8 @@ const profile = async (req, res) => {
     // Return the user details
     res.json({...resp._doc, password: undefined});
   } catch (e) {
-    return res.status(500).json({message: 'Internal server error'});
+    logWithWinston.error(e.message);
+    res.status(500).json({message: 'Internal server error'});
   }
 };
 
@@ -100,7 +104,8 @@ const updateProfile = async (req, res) => {
     // Return a success response
     return res.json({...updatedProfile._doc, password: undefined});
   } catch (e) {
-    return res.status(500).json({message: 'Internal server error'});
+    logWithWinston.error(e.message);
+    res.status(500).json({message: 'Internal server error'});
   }
 };
 
