@@ -1,4 +1,4 @@
-const AppUser = require('../models/AppUser');
+const AppUser = require('../models/app-user');
 const bcrypt = require('bcrypt');
 const {writeJwtToken} = require("../util/auth-token");
 const logWithWinston = require("../util/winston-logger");
