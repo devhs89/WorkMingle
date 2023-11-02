@@ -117,40 +117,30 @@ const registerAsEmployer = async (req, res) => {
 
 // Profile endpoint
 const profile = async (req, res) => {
-  try {
-    // Get the user id from the request
-    const userId = req.userId;
+  // Get the user id from the request
+  const userId = req.userId;
 
-    const resp = await AppUser.findById(userId, {password: 0});
-    if (!resp) return res.status(401).json({message: 'Unauthorized'});
+  const resp = await AppUser.findById(userId, {password: 0});
+  if (!resp) return res.status(401).json({message: 'Unauthorized'});
 
-    // Return the user details
-    res.json({...resp._doc, password: undefined});
-  } catch (e) {
-    logWithWinston.error(e.message);
-    res.status(500).json({message: 'Internal server error'});
-  }
+  // Return the user details
+  res.json({...resp._doc, password: undefined});
 };
 
 // Profile Update endpoint
 const updateProfile = async (req, res) => {
-  try {
-    // Get the user ID from the request
-    const userId = req.userId;
-    const {firstName, lastName, country, state, city, postcode} = req.body;
+  // Get the user ID from the request
+  const userId = req.userId;
+  const {firstName, lastName, country, state, city, postcode} = req.body;
 
-    // Update the user profile
-    const updatedProfile = await AppUser.findOneAndUpdate({_id: userId}, {
-      firstName: firstName, lastName: lastName, country: country, state: state, city: city, postcode: postcode,
-    }, {new: true});
-    if (!updatedProfile) return res.status(401).json({message: 'Unauthorized'});
+  // Update the user profile
+  const updatedProfile = await AppUser.findOneAndUpdate({_id: userId}, {
+    firstName: firstName, lastName: lastName, country: country, state: state, city: city, postcode: postcode,
+  }, {new: true});
+  if (!updatedProfile) return res.status(401).json({message: 'Unauthorized'});
 
-    // Return a success response
-    return res.json({...updatedProfile._doc, password: undefined});
-  } catch (e) {
-    logWithWinston.error(e.message);
-    res.status(500).json({message: 'Internal server error'});
-  }
+  // Return a success response
+  return res.json({...updatedProfile._doc, password: undefined});
 };
 
 
