@@ -15,7 +15,7 @@ const writeJwtToken = ({user, expireAt = null}) => {
   expireAt = expireAt && Number.isInteger(expireAt) ? issuedAt + expireAt : issuedAt + 3600;
 
   // Create a JWT token
-  return jwt.sign({userId: user._id, iat: issuedAt, exp: expireAt}, secretKey);
+  return jwt.sign({userId: user._id, roles: user.roles, iat: issuedAt, exp: expireAt}, secretKey);
 };
 
 const verifyJwtToken = ({token}) => {

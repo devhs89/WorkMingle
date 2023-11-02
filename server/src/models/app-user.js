@@ -20,9 +20,7 @@ const AppUserSchema = new Schema({
     type: String
   }, termsAndConditions: {
     type: String, required: true, pattern: 'true'
-  },
-}, {
-  roles: [{type: Schema.Types.ObjectId, ref: 'AppRole'}],
+  }, roles: [{type: Schema.Types.ObjectId, ref: 'AppRole'}],
 });
 
 module.exports = mongoose.model('AppUser', AppUserSchema);

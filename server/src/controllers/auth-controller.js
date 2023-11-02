@@ -73,6 +73,38 @@ const login = async (req, res) => {
   }
 };
 
+// Register as employer endpoint
+const registerAsEmployer = async (req, res) => {
+  // Check if the user is already registered as employer
+  const roleIds = req.roles;
+  const rolePromises = roleIds.map(async (roleId) => await AppRole.findById(roleId, {_id: 0}).exec());
+  const roles = await Promise.all(rolePromises);
+  const isEmployer = roles.some((role) => role.normalizedName === appRoles.employer.normalizedName);
+  if (isEmployer) return res.status(400).json({message: 'Already registered as employer'});
+
+  // Get the employer role
+  const employerRole = await AppRole.findOne({normalizedName: appRoles.employer.normalizedName}).exec();
+  if (!employerRole) return res.status(500).json({message: 'Internal server error'});
+
+  // Add the employer role to the user
+  const user = await AppUser.findById(req.userId).exec();
+  if (!user) return res.status(401).json({message: 'Unauthorized'});
+
+  // Add the employer role to the user
+  user.roles.push(employerRole._id);
+
+  // Update the user in the database
+  await user.save()
+    .then((savedDoc) => {
+      // If user update successful, create a JWT token
+      const payload = writeJwtToken({user: savedDoc});
+      if (!payload) return res.status(500).json({message: 'Internal server error'});
+      // Return the token and the user details
+      return res.json({token: payload, user: {firstName: savedDoc.firstName, lastName: savedDoc.lastName}});
+    })
+    .catch(() => res.status(500).json({message: 'Internal server error'}));
+};
+
 // Profile endpoint
 const profile = async (req, res) => {
   try {
@@ -112,4 +144,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = {register, login, profile, updateProfile};
+module.exports = {register, login, registerAsEmployer, profile, updateProfile};
