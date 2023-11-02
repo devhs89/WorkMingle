@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 require('dotenv').config();
 const mongoose = require("mongoose");
 const jobApplicationRoutes = require('./src/routes/api');
 const apiRoutes = require('./src/routes/api'); // Import the API routes
+const app = express();
+const path= require('path');
 
 const logWithWinston = require("./src/util/winstonLogger");
 try {
@@ -38,5 +39,6 @@ app.use((req, res, next) => {
 } catch (e) {
   logWithWinston.error(e.message);
 }
-
 app.use('/api', apiRoutes);
+app.use('/uploads', express.static('uploads'));
+
