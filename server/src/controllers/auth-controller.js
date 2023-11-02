@@ -2,8 +2,8 @@ const AppRole = require('../models/app-role');
 const AppUser = require('../models/app-user');
 const bcrypt = require('bcrypt');
 const {writeJwtToken} = require("../util/auth-token");
-const logWithWinston = require("../util/winston-logger");
 const appRoles = require("../constants/app-roles");
+const Employer = require("../models/employer");
 const saltRounds = 10;
 
 // Registration endpoint
@@ -87,6 +87,7 @@ const validateAuthToken = async (req, res) => {
 const registerAsEmployer = async (req, res) => {
   const userId = req.userId;
   const roleNames = req.roles;
+  const employerDetails = req.body;
 
   // Check if the user is already registered as employer
   const isEmployer = roleNames.some(role => role === appRoles.employer.normalizedName);
@@ -105,12 +106,20 @@ const registerAsEmployer = async (req, res) => {
 
   // Update the user in the database
   await user.save()
-    .then((savedDoc) => {
-      // If user update successful, create a JWT token
-      const payload = writeJwtToken({user: savedDoc});
-      if (!payload) return res.status(500).json({message: 'Internal server error'});
-      // Return the token and the user details
-      return res.json({token: payload, user: {firstName: savedDoc.firstName, lastName: savedDoc.lastName}});
+    .then(async (savedDoc) => {
+      // Create a new employer
+      const newEmployer = new Employer({...employerDetails, userId: user._id});
+      await newEmployer.save().then(() => {
+        // If user update successful, create a JWT token
+        const jwtToken = writeJwtToken({user: savedDoc});
+        if (!jwtToken) return res.status(500).json({message: 'Internal server error'});
+
+        // Return the token and the user details
+        return res.json({token: jwtToken, user: {firstName: savedDoc.firstName, lastName: savedDoc.lastName}});
+        // TODO: Endpoint testing pending
+      }).catch(() => {
+        return res.status(500).json({message: 'Internal server error'});
+      });
     })
     .catch(() => res.status(500).json({message: 'Internal server error'}));
 };
