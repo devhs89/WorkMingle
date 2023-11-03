@@ -1,7 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
@@ -15,31 +15,18 @@ import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBrack
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
   protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
-  private _getUserProfileSubscription: Subscription | null = null;
-  private _subscriptions: Subscription[] = [];
 
   constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService, protected router: Router) {
     this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 
   ngOnInit(): void {
-    this._getUserProfileSubscription = this.accountService.getUserProfile().subscribe({
-      error: () => {
-        this.accountService.logoutUser();
-      }
-    });
-    this._subscriptions.push(this._getUserProfileSubscription);
   }
 
   logoutHandler() {
-    this.accountService.logoutUser();
-    this.router.navigate(['/']);
-  }
-
-  ngOnDestroy(): void {
-    this._subscriptions.forEach(s => s.unsubscribe());
+    this.accountService.logoutUser().then(() => window.location.reload());
   }
 
   protected readonly faCopyright = faCopyright;

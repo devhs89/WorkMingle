@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {AppUserInterface} from "../interfaces/app-user.interface";
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
 import {ReplaySubject, tap} from "rxjs";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AccountService implements OnInit {
   private _authResponseReplaySubject = new ReplaySubject<AuthResponseInterface | null>(1);
   authResponse$ = this._authResponseReplaySubject.asObservable();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private router: Router) {
     const tokenPayload = this._getLoginToken();
     if (tokenPayload) this._emitLogin(tokenPayload);
   }
@@ -35,6 +36,10 @@ export class AccountService implements OnInit {
       }));
   }
 
+  validateAuthToken() {
+    return this.httpClient.post<{valid: boolean}>('/api/auth/validate-auth-token', {});
+  }
+
   getUserProfile() {
     return this.httpClient.post<AppUserInterface>('/api/auth/profile', {});
   }
@@ -43,9 +48,10 @@ export class AccountService implements OnInit {
     return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
   }
 
-  logoutUser() {
+  logoutUser(redirectToLogin: boolean = false) {
     this._removeLoginToken();
     this._emitLogout();
+    return redirectToLogin ? this.router.navigate(['/login']) : this.router.navigate(['/']);
   }
 
   private _getLoginToken = () => JSON.parse(localStorage.getItem('tokenPayload') ?? 'null');
