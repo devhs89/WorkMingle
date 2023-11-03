@@ -78,9 +78,8 @@ const login = async (req, res) => {
 
 // Validate auth token endpoint
 const validateAuthToken = async (req, res) => {
-  const userId = req.userId;
-  const roles = req.roles;
-  userId && roles ? res.status(200).json({message: 'Valid token'}) : res.status(401).json({message: 'Invalid token'});
+  // If the request has reached here, the token is valid
+  res.status(200).json({valid: true});
 };
 
 // Register as employer endpoint
