@@ -10,12 +10,10 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-exports.createJobApplication = upload.single('resume'),async (req, res) => {
+createJobApplication = upload.single('resume'),async (req, res) => {
   
-    const name = req.body.name;
-    const email = req.body.email;
-    const resume = req.file.path; // Get the file path
-    const newApplication = new JobApplication({ name, email, resume });
+    const {resume, applicationDate, attachments, references, status} = req.body
+    const newApplication = new JobApplication({resume, applicationDate, attachments, references, status});
     try {
     const savedApplication = await newApplication.save();
     res.status(201).json(savedApplication);
@@ -24,19 +22,7 @@ exports.createJobApplication = upload.single('resume'),async (req, res) => {
   }
 };
 
-/*exports.createJobApplication = async (req, res) => {
-  const { name, email, resume } = req.body;
-  const newApplication = new JobApplication({ name, email, resume });
-
-  try {
-    const savedApplication = await newApplication.save();
-    res.status(201).json(savedApplication);
-  } catch (error) {
-    res.status(500).json({ error: 'Error creating job application' });
-  }
-};*/
-
-exports.getAllJobApplications = async (req, res) => {
+getAllJobApplications = async (req, res) => {
   try {
     const applications = await JobApplication.find();
     res.status(200).json(applications);
@@ -44,3 +30,5 @@ exports.getAllJobApplications = async (req, res) => {
     res.status(500).json({ error: 'Error fetching job applications' });
   }
 };
+
+module.exports = {createJobApplication, getAllJobApplications}

@@ -32,5 +32,3 @@ try {
   // Log any exceptions
   logWithWinston.error(e.message);
 }
-
-app.use('/api', apiRoutes);
