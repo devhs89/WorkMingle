@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable} from "rxjs";
+import {Observable, take} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
@@ -23,11 +23,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accountService.validateAuthToken(true);
+    this.accountService.validateAuthToken().pipe(take(1)).subscribe(() => this.logoutHandler());
   }
 
   logoutHandler() {
-    this.accountService.logoutUser().then(() => window.location.reload());
+    this.accountService.logoutUser();
   }
 
   protected readonly faCopyright = faCopyright;

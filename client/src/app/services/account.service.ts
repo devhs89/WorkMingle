@@ -14,8 +14,8 @@ export class AccountService implements OnInit {
   authResponse$ = this._authResponseReplaySubject.asObservable();
 
   constructor(private httpClient: HttpClient, private router: Router) {
-    const tokenPayload = this._getLoginToken();
-    if (tokenPayload) this._emitLogin(tokenPayload);
+    const authResp = this._getAuthToken();
+    if (authResp) this._emitAuthToken(authResp);
   }
 
   ngOnInit(): void {
@@ -23,23 +23,18 @@ export class AccountService implements OnInit {
 
   registerUser(appUser: AppUserInterface) {
     return this.httpClient.post<AuthResponseInterface>('/api/auth/register', appUser)
-      .pipe(tap((tokenPayload) => {
-        this._saveLoginToken(tokenPayload);
-        this._emitLogin(tokenPayload);
-      }));
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
   loginUser(credentials: { email: string, password: string }) {
     return this.httpClient.post<AuthResponseInterface>('/api/auth/login', credentials)
-      .pipe(tap((tokenPayload) => {
-        this._saveLoginToken(tokenPayload);
-        this._emitLogin(tokenPayload);
-      }));
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
-  validateAuthToken(logoutOnInvalid: boolean = false) {
-    return this.httpClient.post<{ valid: boolean }>('/api/auth/validate-auth-token', {})
-      .pipe(tap((resp) => resp.valid && logoutOnInvalid && this.logoutUser()));
+  validateAuthToken() {
+    return this.httpClient.post<boolean>('/api/auth/validate-auth-token', {}).pipe(tap({
+      error: () => this._deleteAuthSession()
+    }));
   }
 
   getUserProfile() {
@@ -51,20 +46,29 @@ export class AccountService implements OnInit {
   }
 
   logoutUser(to: RedirectOptionsEnum = RedirectOptionsEnum.NONE) {
-    this._removeLoginToken();
-    this._emitLogout();
+    this._deleteAuthSession();
     if (to === RedirectOptionsEnum.LOGIN) return this.router.navigate(['/login']);
     if (to === RedirectOptionsEnum.HOME) return this.router.navigate(['/home']);
     return null;
   }
 
-  private _getLoginToken = () => JSON.parse(localStorage.getItem('tokenPayload') ?? 'null');
+  private _getAuthToken = () => JSON.parse(localStorage.getItem('authToken') ?? 'null');
 
-  private _saveLoginToken = (tokenPayload: AuthResponseInterface) => localStorage.setItem('tokenPayload', JSON.stringify(tokenPayload));
+  private _saveAuthToken = (authToken: AuthResponseInterface) => localStorage.setItem('authToken', JSON.stringify(authToken));
 
-  private _removeLoginToken = () => localStorage.removeItem('tokenPayload');
+  private _removeAuthToken = () => localStorage.removeItem('authToken');
 
-  private _emitLogin = (tokenPayload: AuthResponseInterface) => this._authResponseReplaySubject.next(tokenPayload);
+  private _emitAuthToken = (authToken: AuthResponseInterface) => this._authResponseReplaySubject.next(authToken);
 
   private _emitLogout = () => this._authResponseReplaySubject.next(null);
+
+  private _createAuthSession = (authResp: AuthResponseInterface) => {
+    this._saveAuthToken(authResp);
+    this._emitAuthToken(authResp);
+  };
+
+  private _deleteAuthSession = () => {
+    this._removeAuthToken();
+    this._emitLogout();
+  };
 }
