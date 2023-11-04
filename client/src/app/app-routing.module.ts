@@ -12,11 +12,10 @@ const routes: Routes = [
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'profile', canActivate: [authenticationGuard], component: ProfileComponent},
-  {path: 'employer', component: RegisterComponent},
   {
-    path: 'job',
+    path: 'employer',
     canMatch: [authenticationGuard],
-    loadChildren: () => import('./components/jobs/jobs.module').then((m) => m.JobsModule)
+    loadChildren: () => import('./components/account/employer/employer.module').then((m) => m.EmployerModule)
   },
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
