@@ -4,6 +4,7 @@ import {AppUserInterface} from "../interfaces/app-user.interface";
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
 import {ReplaySubject, tap} from "rxjs";
 import {Router} from "@angular/router";
+import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
 
 @Injectable({
   providedIn: 'root'
@@ -49,10 +50,12 @@ export class AccountService implements OnInit {
     return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
   }
 
-  logoutUser(redirectToLogin: boolean = false) {
+  logoutUser(to: RedirectOptionsEnum = RedirectOptionsEnum.NONE) {
     this._removeLoginToken();
     this._emitLogout();
-    return redirectToLogin ? this.router.navigate(['/login']) : this.router.navigate(['/']);
+    if (to === RedirectOptionsEnum.LOGIN) return this.router.navigate(['/login']);
+    if (to === RedirectOptionsEnum.HOME) return this.router.navigate(['/home']);
+    return null;
   }
 
   private _getLoginToken = () => JSON.parse(localStorage.getItem('tokenPayload') ?? 'null');
