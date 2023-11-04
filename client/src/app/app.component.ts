@@ -2,8 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
-import {Title} from "@angular/platform-browser";
 import {PageTitleService} from "./services/page-title.service";
+import {AccountService} from "./services/account.service";
+import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
+import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
+import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
+import {Router} from "@angular/router";
+import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBracket";
 
 @Component({
   selector: 'app-root',
@@ -11,13 +16,22 @@ import {PageTitleService} from "./services/page-title.service";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  protected breakpointObservable$: Observable<BreakpointState> | null = null;
+  protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
 
-  constructor(private titleService: Title, protected pageTitleService: PageTitleService, private breakpointsService: MediaBreakpointService) {
-    this.breakpointObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
+  constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService, protected router: Router) {
+    this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Home | WorkMingle');
+    this.accountService.validateAuthToken(true);
   }
+
+  logoutHandler() {
+    this.accountService.logoutUser().then(() => window.location.reload());
+  }
+
+  protected readonly faCopyright = faCopyright;
+  protected readonly faCircleUser = faCircleUser;
+  protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faRightToBracket = faRightToBracket;
 }

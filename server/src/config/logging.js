@@ -1,7 +1,7 @@
-// logging.js
 const winston = require('winston');
-const { createLogger, transports, format } = winston;
+const {createLogger, transports, format} = winston;
 
+// Configure the Winston logger
 const logger = createLogger({
   level: 'info',
   format: format.combine(
@@ -10,7 +10,7 @@ const logger = createLogger({
   ),
   transports: [
     new transports.Console(),
-    new transports.File({ filename: 'logs/application.log' }),
+    new transports.File({filename: 'logs/application.log'}),
   ],
 });
 
