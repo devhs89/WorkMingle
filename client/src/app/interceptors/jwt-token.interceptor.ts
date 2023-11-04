@@ -13,7 +13,7 @@ export class JwtTokenInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let clonedRequest = null;
-    this._tokenPayloadSubscription = this.accountService.tokenPayload$.subscribe({
+    this._tokenPayloadSubscription = this.accountService.authResponse$.subscribe({
       next: (tokenPayload) => {
         if (tokenPayload) {
           clonedRequest = request.clone({

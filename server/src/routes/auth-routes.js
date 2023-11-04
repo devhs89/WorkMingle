@@ -1,5 +1,7 @@
 const express = require('express');
-const {register, login, profile, updateProfile, registerAsEmployer} = require("../controllers/auth-controller");
+const {
+  register, login, profile, updateProfile, registerAsEmployer, validateAuthToken
+} = require("../controllers/auth-controller");
 const {authenticateUser} = require("../middlewares/auth-middleware");
 const router = express.Router();
 
@@ -8,6 +10,9 @@ router.post('/register', register);
 
 // Login route
 router.post('/login', login);
+
+// Login route
+router.post('/validate-auth-token', authenticateUser, validateAuthToken);
 
 // Profile route with authentication middleware
 router.post('/employer/register', authenticateUser, registerAsEmployer);
