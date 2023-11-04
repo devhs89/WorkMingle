@@ -36,8 +36,9 @@ export class AccountService implements OnInit {
       }));
   }
 
-  validateAuthToken() {
-    return this.httpClient.post<{valid: boolean}>('/api/auth/validate-auth-token', {});
+  validateAuthToken(logoutOnInvalid: boolean = false) {
+    return this.httpClient.post<{ valid: boolean }>('/api/auth/validate-auth-token', {})
+      .pipe(tap((resp) => resp.valid && logoutOnInvalid && this.logoutUser()));
   }
 
   getUserProfile() {

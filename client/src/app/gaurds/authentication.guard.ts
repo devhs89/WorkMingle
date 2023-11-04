@@ -14,9 +14,8 @@ export const authenticationGuard: CanActivateFn = () => {
   };
 
   return accountService.validateAuthToken().pipe(map((resp) => {
-    if (resp) return true;
-    redirectToLogin();
-    return false;
+    if (!resp.valid) redirectToLogin();
+    return resp.valid;
   }), catchError(() => {
     redirectToLogin();
     return of(false);
