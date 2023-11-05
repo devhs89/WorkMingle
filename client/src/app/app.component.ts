@@ -9,6 +9,7 @@ import {faCircleUser} from "@fortawesome/free-solid-svg-icons/faCircleUser";
 import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
 import {Router} from "@angular/router";
 import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBracket";
+import {RedirectOptionsEnum} from "./constants/redirect-options.enum";
 
 @Component({
   selector: 'app-root',
@@ -23,11 +24,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accountService.validateAuthToken().pipe(take(1)).subscribe((resp) => !resp && this.logoutHandler());
+    this.accountService.validateAuthToken().pipe(take(1)).subscribe((resp) => !resp && this.accountService.logoutUser(RedirectOptionsEnum.LOGIN));
   }
 
   logoutHandler() {
-    this.accountService.logoutUser();
+    this.accountService.logoutUser(RedirectOptionsEnum.HOME);
   }
 
   protected readonly faCopyright = faCopyright;
