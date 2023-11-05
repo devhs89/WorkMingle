@@ -4,6 +4,10 @@ const bodyParser = require('body-parser');
 const logWithWinston = require("./src/util/winston-logger");
 const dbInit = require('./src/data/db-init');
 const authRoutes = require('./src/routes/auth-routes');
+const jobRoutes = require('./src/routes/job-routes');
+const multer = require('multer');
+
+
 
 try {
   // Create a new Express application.
@@ -23,6 +27,7 @@ try {
 
   // Add authentication middleware to handle authentication routes
   app.use('/api/auth', authRoutes);
+  app.use('/api/jobs', jobRoutes);
 
   // Start server on the specified port
   app.listen(port, function () {

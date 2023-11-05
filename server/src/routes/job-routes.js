@@ -4,7 +4,7 @@ const jobApplicationController = require('../controllers/jobApplicationControlle
 const { authenticateUser } = require('../middlewares/auth-middleware');
 
 // Define API routes
-router.post('/job/create',authenticateUser, jobApplicationController.createJobApplication);
-router.post('/jobs', authenticateUser,jobApplicationController.getAllJobApplications);
+router.post('/create',authenticateUser, jobApplicationController.createJobApplication);
+router.post('/', authenticateUser,jobApplicationController.getAllJobApplications);
 
 module.exports = router;
