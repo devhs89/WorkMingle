@@ -15,14 +15,19 @@ const routes: Routes = [
   {
     path: 'employer',
     canMatch: [authenticationGuard],
-    loadChildren: () => import('./components/account/employer/employer.module').then((m) => m.EmployerModule)
+    loadChildren: () => import('../app/components/account/employer/employer.module').then((m) => m.EmployerModule)
+  },
+  {
+    path: 'jobs',
+    canMatch: [authenticationGuard],
+    loadChildren: () => import('../app/components/jobs/jobs.module').then((m) => m.JobsModule)
   },
   {path: '', redirectTo: 'home', pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
