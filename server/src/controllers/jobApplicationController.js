@@ -15,7 +15,6 @@ const upload = multer({ storage });
 // Your route handler
 createJobApplication = async (req, res) => {
   try {
-    console.log("afda");
     const { applicationDate, references, status } = req.body;
     const resume = req.files['resume'][0].path;
     const attachments = req.files['attachments'].map((file) => file.path);
