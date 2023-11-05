@@ -2,7 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppUserInterface} from "../interfaces/app-user.interface";
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
-import {ReplaySubject, tap} from "rxjs";
+import {catchError, map, of, ReplaySubject, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
 
@@ -32,9 +32,8 @@ export class AccountService implements OnInit {
   }
 
   validateAuthToken() {
-    return this.httpClient.post<boolean>('/api/auth/validate-auth-token', {}).pipe(tap({
-      error: () => this._deleteAuthSession()
-    }));
+    return this.httpClient.post<{ valid: boolean }>('/api/auth/validate-auth-token', {})
+      .pipe(map((res) => res.valid), catchError(() => of(false)));
   }
 
   getUserProfile() {

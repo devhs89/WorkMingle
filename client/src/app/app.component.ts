@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accountService.validateAuthToken().pipe(take(1)).subscribe(() => this.logoutHandler());
+    this.accountService.validateAuthToken().pipe(take(1)).subscribe((resp) => !resp && this.logoutHandler());
   }
 
   logoutHandler() {
