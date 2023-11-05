@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToasterService} from "../../../../services/toaster.service";
 import {PageTitleService} from "../../../../services/page-title.service";
 
@@ -9,7 +9,19 @@ import {PageTitleService} from "../../../../services/page-title.service";
   styleUrls: ['./onboard.component.scss']
 })
 export class OnboardComponent implements OnInit {
+  @ViewChild('empFormDirective') empFormDirective: any;
   employerForm: FormGroup = new FormGroup({});
+  businessNameCtrl = new FormControl('', Validators.required);
+  industryCtrl = new FormControl('', Validators.required);
+  streetAddressCtrl = new FormControl('', Validators.required);
+  cityCtrl = new FormControl('', Validators.required);
+  postalCodeCtrl = new FormControl('', Validators.required);
+  countryCtrl = new FormControl('', Validators.required);
+  websiteCtrl = new FormControl('', [Validators.pattern('https?://.+')]);
+  workEmailCtrl = new FormControl('', [Validators.required, Validators.email]);
+  workPhoneCtrl = new FormControl('');
+  descriptionCtrl = new FormControl('');
+
   dummyData = {
     "businessName": "ABC Corporation",
     "industry": "Information Technology",
@@ -28,7 +40,6 @@ export class OnboardComponent implements OnInit {
     pageTitleService.setWindowTitle('Onboard');
     pageTitleService.setPageTitle('Register as an Employer');
     this.createForm();
-    console.log();
   }
 
 
@@ -38,16 +49,16 @@ export class OnboardComponent implements OnInit {
 
   createForm() {
     this.employerForm = this.fb.group({
-      businessName: ['', Validators.required],
-      industry: ['', Validators.required],
-      streetAddress: ['', Validators.required],
-      city: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      country: ['', Validators.required],
-      website: ['', [Validators.pattern('https?://.+')]],
-      workEmail: ['', [Validators.required, Validators.email]],
-      workPhone: [''],
-      description: ['']
+      businessName: this.businessNameCtrl,
+      industry: this.industryCtrl,
+      streetAddress: this.streetAddressCtrl,
+      city: this.cityCtrl,
+      postalCode: this.postalCodeCtrl,
+      country: this.countryCtrl,
+      website: this.websiteCtrl,
+      workEmail: this.workEmailCtrl,
+      workPhone: this.workPhoneCtrl,
+      description: this.descriptionCtrl
     });
   }
 
@@ -64,6 +75,7 @@ export class OnboardComponent implements OnInit {
 
       // Reset the form after successful submission
       this.employerForm.reset();
+      this.empFormDirective.resetForm();
     } else {
       // Display an error message
       this.toasterService.openSnackbar({message: 'Please fill out all required fields correctly.', type: 'error'});
