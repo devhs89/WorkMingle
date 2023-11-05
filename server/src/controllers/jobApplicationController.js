@@ -9,11 +9,13 @@ const storage = multer.diskStorage({
   }
 });
 
+
 const upload = multer({ storage });
 
 // Your route handler
-createJobApplication = upload.fields([{ name: 'resume', maxCount: 1 }, { name: 'attachments' }]), async (req, res) => {
+createJobApplication = async (req, res) => {
   try {
+    console.log("afda");
     const { applicationDate, references, status } = req.body;
     const resume = req.files['resume'][0].path;
     const attachments = req.files['attachments'].map((file) => file.path);
@@ -26,6 +28,7 @@ createJobApplication = upload.fields([{ name: 'resume', maxCount: 1 }, { name: '
     res.status(500).json({ error: 'Error creating job application' });
   }
 };
+
 
 getAllJobApplications = async (req, res) => {
   try {
