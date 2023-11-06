@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToasterService} from "../../../../services/toaster.service";
 import {PageTitleService} from "../../../../services/page-title.service";
+import {AccountService} from "../../../../services/account.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-onboard',
@@ -36,7 +38,7 @@ export class OnboardComponent implements OnInit {
   };
 
 
-  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private toasterService: ToasterService) {
+  constructor(pageTitleService: PageTitleService, private router: Router, private fb: FormBuilder, private toasterService: ToasterService, private accountService: AccountService) {
     pageTitleService.setWindowTitle('Onboard');
     pageTitleService.setPageTitle('Register as an Employer');
     this.createForm();
@@ -64,18 +66,23 @@ export class OnboardComponent implements OnInit {
 
   onEmOnSubmit() {
     if (this.employerForm.valid) {
-      // You can send the form data to your server here for registration
       const formData = this.employerForm.value;
-      // Example: Send the formData to your API
-      // Your API call goes here, e.g., using HttpClient
-      console.log(formData);
-
-      // Display a success message
-      this.toasterService.openSnackbar({message: 'Employer registration successful!', type: 'success'});
-
-      // Reset the form after successful submission
-      this.employerForm.reset();
-      this.empFormDirective.resetForm();
+      this.accountService.registerEmployer(formData).subscribe({
+        next: (authResp) => {
+          if (authResp.token) {
+            this.router.navigate(['/employer/dashboard']).then(() =>
+              this.toasterService.openSnackbar({message: 'Employer account created successfully.', type: 'success'}));
+          } else {
+            this.toasterService.openSnackbar({
+              message: 'Employer registration failed. Please contact site administrator.',
+              type: 'error'
+            });
+          }
+        },
+        error: (err) => {
+          this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
+        }
+      });
     } else {
       // Display an error message
       this.toasterService.openSnackbar({message: 'Please fill out all required fields correctly.', type: 'error'});

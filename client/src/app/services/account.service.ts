@@ -5,6 +5,7 @@ import {AuthResponseInterface} from "../interfaces/auth-response.interface";
 import {catchError, map, of, ReplaySubject, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
+import {AppEmployerInterface} from "../interfaces/app-employer.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +43,11 @@ export class AccountService implements OnInit {
 
   updateUser(appUser: AppUserInterface) {
     return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
+  }
+
+  registerEmployer(appEmployer: AppEmployerInterface) {
+    return this.httpClient.post<AuthResponseInterface>('/api/auth/employer/register', appEmployer)
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
   logoutUser(to: RedirectOptionsEnum = RedirectOptionsEnum.NONE) {
