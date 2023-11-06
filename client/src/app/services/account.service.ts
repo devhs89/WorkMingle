@@ -16,7 +16,7 @@ export class AccountService implements OnInit {
 
   constructor(private httpClient: HttpClient, private router: Router) {
     const authResp = this._getAuthToken();
-    if (authResp) this._emitAuthToken(authResp);
+    authResp ? this._emitAuthToken(authResp) : this._emitAuthToken(null);
   }
 
   ngOnInit(): void {
@@ -63,7 +63,7 @@ export class AccountService implements OnInit {
 
   private _removeAuthToken = () => localStorage.removeItem('authToken');
 
-  private _emitAuthToken = (authToken: AuthResponseInterface) => this._authResponseReplaySubject.next(authToken);
+  private _emitAuthToken = (authToken: AuthResponseInterface | null) => this._authResponseReplaySubject.next(authToken);
 
   private _emitLogout = () => this._authResponseReplaySubject.next(null);
 

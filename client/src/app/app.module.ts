@@ -17,6 +17,7 @@ import {GenericInterceptor} from "./interceptors/generic.interceptor";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
 import {MatMenuModule} from "@angular/material/menu";
+import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {MatMenuModule} from "@angular/material/menu";
     ProfileComponent,
     PageNotFoundComponent,
     ToastComponent,
+    JobsListComponent
   ],
   imports: [
     BrowserModule,
