@@ -11,13 +11,12 @@ import {ProfileComponent} from './components/account/profile/profile.component';
 import {PageNotFoundComponent} from './components/generic/page-not-found/page-not-found.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {JobsListComponent} from './components/jobs/jobs-list/jobs-list.component';
 import {ToastComponent} from './components/shared/toast/toast.component';
 import {JwtTokenInterceptor} from "./interceptors/jwt-token.interceptor";
 import {GenericInterceptor} from "./interceptors/generic.interceptor";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {PostJobComponent} from "./components/jobs/post-job/post-job.component";
 import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -27,9 +26,7 @@ import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
     LoginComponent,
     ProfileComponent,
     PageNotFoundComponent,
-    JobsListComponent,
     ToastComponent,
-    PostJobComponent
   ],
   imports: [
     BrowserModule,
@@ -39,7 +36,8 @@ import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    MatUiModule
+    MatUiModule,
+    MatMenuModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},
