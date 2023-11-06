@@ -115,7 +115,6 @@ const registerAsEmployer = async (req, res) => {
 
         // Return the token and the user details
         return res.json({token: jwtToken, user: {firstName: savedDoc.firstName, lastName: savedDoc.lastName}});
-        // TODO: Endpoint testing pending
       }).catch(() => {
         return res.status(500).json({message: 'Internal server error'});
       });
