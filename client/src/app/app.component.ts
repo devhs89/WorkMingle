@@ -10,6 +10,8 @@ import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromB
 import {Router} from "@angular/router";
 import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBracket";
 import {RedirectOptionsEnum} from "./constants/redirect-options.enum";
+import {verifyAppRole} from "./helpers/verify-auth-token.helper";
+import {appRoles} from "./constants/app-roles.constant";
 
 @Component({
   selector: 'app-root',
@@ -24,7 +26,16 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.accountService.validateAuthToken().pipe(take(1)).subscribe((resp) => !resp && this.accountService.logoutUser(RedirectOptionsEnum.LOGIN));
+  }
+
+  allowAccessTo(appRole: string): boolean {
+    let valid = false;
+    this.accountService.authResponse$.pipe(take(1)).subscribe({
+      next: (resp) => {
+        if (resp) valid = verifyAppRole(resp, appRole);
+      }
+    });
+    return valid;
   }
 
   logoutHandler() {
@@ -35,4 +46,5 @@ export class AppComponent implements OnInit {
   protected readonly faCircleUser = faCircleUser;
   protected readonly faRightFromBracket = faRightFromBracket;
   protected readonly faRightToBracket = faRightToBracket;
+  protected readonly appRoles = appRoles;
 }

@@ -16,6 +16,7 @@ import {JwtTokenInterceptor} from "./interceptors/jwt-token.interceptor";
 import {GenericInterceptor} from "./interceptors/generic.interceptor";
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
+import {MatMenuModule} from "@angular/material/menu";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    MatUiModule
+    MatUiModule,
+    MatMenuModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},
