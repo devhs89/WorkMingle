@@ -8,4 +8,5 @@ const AppRoleSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('AppRole', AppRoleSchema);
+const AppRole = mongoose.model('AppRole', AppRoleSchema);
+module.exports = AppRole;
