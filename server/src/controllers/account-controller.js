@@ -77,7 +77,7 @@ const login = async (req, res) => {
 };
 
 // Register as employer endpoint
-const registerAsEmployer = async (req, res) => {
+const onboardEmployer = async (req, res) => {
   const userId = req.userId;
   const roleNames = req.roles;
   const employerDetails = req.body;
@@ -145,4 +145,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = {register, login, registerAsEmployer, profile, updateProfile};
+module.exports = {register, login, onboardEmployer, profile, updateProfile};
