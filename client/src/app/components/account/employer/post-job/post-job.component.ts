@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageTitleService} from "../../../../services/page-title.service";
 import {EmployerFeaturesService} from "../../../../services/employer-features.service";
+import {ToasterService} from "../../../../services/toaster.service";
 
 @Component({
   selector: 'app-post-job',
@@ -9,6 +10,7 @@ import {EmployerFeaturesService} from "../../../../services/employer-features.se
   styleUrls: ['./post-job.component.scss']
 })
 export class PostJobComponent implements OnInit {
+  @ViewChild('jobFormDirective') jobFormDirective: any;
   jobForm: FormGroup;
   titleCtrl: FormControl = new FormControl('', Validators.required);
   companyCtrl: FormControl = new FormControl('', Validators.required);
@@ -24,7 +26,7 @@ export class PostJobComponent implements OnInit {
     salary: '100,000'
   };
 
-  constructor(private formBuilder: FormBuilder, pageService: PageTitleService, private employerFeaturesService: EmployerFeaturesService) {
+  constructor(private formBuilder: FormBuilder, pageService: PageTitleService, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService) {
     pageService.setWindowTitle('Post Job');
     pageService.setPageTitle('Advertise a Job');
     this.jobForm = this.formBuilder.group({
@@ -41,10 +43,16 @@ export class PostJobComponent implements OnInit {
       const jobData = this.jobForm.value;
       this.employerFeaturesService.postJob(jobData).subscribe({
         next: (resp) => {
-          console.log(resp);
+          this.jobForm.reset();
+          this.jobFormDirective.resetForm();
+          this.toasterService.openSnackbar({
+            message: `Job titled "${resp.title}" posted successfully!`,
+            type: 'success'
+          });
         },
-        error: () => {
-          console.log('Error posting job');
+        error: (err) => {
+          for (let controlsKey in this.jobForm.controls) this.jobForm.controls[controlsKey].setErrors({incorrect: true});
+          this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
         }
       });
     }

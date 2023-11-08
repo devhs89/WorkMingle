@@ -11,6 +11,6 @@ export class EmployerFeaturesService {
   }
 
   postJob(jobData: JobAdvertInterface) {
-    return this.httpClient.post('/api/employer/post-job', jobData);
+    return this.httpClient.post<JobAdvertInterface>('/api/employer/post-job', jobData);
   }
 }

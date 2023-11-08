@@ -4,4 +4,6 @@ export interface JobAdvertInterface {
   location: string,
   description: string
   salary?: string;
+  employerId?: string;
+  _id?: string;
 }
