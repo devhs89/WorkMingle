@@ -2,7 +2,7 @@ import {Injectable, OnInit} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {AppUserInterface} from "../interfaces/app-user.interface";
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
-import {catchError, map, of, ReplaySubject, tap} from "rxjs";
+import {ReplaySubject, tap} from "rxjs";
 import {Router} from "@angular/router";
 import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
 import {AppEmployerInterface} from "../interfaces/app-employer.interface";
@@ -23,30 +23,25 @@ export class AccountService implements OnInit {
   }
 
   registerUser(appUser: AppUserInterface) {
-    return this.httpClient.post<AuthResponseInterface>('/api/auth/register', appUser)
+    return this.httpClient.post<AuthResponseInterface>('/api/account/register', appUser)
       .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
   loginUser(credentials: { email: string, password: string }) {
-    return this.httpClient.post<AuthResponseInterface>('/api/auth/login', credentials)
+    return this.httpClient.post<AuthResponseInterface>('/api/account/login', credentials)
       .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
-  validateAuthToken() {
-    return this.httpClient.post<{ valid: boolean }>('/api/auth/validate-auth-token', {})
-      .pipe(map((res) => res.valid), catchError(() => of(false)));
-  }
-
   getUserProfile() {
-    return this.httpClient.post<AppUserInterface>('/api/auth/profile', {});
+    return this.httpClient.post<AppUserInterface>('/api/account/profile', {});
   }
 
   updateUser(appUser: AppUserInterface) {
-    return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
+    return this.httpClient.put<AppUserInterface>('/api/account/update-profile', appUser);
   }
 
   registerEmployer(appEmployer: AppEmployerInterface) {
-    return this.httpClient.post<AuthResponseInterface>('/api/auth/employer/register', appEmployer)
+    return this.httpClient.post<AuthResponseInterface>('/api/account/employer/register', appEmployer)
       .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const employerSchema = new Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'AppUser'},
+  userId: {type: Schema.Types.ObjectId, ref: 'AppUser', unique: true},
   businessName: {type: String, required: true, unique: true},
   industry: {type: String, required: true},
   streetAddress: {type: String, required: true},
