@@ -16,5 +16,6 @@ const jobAdvertSchema = new Schema({
   },
 });
 
-const JobAdvert = mongoose.model('JobAdvert', jobAdvertSchema);
+jobAdvertSchema.index({title: 'text', location: 'text'});
+const JobAdvert = mongoose.model('JobAdvert', jobAdvertSchema, 'job-adverts');
 module.exports = JobAdvert;
