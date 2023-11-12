@@ -1,21 +1,63 @@
-<div class="container">
-  <div class="row">
-    <div *ngFor="let job of jobListings; index as dex" id="job-card-wrapper{{dex}}" class="mb-3 col-lg-6">
-      <mat-card class="job-card" id="job-card{{dex}}">
-        <mat-card-header role="button" matRipple>
-          <mat-card-subtitle><small>{{job.location}} - {{job.salary}} - {{job.company}}</small></mat-card-subtitle>
-          <mat-card-title class="fs-5 mb-2">{{job.title}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <div
-            class="mb-2 job-description-wrapper">{{job.description.slice(0, (xSmallScreen$ | async)?.matches ? 100 : 200).concat('...')}}</div>
-          <mat-divider></mat-divider>
-        </mat-card-content>
-        <mat-card-actions class="justify-content-between mx-2">
-          <button mat-flat-button>Apply</button>
-          <a mat-flat-button routerLink="/job-advert/{{dex}}">Learn More</a>
-        </mat-card-actions>
-      </mat-card>
+<div class="container justify-content-center">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-7 col-xxl-5">
+      <div class="row search-bar mb-3 align-items-md-baseline">
+        <div class="col-sm-6 col-md-5">
+          <mat-form-field class="w-100">
+            <mat-label>Job Title, Keywords</mat-label>
+            <input matInput type="text" placeholder="e.g. software engineer, forklift"
+                   [formControl]="jobTitleFormCtrl" />
+            <mat-error class="small"
+                       *ngIf="jobTitleFormCtrl.invalid && jobTitleFormCtrl.touched && jobTitleFormCtrl.hasError('required')">
+              Job
+              Title is required
+            </mat-error>
+            <mat-error class="small"
+                       *ngIf="jobTitleFormCtrl.invalid && jobTitleFormCtrl.touched && jobTitleFormCtrl.hasError('pattern')">
+              Invalid characters in Job Title
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-6 col-md-5">
+          <mat-form-field class="w-100">
+            <mat-label>Location</mat-label>
+            <input matInput type="text" placeholder="e.g. new york, canada" [formControl]="locationFormCtrl">
+            <mat-error class="small"
+                       *ngIf="locationFormCtrl.invalid && locationFormCtrl.touched && locationFormCtrl.hasError('required')">
+              Location
+              is required
+            </mat-error>
+            <mat-error class="small"
+                       *ngIf="locationFormCtrl.invalid && locationFormCtrl.touched && locationFormCtrl.hasError('pattern')">
+              Invalid characters in Location
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-sm-12 col-md-2 mb-3">
+          <button mat-raised-button color="primary" class="search-button" (click)="searchJobsBtnHandler()">Search Jobs
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+      </div>
+      <div class="row">
+        <div *ngFor="let job of jobListings; index as dex" id="job-card-wrapper{{dex}}" class="mb-3 col-lg-6">
+          <mat-card class="job-card" id="job-card{{dex}}">
+            <mat-card-header role="button" matRipple>
+              <mat-card-subtitle><small>{{job.location}} - {{job.salary}} - {{job.company}}</small></mat-card-subtitle>
+              <mat-card-title class="fs-5 mb-2">{{job.title}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div
+                class="mb-2 job-description-wrapper">{{job.description}}</div>
+              <mat-divider></mat-divider>
+            </mat-card-content>
+            <mat-card-actions class="justify-content-between mx-2">
+              <button mat-flat-button>Apply</button>
+              <a mat-flat-button routerLink="/job-advert/{{dex}}">Learn More</a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+      </div>
     </div>
   </div>
 </div>

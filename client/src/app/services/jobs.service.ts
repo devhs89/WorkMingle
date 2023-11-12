@@ -11,7 +11,14 @@ export class JobsService {
   constructor(private httpClient: HttpClient) {
   }
 
-  searchJobs({jobTitle, location}: { jobTitle: string, location: string }): Observable<JobAdvertInterface[]> {
-    return this.httpClient.post('/api/jobs/search', {jobTitle, location}) as Observable<JobAdvertInterface[]>;
+  allJobs(): Observable<JobAdvertInterface[]> {
+    return this.httpClient.post('/api/jobs', {}) as Observable<JobAdvertInterface[]>;
+  }
+
+  searchJobs({jobTitle, jobLocation}: { jobTitle: string, jobLocation: string }): Observable<JobAdvertInterface[]> {
+    return this.httpClient.post('/api/jobs/search', {
+      jobTitle,
+      location: jobLocation
+    }) as Observable<JobAdvertInterface[]>;
   }
 }

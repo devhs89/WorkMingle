@@ -28,7 +28,7 @@ import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component
     ProfileComponent,
     PageNotFoundComponent,
     ToastComponent,
-    JobsListComponent
+    JobsListComponent,
   ],
   imports: [
     BrowserModule,

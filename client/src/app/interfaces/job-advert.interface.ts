@@ -6,4 +6,5 @@ export interface JobAdvertInterface {
   salary?: string;
   employerId?: string;
   _id?: string;
+  score?: number;
 }
