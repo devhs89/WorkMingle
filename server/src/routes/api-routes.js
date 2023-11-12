@@ -13,6 +13,12 @@ router.post('/account/register', register);
 // Login route
 router.post('/account/login', login);
 
+// All jobs route
+router.post('/jobs', allJobs);
+
+// Search jobs route
+router.post('/jobs/search', searchJobs);
+
 // Profile route with authentication middleware
 router.post('/account/profile', authenticateUser, profile);
 
@@ -33,11 +39,5 @@ router.post('/employer/update-job', authenticateEmployer, updateJob);
 
 // Delete job route with employer authentication middleware
 router.post('/employer/delete-job', authenticateEmployer, deleteJob);
-
-// All jobs route with user authentication middleware
-router.post('/jobs', authenticateUser, allJobs);
-
-// Search jobs route with user authentication middleware
-router.post('/jobs/search', authenticateUser, searchJobs);
 
 module.exports = router;
