@@ -8,3 +8,8 @@ export interface JobAdvertInterface {
   _id?: string;
   score?: number;
 }
+
+export interface JobAdvertResponseInterface {
+  docCount: number;
+  result: JobAdvertInterface[];
+}

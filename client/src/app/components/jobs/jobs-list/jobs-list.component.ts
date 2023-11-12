@@ -33,24 +33,8 @@ export class JobsListComponent implements OnInit {
       this.locationFormCtrl.setValue(jobLocation ? jobLocation : '');
       this._searchJobs(jobTitle, jobLocation);
     } else {
-      this.jobsService.allJobs().subscribe({
-        next: (jobs) => {
-          this.jobListings = jobs;
-        },
-        error: (err) => {
-          this.jobListings = [];
-          this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
-        }
-      });
+      this._allJobs();
     }
-  }
-
-  private _capitalizeText(text: string): string {
-    const textArray = text.split(' ');
-    const capitalizedTextArray = textArray.map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    });
-    return capitalizedTextArray.join(' ');
   }
 
   searchJobsBtnHandler() {
@@ -61,15 +45,36 @@ export class JobsListComponent implements OnInit {
     }
   }
 
+  private _allJobs() {
+    this.jobsService.allJobs().subscribe({
+      next: (jobs) => {
+        this.jobListings = jobs.result;
+        this.pageTitleService.setPageTitle(`${jobs.docCount} ${jobs.docCount > 1 ? 'jobs ' : 'job '}found`);
+      },
+      error: (err) => {
+        this.jobListings = [];
+        this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
+      }
+    });
+  }
+
+  private _capitalizeText(text: string): string {
+    const textArray = text.split(' ');
+    const capitalizedTextArray = textArray.map((word) => {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    });
+    return capitalizedTextArray.join(' ');
+  }
+
   private _searchJobs(jobTitle: string, jobLocation: string) {
     this.jobsService.searchJobs({jobTitle, jobLocation}).subscribe({
       next: (jobs) => {
-        if (jobs.length === 0) {
+        if (jobs.docCount <= 0) {
           this.toasterService.openSnackbar({message: 'No jobs found', type: 'default'});
           this.pageTitleService.setPageTitle('No jobs found');
         }
-        this.jobListings = jobs;
-        this.pageTitleService.setPageTitle(`${jobs.length} ${jobTitle ? `${this._capitalizeText(jobTitle)} ` : ' '}${jobs.length > 1 ? 'jobs ' : 'job '}${jobLocation ? `in ${this._capitalizeText(jobLocation)} ` : ''} found`);
+        this.jobListings = jobs.result;
+        this.pageTitleService.setPageTitle(`${jobs.docCount} ${jobTitle ? `${this._capitalizeText(jobTitle)} ` : ' '}${jobs.docCount > 1 ? 'jobs ' : 'job '}${jobLocation ? `in ${this._capitalizeText(jobLocation)} ` : ''} found`);
       },
       error: (err) => {
         this.jobListings = [];
