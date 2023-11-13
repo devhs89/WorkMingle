@@ -11,5 +11,5 @@ export interface JobAdvertInterface {
 
 export interface JobAdvertResponseInterface {
   docCount: number;
-  result: JobAdvertInterface[];
+  results: JobAdvertInterface[];
 }

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {JobAdvertInterface} from "../../../interfaces/job-advert.interface";
+import {JobAdvertInterface, JobAdvertResponseInterface} from "../../../interfaces/job-advert.interface";
 import {MediaBreakpointService} from "../../../services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
 import {Observable} from "rxjs";
@@ -8,6 +8,8 @@ import {JobsService} from "../../../services/jobs.service";
 import {ToasterService} from "../../../services/toaster.service";
 import {PageTitleService} from "../../../services/page-title.service";
 import {FormControl, Validators} from "@angular/forms";
+import {PageEvent} from "@angular/material/paginator";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-jobs-list',
@@ -19,6 +21,7 @@ export class JobsListComponent implements OnInit {
   xSmallScreen$: Observable<BreakpointState> = new Observable<BreakpointState>();
   jobTitleFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
   locationFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
+  pageOpts = {docCount: 0, limit: 10, page: 0};
 
   constructor(private mediaBreakpointService: MediaBreakpointService, private pageTitleService: PageTitleService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private jobsService: JobsService) {
     this.pageTitleService.setWindowTitle('Jobs');
@@ -27,59 +30,77 @@ export class JobsListComponent implements OnInit {
 
   ngOnInit(): void {
     this.xSmallScreen$ = this.mediaBreakpointService.matchBreakpoint(Breakpoints.XSmall);
-    const {jobTitle, loc: jobLocation} = this.activatedRoute.snapshot.queryParams;
-    if (jobTitle || jobLocation) {
-      this.jobTitleFormCtrl.setValue(jobTitle ? jobTitle : '');
-      this.locationFormCtrl.setValue(jobLocation ? jobLocation : '');
-      this._searchJobs(jobTitle, jobLocation);
-    } else {
-      this._allJobs();
-    }
+    const {jobTitle, jobLocation} = this.activatedRoute.snapshot.queryParams;
+    this.jobTitleFormCtrl.setValue(jobTitle ? jobTitle : '');
+    this.locationFormCtrl.setValue(jobLocation ? jobLocation : '');
+    this.searchJobsBtnHandler();
   }
 
   searchJobsBtnHandler() {
     if (this.jobTitleFormCtrl.valid && this.locationFormCtrl.valid) {
       const jobTitle = this.jobTitleFormCtrl.value as string;
       const jobLocation = this.locationFormCtrl.value as string;
-      this._searchJobs(jobTitle, jobLocation);
+      if (jobTitle || jobLocation) {
+        this._searchJobs(jobTitle, jobLocation, this.pageOpts.page, this.pageOpts.limit);
+      } else {
+        this._allJobs(this.pageOpts.page, this.pageOpts.limit);
+      }
     }
   }
 
-  private _allJobs() {
-    this.jobsService.allJobs().subscribe({
-      next: (jobs) => {
-        this.jobListings = jobs.result;
-        this.pageTitleService.setPageTitle(`${jobs.docCount} ${jobs.docCount > 1 ? 'jobs ' : 'job '}found`);
-      },
-      error: (err) => {
-        this.jobListings = [];
-        this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
-      }
+  pageSwitchHandler($event: PageEvent) {
+    this.pageOpts.limit = $event.pageSize;
+    this.pageOpts.page = $event.pageIndex;
+    this.searchJobsBtnHandler();
+  }
+
+  private _populateJobListings({jobsResp, errResp}: {
+    jobsResp?: JobAdvertResponseInterface,
+    errResp?: HttpErrorResponse
+  }) {
+    if (errResp || !jobsResp) {
+      this.jobListings = [];
+      this._setPageTitle();
+      this.toasterService.openSnackbar({message: errResp?.error.message ?? 'An error occurred', type: 'error'});
+      return;
+    }
+    if (jobsResp.docCount <= 0) {
+      this._setPageTitle();
+      this.toasterService.openSnackbar({message: 'No jobs found', type: 'default'});
+      return;
+    }
+    this.jobListings = jobsResp.results;
+    this.pageOpts.docCount = jobsResp.docCount;
+    this._setPageTitle(jobsResp.docCount);
+  }
+
+  private _allJobs(pageNo: number, pageLimit: number) {
+    this.jobsService.allJobs({pageNo: pageNo, pageLimit: pageLimit})
+      .subscribe({
+        next: (jobs) => this._populateJobListings({jobsResp: jobs}),
+        error: (err) => this._populateJobListings({errResp: err})
+      });
+  }
+
+  private _searchJobs(jobTitle: string, jobLocation: string, pageNo: number, pageLimit: number) {
+    this.jobsService.searchJobs({
+      jobTitle,
+      jobLocation,
+      pageNo: pageNo,
+      pageLimit: pageLimit
+    }).subscribe({
+      next: (jobs) => this._populateJobListings({jobsResp: jobs}),
+      error: (err) => this._populateJobListings({errResp: err})
     });
   }
 
-  private _capitalizeText(text: string): string {
-    const textArray = text.split(' ');
-    const capitalizedTextArray = textArray.map((word) => {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    });
-    return capitalizedTextArray.join(' ');
+  private _setPageTitle(docCount?: number) {
+    if (docCount) {
+      this.pageTitleService.setPageTitle(`${docCount} ${docCount > 1 ? 'jobs' : 'job'} found`);
+    } else {
+      this.pageTitleService.setPageTitle('Jobs');
+    }
   }
 
-  private _searchJobs(jobTitle: string, jobLocation: string) {
-    this.jobsService.searchJobs({jobTitle, jobLocation}).subscribe({
-      next: (jobs) => {
-        if (jobs.docCount <= 0) {
-          this.toasterService.openSnackbar({message: 'No jobs found', type: 'default'});
-          this.pageTitleService.setPageTitle('No jobs found');
-        }
-        this.jobListings = jobs.result;
-        this.pageTitleService.setPageTitle(`${jobs.docCount} ${jobTitle ? `${this._capitalizeText(jobTitle)} ` : ' '}${jobs.docCount > 1 ? 'jobs ' : 'job '}${jobLocation ? `in ${this._capitalizeText(jobLocation)} ` : ''} found`);
-      },
-      error: (err) => {
-        this.jobListings = [];
-        this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
-      }
-    });
-  }
+  protected readonly Breakpoints = Breakpoints;
 }

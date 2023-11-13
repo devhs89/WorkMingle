@@ -40,6 +40,11 @@
         <mat-divider></mat-divider>
       </div>
       <div class="row">
+        <div class="col-12">
+          <ng-container *ngTemplateOutlet="jobPageCtrl"></ng-container>
+        </div>
+      </div>
+      <div class="row">
         <div *ngFor="let job of jobListings; index as dex" id="job-card-wrapper{{dex}}" class="mb-3 col-lg-6">
           <mat-card class="job-card" id="job-card{{dex}}">
             <mat-card-header role="button" matRipple>
@@ -58,6 +63,20 @@
           </mat-card>
         </div>
       </div>
+      <div class="row">
+        <div class="col-12">
+          <ng-container *ngTemplateOutlet="jobPageCtrl"></ng-container>
+        </div>
+      </div>
     </div>
   </div>
 </div>
+<ng-template #jobPageCtrl>
+  <mat-card class="mb-3">
+    <mat-card-content class="p-1">
+      <mat-paginator [length]="pageOpts.docCount" [pageSize]="pageOpts.limit" [pageSizeOptions]="[5, 10, 25, 50]"
+                     [pageIndex]="pageOpts.page" (page)="pageSwitchHandler($event)" showFirstLastButtons
+                     aria-label="Select page"></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
