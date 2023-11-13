@@ -18,6 +18,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
 import {MatMenuModule} from "@angular/material/menu";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component
     ProfileComponent,
     PageNotFoundComponent,
     ToastComponent,
-    JobsListComponent
+    JobsListComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +40,8 @@ import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component
     ReactiveFormsModule,
     FontAwesomeModule,
     MatUiModule,
-    MatMenuModule
+    MatMenuModule,
+    MatPaginatorModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},

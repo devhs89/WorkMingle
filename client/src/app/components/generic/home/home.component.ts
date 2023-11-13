@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {PageTitleService} from "../../../services/page-title.service";
 import {FormControl, Validators} from "@angular/forms";
 import {JobsService} from "../../../services/jobs.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -9,27 +10,20 @@ import {JobsService} from "../../../services/jobs.service";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
-  jobTitleFormCtrl = new FormControl<unknown>('software', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
-  locationFormCtrl = new FormControl<unknown>('new york', [Validators.required, Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
+  jobTitleFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
+  locationFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
 
-  constructor(pageTitleService: PageTitleService, private JobsService: JobsService) {
+  constructor(pageTitleService: PageTitleService, private JobsService: JobsService, private router: Router) {
     pageTitleService.setWindowTitle('Home');
     pageTitleService.setPageTitle('Find Your Dream Job');
   }
 
-  searchJobs() {
+  searchJobsBtnHandler() {
     if (this.jobTitleFormCtrl.valid && this.locationFormCtrl.valid) {
-      this.JobsService.searchJobs({
-        jobTitle: this.jobTitleFormCtrl.value as string,
-        location: this.locationFormCtrl.value as string
-      }).subscribe({
-        next: (jobAdverts) => {
-          console.log(jobAdverts);
-        },
-        error: (err) => {
-          console.log(err);
-        }
-      });
+      const qParams: { jobTitle?: string, jobLocation?: string } = {};
+      if (this.jobTitleFormCtrl.value) qParams.jobTitle = this.jobTitleFormCtrl.value as string;
+      if (this.locationFormCtrl.value) qParams.jobLocation = this.locationFormCtrl.value as string;
+      this.router.navigate(['/jobs'], {queryParams: qParams});
     }
   }
 }
