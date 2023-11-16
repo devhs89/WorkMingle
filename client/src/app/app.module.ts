@@ -19,6 +19,7 @@ import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
 import {MatMenuModule} from "@angular/material/menu";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { JobDetailComponent } from './components/jobs/job-detail/job-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     PageNotFoundComponent,
     ToastComponent,
     JobsListComponent,
+    JobDetailComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,12 +9,14 @@ import {authenticationGuard} from "./gaurds/authentication.guard";
 import {authorizationGuard} from "./interceptors/authorization.guard";
 import {OnboardComponent} from "./components/account/employer/onboard/onboard.component";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
+import {JobDetailComponent} from './components/jobs/job-detail/job-detail.component';
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
   {path: 'jobs', component: JobsListComponent},
+  {path: 'job/:id', canActivate: [authenticationGuard], component: JobDetailComponent},
   {path: 'profile', canActivate: [authenticationGuard], component: ProfileComponent},
   {
     path: 'employer',
