@@ -17,7 +17,21 @@ const postedJobs = async (req, res) => {
 
 const postJob = async (req, res) => {
   try {
-    const {title, company, location, description, salary} = req.body;
+    const {
+      title,
+      company,
+      location,
+      description,
+      datePosted,
+      dateExpires,
+      jobType,
+      industry,
+      availablePositions,
+      experience,
+      education,
+      skills,
+      salary
+    } = req.body;
     const userId = req.userId;
 
     const employer = await Employer.findOne({userId: userId}).exec();
@@ -27,13 +41,29 @@ const postJob = async (req, res) => {
       title: title,
       company: company,
       location: location,
-      description: description,
-      salary: salary,
+      jobType: jobType,
+      industry: industry,
+      experience: experience,
       employerId: employer._id
     }).exec();
     if (jobPostExists) return res.status(400).json({message: "Job post already exists"});
 
-    const jobPost = await JobAdvert.create({title, company, location, description, salary, employerId: employer._id});
+    const jobPost = await JobAdvert.create({
+      title,
+      company,
+      location,
+      description,
+      datePosted,
+      dateExpires,
+      jobType,
+      industry,
+      availablePositions,
+      experience,
+      education,
+      skills,
+      salary,
+      employerId: employer._id
+    });
     return res.status(200).json(jobPost);
   } catch (e) {
     res.status(500).json({message: e.message});

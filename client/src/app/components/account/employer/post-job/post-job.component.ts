@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageTitleService} from "../../../../services/page-title.service";
 import {EmployerFeaturesService} from "../../../../services/employer-features.service";
 import {ToasterService} from "../../../../services/toaster.service";
+import {dummyData2} from "../../../../constants/temp.constant";
 
 @Component({
   selector: 'app-post-job',
@@ -17,14 +18,6 @@ export class PostJobComponent implements OnInit {
   locationCtrl: FormControl = new FormControl('', Validators.required);
   descriptionCtrl: FormControl = new FormControl('', Validators.required);
   salaryCtrl: FormControl = new FormControl('');
-
-  dummyData = {
-    title: 'Software Engineer',
-    company: 'Google',
-    location: 'Mountain View, CA',
-    description: 'We are looking for a software engineer to join our team.',
-    salary: '100,000'
-  };
 
   constructor(private formBuilder: FormBuilder, pageService: PageTitleService, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService) {
     pageService.setWindowTitle('Post Job');
@@ -59,6 +52,6 @@ export class PostJobComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.jobForm.patchValue(this.dummyData);
+    this.jobForm.patchValue(dummyData2[0]);
   }
 }
