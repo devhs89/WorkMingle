@@ -66,4 +66,13 @@ const searchJobs = async (req, res) => {
   }
 };
 
-module.exports = {allJobs, searchJobs};
+const showJob = async (req, res) => {
+  try {
+    const job = await JobAdvert.findById(req.body.id).exec();
+    res.json(job);
+  } catch (e) {
+    res.status(500).json({message: e.message});
+  }
+};
+
+module.exports = {allJobs, searchJobs, showJob};

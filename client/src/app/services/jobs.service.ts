@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {JobAdvertResponseInterface} from "../interfaces/job-advert.interface";
+import {JobAdvertInterface, JobAdvertResponseInterface} from "../interfaces/job-advert.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -30,5 +30,9 @@ export class JobsService {
       page: pageNo,
       limit: pageLimit
     }) as Observable<JobAdvertResponseInterface>;
+  }
+
+  showJob({jobId}: { jobId: string }): Observable<JobAdvertInterface> {
+    return this.httpClient.post<JobAdvertInterface>('/api/job/show', {id: jobId});
   }
 }

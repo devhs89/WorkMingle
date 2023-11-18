@@ -1,1 +1,52 @@
-<p>job-detail works!</p>
+<div class="container justify-content-center">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-7 col-xxl-5">
+      <mat-card class="mb-2 p-2" *ngIf="jobDetail; else serverError">
+        <mat-card-header>
+          <mat-card-subtitle>
+            <div class="d-flex company-salary-info">
+              <span class="fs-6 me-3 text-capitalize"><fa-icon [icon]="faBuilding"></fa-icon>
+                {{jobDetail.company}}</span>
+              <span class="fs-6 me-3 text-capitalize"><fa-icon [icon]="faBriefcaseClock"></fa-icon>
+                {{jobDetail.jobType}}</span>
+              <span class="fs-6 text-capitalize"><fa-icon [icon]="faCircleDollarToSlot"></fa-icon>
+                {{jobDetail.salary}} yearly</span>
+            </div>
+          </mat-card-subtitle>
+          <mat-card-title>
+            <span class="fs-4">{{jobDetail.title}}</span>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-divider class="my-2"></mat-divider>
+          <mat-card-subtitle><span class="me-2 job-dates-info"><fa-icon
+            [icon]="faCalendarPlus"></fa-icon> Posted on {{parseDate(jobDetail.datePosted)}}</span>
+            <span><fa-icon [icon]="faHourglassHalf"></fa-icon> Expires on {{parseDate(jobDetail.dateExpires)}}</span>
+          </mat-card-subtitle>
+          <div class="job-detail-description">
+            <div class="fs-6 fw-medium mt-2 mb-1">Job Description</div>
+            <div class="">{{jobDetail.description}}</div>
+          </div>
+          <div class="job-detail-skills" *ngIf="jobDetail.skills && jobDetail.skills.length">
+            <h6 class="mt-2">Skills Required</h6>
+            <div class="d-flex flex-wrap">
+              <mat-chip-listbox>
+                <mat-chip *ngFor="let skill of jobDetail.skills" class="fs-6-5">{{skill}}</mat-chip>
+              </mat-chip-listbox>
+            </div>
+          </div>
+        </mat-card-content>
+        <mat-card-actions class="justify-content-between mx-2">
+          <button mat-raised-button color="accent" class="me-2" (click)="applyJob(jobDetail._id)">Apply</button>
+          <a mat-flat-button routerLink="/jobs">Back to Jobs</a>
+        </mat-card-actions>
+      </mat-card>
+      <ng-template #serverError>
+        <mat-card class="mb-2 p-2">
+          <mat-card-content>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
+    </div>
+  </div>
+</div>

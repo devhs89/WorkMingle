@@ -20,6 +20,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { JobDetailComponent } from './components/jobs/job-detail/job-detail.component';
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { JobDetailComponent } from './components/jobs/job-detail/job-detail.comp
     FontAwesomeModule,
     MatUiModule,
     MatMenuModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatChipsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},

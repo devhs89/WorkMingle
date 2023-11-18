@@ -9,7 +9,6 @@ export interface JobAdvertInterface {
   industry: string,
   availablePositions: number,
   experience: string,
-  education?: string,
   skills?: string[],
   salary?: string;
   score?: number;

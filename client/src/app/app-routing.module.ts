@@ -15,9 +15,14 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'jobs', component: JobsListComponent},
-  {path: 'job/:id', canActivate: [authenticationGuard], component: JobDetailComponent},
   {path: 'profile', canActivate: [authenticationGuard], component: ProfileComponent},
+  {
+    path: 'jobs', children: [
+      {path: '', component: JobsListComponent, pathMatch: 'full'},
+      {path: 'show', component: JobDetailComponent},
+      {path: 'apply', component: JobDetailComponent}
+    ]
+  },
   {
     path: 'employer',
     children: [
