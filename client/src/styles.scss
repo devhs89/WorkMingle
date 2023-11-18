@@ -40,3 +40,9 @@ mat-error {
 .toast-error * {
   color: $red-A700 !important;
 }
+
+@media (min-width: map-get($grid-breakpoints, "sm")) {
+  .mat-mdc-paginator-container {
+    justify-content: space-between !important;
+  }
+}

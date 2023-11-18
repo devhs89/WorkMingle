@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {JobAdvertInterface, JobAdvertResponseInterface} from "../../../interfaces/job-advert.interface";
 import {MediaBreakpointService} from "../../../services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
@@ -8,7 +8,7 @@ import {JobsService} from "../../../services/jobs.service";
 import {ToasterService} from "../../../services/toaster.service";
 import {PageTitleService} from "../../../services/page-title.service";
 import {FormControl, Validators} from "@angular/forms";
-import {PageEvent} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
@@ -22,6 +22,7 @@ export class JobsListComponent implements OnInit {
   jobTitleFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
   locationFormCtrl = new FormControl<unknown>('', [Validators.pattern('^[a-zA-Z0-9\\s]*$')]);
   pageOpts = {docCount: 0, limit: 10, page: 0};
+  @ViewChild('jobsListMatPaginator') jobsListMatPaginator: MatPaginator | undefined;
 
   constructor(private mediaBreakpointService: MediaBreakpointService, private pageTitleService: PageTitleService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private jobsService: JobsService) {
     this.pageTitleService.setWindowTitle('Jobs');
@@ -40,6 +41,7 @@ export class JobsListComponent implements OnInit {
     if (this.jobTitleFormCtrl.valid && this.locationFormCtrl.valid) {
       const jobTitle = this.jobTitleFormCtrl.value as string;
       const jobLocation = this.locationFormCtrl.value as string;
+      if (this.jobsListMatPaginator) this.jobsListMatPaginator.firstPage();
       if (jobTitle || jobLocation) {
         this._searchJobs(jobTitle, jobLocation, this.pageOpts.page, this.pageOpts.limit);
       } else {
@@ -51,7 +53,15 @@ export class JobsListComponent implements OnInit {
   pageSwitchHandler($event: PageEvent) {
     this.pageOpts.limit = $event.pageSize;
     this.pageOpts.page = $event.pageIndex;
-    this.searchJobsBtnHandler();
+    if (this.jobTitleFormCtrl.valid && this.locationFormCtrl.valid) {
+      const jobTitle = this.jobTitleFormCtrl.value as string;
+      const jobLocation = this.locationFormCtrl.value as string;
+      if (jobTitle || jobLocation) {
+        this._searchJobs(jobTitle, jobLocation, this.pageOpts.page, this.pageOpts.limit);
+      } else {
+        this._allJobs(this.pageOpts.page, this.pageOpts.limit);
+      }
+    }
   }
 
   private _populateJobListings({jobsResp, errResp}: {

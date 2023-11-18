@@ -63,7 +63,7 @@
           </mat-card>
         </div>
       </div>
-      <div class="row">
+      <div class="row" *ngIf="jobListings.length > 0">
         <div class="col-12">
           <ng-container *ngTemplateOutlet="jobPageCtrl"></ng-container>
         </div>
@@ -74,7 +74,8 @@
 <ng-template #jobPageCtrl>
   <mat-card class="mb-3">
     <mat-card-content class="p-1">
-      <mat-paginator [length]="pageOpts.docCount" [pageSize]="pageOpts.limit" [pageSizeOptions]="[5, 10, 25, 50]"
+      <mat-paginator #jobsListMatPaginator="matPaginator" [length]="pageOpts.docCount" [pageSize]="pageOpts.limit"
+                     [pageSizeOptions]="[5, 10, 25, 50]"
                      [pageIndex]="pageOpts.page" (page)="pageSwitchHandler($event)" showFirstLastButtons
                      aria-label="Select page"></mat-paginator>
     </mat-card-content>
