@@ -8,6 +8,7 @@ import {faCalendarPlus} from "@fortawesome/free-solid-svg-icons/faCalendarPlus";
 import {faHourglassHalf} from "@fortawesome/free-solid-svg-icons/faHourglassHalf";
 import {faBriefcase} from "@fortawesome/free-solid-svg-icons/faBriefcase";
 import {faBriefcaseClock} from "@fortawesome/free-solid-svg-icons/faBriefcaseClock";
+import {faLocationDot} from "@fortawesome/free-solid-svg-icons/faLocationDot";
 
 @Component({
   selector: 'app-job-detail',
@@ -15,7 +16,6 @@ import {faBriefcaseClock} from "@fortawesome/free-solid-svg-icons/faBriefcaseClo
   styleUrls: ['./job-detail.component.scss']
 })
 export class JobDetailComponent implements OnInit {
-  private possibleRoutes: string[] = ['show', 'apply'];
   private jobId: string | null = null;
   private currentRoute: string | null = null;
   protected jobDetail: JobAdvertInterface | null = null;
@@ -52,4 +52,6 @@ export class JobDetailComponent implements OnInit {
   applyJob(id: any) {
 
   }
+
+  protected readonly faLocationDot = faLocationDot;
 }

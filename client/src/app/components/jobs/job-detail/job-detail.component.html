@@ -4,12 +4,14 @@
       <mat-card class="mb-2 p-2" *ngIf="jobDetail; else serverError">
         <mat-card-header>
           <mat-card-subtitle>
-            <div class="d-flex company-salary-info">
-              <span class="fs-6 me-3 text-capitalize"><fa-icon [icon]="faBuilding"></fa-icon>
+            <div class="row fs-6 company-salary-info">
+              <span class="col-auto text-capitalize"><fa-icon [icon]="faBuilding"></fa-icon>
                 {{jobDetail.company}}</span>
-              <span class="fs-6 me-3 text-capitalize"><fa-icon [icon]="faBriefcaseClock"></fa-icon>
+              <span class="col-auto text-capitalize"><fa-icon [icon]="faLocationDot"></fa-icon>
+                {{jobDetail.location}}</span>
+              <span class="col-auto text-capitalize"><fa-icon [icon]="faBriefcaseClock"></fa-icon>
                 {{jobDetail.jobType}}</span>
-              <span class="fs-6 text-capitalize"><fa-icon [icon]="faCircleDollarToSlot"></fa-icon>
+              <span class="col-auto text-capitalize"><fa-icon [icon]="faCircleDollarToSlot"></fa-icon>
                 {{jobDetail.salary}} yearly</span>
             </div>
           </mat-card-subtitle>
@@ -19,9 +21,13 @@
         </mat-card-header>
         <mat-card-content>
           <mat-divider class="my-2"></mat-divider>
-          <mat-card-subtitle><span class="me-2 job-dates-info"><fa-icon
-            [icon]="faCalendarPlus"></fa-icon> Posted on {{parseDate(jobDetail.datePosted)}}</span>
-            <span><fa-icon [icon]="faHourglassHalf"></fa-icon> Expires on {{parseDate(jobDetail.dateExpires)}}</span>
+          <mat-card-subtitle>
+            <div class="row job-dates-info">
+              <span class="col-auto"><fa-icon
+                [icon]="faCalendarPlus"></fa-icon> Posted on {{parseDate(jobDetail.datePosted)}}</span>
+              <span class="col-auto"><fa-icon
+                [icon]="faHourglassHalf"></fa-icon> Expires on {{parseDate(jobDetail.dateExpires)}}</span>
+            </div>
           </mat-card-subtitle>
           <div class="job-detail-description">
             <div class="fs-6 fw-medium mt-2 mb-1">Job Description</div>
@@ -37,7 +43,8 @@
           </div>
         </mat-card-content>
         <mat-card-actions class="justify-content-between mx-2">
-          <button mat-raised-button color="accent" class="me-2" (click)="applyJob(jobDetail._id)">Apply</button>
+          <button mat-raised-button color="accent" routerLink="/jobs/apply" [queryParams]="{id: jobDetail._id}">Apply
+          </button>
           <a mat-flat-button routerLink="/jobs">Back to Jobs</a>
         </mat-card-actions>
       </mat-card>
