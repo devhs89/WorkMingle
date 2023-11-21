@@ -35,4 +35,14 @@ export class JobsService {
   showJob({jobId}: { jobId: string }): Observable<JobAdvertInterface> {
     return this.httpClient.post<JobAdvertInterface>('/api/job/show', {id: jobId});
   }
+
+  applyJob({jobId, firstName, lastName, resume, coverLetter}: {
+    jobId: string,
+    firstName: string,
+    lastName: string,
+    resume: ArrayBuffer | string
+    coverLetter: ArrayBuffer | string | null
+  }): Observable<any> {
+    return this.httpClient.post('/api/job/apply', {jobId, firstName, lastName, coverLetter, resume});
+  }
 }

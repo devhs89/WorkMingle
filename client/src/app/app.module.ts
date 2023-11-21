@@ -21,6 +21,7 @@ import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { JobDetailComponent } from './components/jobs/job-detail/job-detail.component';
 import {MatChipsModule} from "@angular/material/chips";
+import { JobApplicationComponent } from './components/jobs/job-application/job-application.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {MatChipsModule} from "@angular/material/chips";
     ToastComponent,
     JobsListComponent,
     JobDetailComponent,
+    JobApplicationComponent,
   ],
   imports: [
     BrowserModule,

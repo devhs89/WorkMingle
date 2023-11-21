@@ -10,6 +10,7 @@ import {authorizationGuard} from "./interceptors/authorization.guard";
 import {OnboardComponent} from "./components/account/employer/onboard/onboard.component";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 import {JobDetailComponent} from './components/jobs/job-detail/job-detail.component';
+import {JobApplicationComponent} from "./components/jobs/job-application/job-application.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -20,7 +21,7 @@ const routes: Routes = [
     path: 'jobs', children: [
       {path: '', component: JobsListComponent, pathMatch: 'full'},
       {path: 'show', component: JobDetailComponent},
-      {path: 'apply', component: JobDetailComponent}
+      {path: 'apply', component: JobApplicationComponent, canActivate: [authenticationGuard]}
     ]
   },
   {

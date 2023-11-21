@@ -1,0 +1,125 @@
+<div class="container justify-content-center">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-xl-7 col-xxl-5">
+      <div class="row">
+        <div class="mb-3 col-md-8">
+          <mat-card class="p-2">
+            <mat-card-content>
+              <form [formGroup]="jobApplicationForm" (ngSubmit)="onJafSubmit()" class="row" autocomplete="off">
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>First Name</mat-label>
+                        <input matInput type="text" formControlName="firstName">
+                        <mat-error *ngIf="jobApplicationForm.get('firstName')?.hasError('required')">First Name required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                      <mat-form-field class="w-100">
+                        <mat-label>Last Name</mat-label>
+                        <input matInput type="text" formControlName="lastName">
+                        <mat-error *ngIf="jobApplicationForm.get('lastName')?.hasError('required')">Last Name required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="row">
+                    <div class="col-md-6 mb-3 optional-cover-letter-attachment">
+                      <div class="mb-2">
+                        <label>Cover Letter (Optional)</label>
+                      </div>
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <button class="text-decoration-underline" type="button" mat-button color="primary"
+                                  (click)="coverLetterFileInput.click()">
+                            Choose Cover Letter
+                          </button>
+                        </div>
+                        <div class="col-auto mx-2">{{selectedCoverLetterName}}</div>
+                      </div>
+                      <input id="coverLetterFileInput" hidden (change)="onCoverLetterFileSelected()"
+                             #coverLetterFileInput name="coverLetterFileInput"
+                             type="file"
+                             accept=".pdf, .doc, .docx">
+                    </div>
+                    <div class="col-md-6 mb-3 resume-attachment">
+                      <div class="mb-2">
+                        <label>Resume / Curriculum Vitae (CV)</label>
+                      </div>
+                      <div class="row align-items-center">
+                        <div class="col-auto">
+                          <button type="button" class="text-decoration-underline" mat-button color="primary"
+                                  (click)="resumeFileInput.click()">
+                            Choose Resume
+                          </button>
+                        </div>
+                        <div class="col-auto mx-2">{{selectedResumeName}}</div>
+                      </div>
+                      <input id="resumeFileInput" hidden (change)="onResumeFileSelected()"
+                             #resumeFileInput name="resumeFileInput" required
+                             type="file"
+                             accept=".pdf, .doc, .docx">
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <mat-divider class="mb-1"></mat-divider>
+            </mat-card-content>
+            <mat-card-actions class="mx-2 justify-content-between">
+              <button mat-raised-button color="accent" type="submit" (click)="onJafSubmit()">Submit Application</button>
+              <a mat-button color="primary" routerLink="/jobs">Back to Jobs</a>
+            </mat-card-actions>
+          </mat-card>
+        </div>
+        <div class="mb-3 col-md-4">
+          <mat-card class="p-2">
+            <mat-card-header>
+              <mat-card-subtitle>
+                <div class="row fs-6 company-salary-info">
+              <span class="col-auto text-capitalize"><fa-icon [icon]="faBuilding"></fa-icon>
+                {{jobDetails?.company}}</span>
+                  <span class="col-auto text-capitalize"><fa-icon [icon]="faLocationDot"></fa-icon>
+                    {{jobDetails?.location}}</span>
+                  <span class="col-auto text-capitalize"><fa-icon [icon]="faBriefcaseClock"></fa-icon>
+                    {{jobDetails?.jobType}}</span>
+                  <span class="col-auto text-capitalize"><fa-icon [icon]="faCircleDollarToSlot"></fa-icon>
+                    {{jobDetails?.salary}} yearly</span>
+                </div>
+              </mat-card-subtitle>
+              <mat-card-title>
+                <span class="fs-4">{{jobDetails?.title}}</span>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-divider class="my-2"></mat-divider>
+              <mat-card-subtitle>
+                <div class="row job-dates-info">
+                  <span class="col-auto"><fa-icon
+                    [icon]="faHourglassHalf"></fa-icon> Expires on {{parseDate(jobDetails?.dateExpires)}}</span>
+                </div>
+              </mat-card-subtitle>
+              <div class="job-detail-description">
+                <div class="fs-6 fw-medium mt-2 mb-1">Description</div>
+                <div class="">{{jobDetails?.description}}</div>
+              </div>
+              <ng-container *ngIf="jobDetails?.skills as jSkills">
+                <div class="job-detail-skills" *ngIf="jSkills.length">
+                  <h6 class="mt-2">Skills Required</h6>
+                  <div class="d-flex flex-wrap">
+                    <mat-chip-listbox>
+                      <mat-chip *ngFor="let skill of jSkills" class="fs-6-5">{{skill}}</mat-chip>
+                    </mat-chip-listbox>
+                  </div>
+                </div>
+              </ng-container>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
