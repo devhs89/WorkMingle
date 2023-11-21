@@ -23,4 +23,5 @@ const AppUserSchema = new Schema({
   }, roles: [{type: Schema.Types.String, ref: 'AppRole'}],
 });
 
-module.exports = mongoose.model('AppUser', AppUserSchema);
+const AppUser = mongoose.model('AppUser', AppUserSchema);
+module.exports = AppUser;

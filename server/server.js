@@ -3,11 +3,7 @@ const ignore = require('dotenv').config();
 const bodyParser = require('body-parser');
 const logWithWinston = require("./src/util/winston-logger");
 const dbInit = require('./src/data/db-init');
-const authRoutes = require('./src/routes/auth-routes');
-const jobRoutes = require('./src/routes/job-routes');
-const multer = require('multer');
-
-
+const apiRoutes = require('./src/routes/api-routes');
 
 try {
   // Create a new Express application.
@@ -26,8 +22,7 @@ try {
   app.use(bodyParser.json());
 
   // Add authentication middleware to handle authentication routes
-  app.use('/api/auth', authRoutes);
-  app.use('/api/jobs', jobRoutes);
+  app.use('/api', apiRoutes);
 
   // Start server on the specified port
   app.listen(port, function () {

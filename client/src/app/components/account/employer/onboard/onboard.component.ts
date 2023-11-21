@@ -1,7 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToasterService} from "../../../../services/toaster.service";
 import {PageTitleService} from "../../../../services/page-title.service";
+import {AccountService} from "../../../../services/account.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-onboard',
@@ -9,7 +11,19 @@ import {PageTitleService} from "../../../../services/page-title.service";
   styleUrls: ['./onboard.component.scss']
 })
 export class OnboardComponent implements OnInit {
+  @ViewChild('empFormDirective') empFormDirective: any;
   employerForm: FormGroup = new FormGroup({});
+  businessNameCtrl = new FormControl('', Validators.required);
+  industryCtrl = new FormControl('', Validators.required);
+  streetAddressCtrl = new FormControl('', Validators.required);
+  cityCtrl = new FormControl('', Validators.required);
+  postalCodeCtrl = new FormControl('', Validators.required);
+  countryCtrl = new FormControl('', Validators.required);
+  websiteCtrl = new FormControl('', [Validators.pattern('https?://.+')]);
+  workEmailCtrl = new FormControl('', [Validators.required, Validators.email]);
+  workPhoneCtrl = new FormControl('');
+  descriptionCtrl = new FormControl('');
+
   dummyData = {
     "businessName": "ABC Corporation",
     "industry": "Information Technology",
@@ -24,11 +38,10 @@ export class OnboardComponent implements OnInit {
   };
 
 
-  constructor(pageTitleService: PageTitleService, private fb: FormBuilder, private toasterService: ToasterService) {
+  constructor(pageTitleService: PageTitleService, private router: Router, private fb: FormBuilder, private toasterService: ToasterService, private accountService: AccountService) {
     pageTitleService.setWindowTitle('Onboard');
     pageTitleService.setPageTitle('Register as an Employer');
     this.createForm();
-    console.log();
   }
 
 
@@ -38,32 +51,38 @@ export class OnboardComponent implements OnInit {
 
   createForm() {
     this.employerForm = this.fb.group({
-      businessName: ['', Validators.required],
-      industry: ['', Validators.required],
-      streetAddress: ['', Validators.required],
-      city: ['', Validators.required],
-      postalCode: ['', Validators.required],
-      country: ['', Validators.required],
-      website: ['', [Validators.pattern('https?://.+')]],
-      workEmail: ['', [Validators.required, Validators.email]],
-      workPhone: [''],
-      description: ['']
+      businessName: this.businessNameCtrl,
+      industry: this.industryCtrl,
+      streetAddress: this.streetAddressCtrl,
+      city: this.cityCtrl,
+      postalCode: this.postalCodeCtrl,
+      country: this.countryCtrl,
+      website: this.websiteCtrl,
+      workEmail: this.workEmailCtrl,
+      workPhone: this.workPhoneCtrl,
+      description: this.descriptionCtrl
     });
   }
 
   onEmOnSubmit() {
     if (this.employerForm.valid) {
-      // You can send the form data to your server here for registration
       const formData = this.employerForm.value;
-      // Example: Send the formData to your API
-      // Your API call goes here, e.g., using HttpClient
-      console.log(formData);
-
-      // Display a success message
-      this.toasterService.openSnackbar({message: 'Employer registration successful!', type: 'success'});
-
-      // Reset the form after successful submission
-      this.employerForm.reset();
+      this.accountService.registerEmployer(formData).subscribe({
+        next: (authResp) => {
+          if (authResp.token) {
+            this.router.navigate(['/employer/dashboard']).then(() =>
+              this.toasterService.openSnackbar({message: 'Employer account created successfully.', type: 'success'}));
+          } else {
+            this.toasterService.openSnackbar({
+              message: 'Employer registration failed. Please contact site administrator.',
+              type: 'error'
+            });
+          }
+        },
+        error: (err) => {
+          this.toasterService.openSnackbar({message: err.error.message, type: 'error'});
+        }
+      });
     } else {
       // Display an error message
       this.toasterService.openSnackbar({message: 'Please fill out all required fields correctly.', type: 'error'});

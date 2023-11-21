@@ -21,6 +21,8 @@ const dbInit = async () => {
     console.log('Connected to MongoDB');
   });
 
+  db.set('autoIndex', false);
+
   // Seed application roles
   await seedAppRoles();
 

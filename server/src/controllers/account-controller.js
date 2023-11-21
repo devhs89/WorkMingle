@@ -76,14 +76,8 @@ const login = async (req, res) => {
   });
 };
 
-// Validate auth token endpoint
-const validateAuthToken = async (req, res) => {
-  // If the request has reached here, the token is valid
-  res.status(200).json({valid: true});
-};
-
 // Register as employer endpoint
-const registerAsEmployer = async (req, res) => {
+const onboardEmployer = async (req, res) => {
   const userId = req.userId;
   const roleNames = req.roles;
   const employerDetails = req.body;
@@ -115,7 +109,6 @@ const registerAsEmployer = async (req, res) => {
 
         // Return the token and the user details
         return res.json({token: jwtToken, user: {firstName: savedDoc.firstName, lastName: savedDoc.lastName}});
-        // TODO: Endpoint testing pending
       }).catch(() => {
         return res.status(500).json({message: 'Internal server error'});
       });
@@ -152,4 +145,4 @@ const updateProfile = async (req, res) => {
 };
 
 
-module.exports = {register, login, validateAuthToken, registerAsEmployer, profile, updateProfile};
+module.exports = {register, login, onboardEmployer, profile, updateProfile};

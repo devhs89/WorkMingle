@@ -4,6 +4,8 @@ import {AppUserInterface} from "../interfaces/app-user.interface";
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
 import {ReplaySubject, tap} from "rxjs";
 import {Router} from "@angular/router";
+import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
+import {AppEmployerInterface} from "../interfaces/app-employer.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -13,55 +15,60 @@ export class AccountService implements OnInit {
   authResponse$ = this._authResponseReplaySubject.asObservable();
 
   constructor(private httpClient: HttpClient, private router: Router) {
-    const tokenPayload = this._getLoginToken();
-    if (tokenPayload) this._emitLogin(tokenPayload);
+    const authResp = this._getAuthToken();
+    authResp ? this._emitAuthToken(authResp) : this._emitAuthToken(null);
   }
 
   ngOnInit(): void {
   }
 
   registerUser(appUser: AppUserInterface) {
-    return this.httpClient.post<AuthResponseInterface>('/api/auth/register', appUser)
-      .pipe(tap((tokenPayload) => {
-        this._saveLoginToken(tokenPayload);
-        this._emitLogin(tokenPayload);
-      }));
+    return this.httpClient.post<AuthResponseInterface>('/api/account/register', appUser)
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
   loginUser(credentials: { email: string, password: string }) {
-    return this.httpClient.post<AuthResponseInterface>('/api/auth/login', credentials)
-      .pipe(tap((tokenPayload) => {
-        this._saveLoginToken(tokenPayload);
-        this._emitLogin(tokenPayload);
-      }));
-  }
-
-  validateAuthToken(logoutOnInvalid: boolean = false) {
-    return this.httpClient.post<{ valid: boolean }>('/api/auth/validate-auth-token', {})
-      .pipe(tap((resp) => resp.valid && logoutOnInvalid && this.logoutUser()));
+    return this.httpClient.post<AuthResponseInterface>('/api/account/login', credentials)
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
   getUserProfile() {
-    return this.httpClient.post<AppUserInterface>('/api/auth/profile', {});
+    return this.httpClient.post<AppUserInterface>('/api/account/profile', {});
   }
 
   updateUser(appUser: AppUserInterface) {
-    return this.httpClient.put<AppUserInterface>('/api/auth/update-profile', appUser);
+    return this.httpClient.put<AppUserInterface>('/api/account/update-profile', appUser);
   }
 
-  logoutUser(redirectToLogin: boolean = false) {
-    this._removeLoginToken();
-    this._emitLogout();
-    return redirectToLogin ? this.router.navigate(['/login']) : this.router.navigate(['/']);
+  registerEmployer(appEmployer: AppEmployerInterface) {
+    return this.httpClient.post<AuthResponseInterface>('/api/account/employer/register', appEmployer)
+      .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
-  private _getLoginToken = () => JSON.parse(localStorage.getItem('tokenPayload') ?? 'null');
+  logoutUser(to: RedirectOptionsEnum = RedirectOptionsEnum.NONE) {
+    this._deleteAuthSession();
+    if (to === RedirectOptionsEnum.LOGIN) return this.router.navigate(['/login']);
+    if (to === RedirectOptionsEnum.HOME) return this.router.navigate(['/home']);
+    return null;
+  }
 
-  private _saveLoginToken = (tokenPayload: AuthResponseInterface) => localStorage.setItem('tokenPayload', JSON.stringify(tokenPayload));
+  private _getAuthToken = () => JSON.parse(localStorage.getItem('authToken') ?? 'null');
 
-  private _removeLoginToken = () => localStorage.removeItem('tokenPayload');
+  private _saveAuthToken = (authToken: AuthResponseInterface) => localStorage.setItem('authToken', JSON.stringify(authToken));
 
-  private _emitLogin = (tokenPayload: AuthResponseInterface) => this._authResponseReplaySubject.next(tokenPayload);
+  private _removeAuthToken = () => localStorage.removeItem('authToken');
+
+  private _emitAuthToken = (authToken: AuthResponseInterface | null) => this._authResponseReplaySubject.next(authToken);
 
   private _emitLogout = () => this._authResponseReplaySubject.next(null);
+
+  private _createAuthSession = (authResp: AuthResponseInterface) => {
+    this._saveAuthToken(authResp);
+    this._emitAuthToken(authResp);
+  };
+
+  private _deleteAuthSession = () => {
+    this._removeAuthToken();
+    this._emitLogout();
+  };
 }

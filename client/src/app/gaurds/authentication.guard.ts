@@ -1,23 +1,34 @@
 import {CanActivateFn} from '@angular/router';
 import {inject} from "@angular/core";
 import {AccountService} from "../services/account.service";
-import {catchError, map, of} from "rxjs";
+import {firstValueFrom} from "rxjs";
 import {ToasterService} from "../services/toaster.service";
+import {RedirectOptionsEnum} from "../constants/redirect-options.enum";
+import {verifyAppRole} from "../helpers/verify-auth-token.helper";
+import {appRoles} from "../constants/app-roles.constant";
 
-export const authenticationGuard: CanActivateFn = () => {
+export const authenticationGuard: CanActivateFn = async () => {
   const accountService = inject(AccountService);
   const toasterService = inject(ToasterService);
+  let valid = false;
 
   const redirectToLogin = () => {
-    accountService.logoutUser(true).then(() =>
+    accountService.logoutUser(RedirectOptionsEnum.LOGIN)?.then(() =>
       toasterService.openSnackbar({message: 'Session expired. Please login again.', type: 'error'}));
   };
 
-  return accountService.validateAuthToken().pipe(map((resp) => {
-    if (!resp.valid) redirectToLogin();
-    return resp.valid;
-  }), catchError(() => {
+  try {
+    const authResp = await firstValueFrom(accountService.authResponse$);
+    if (authResp) {
+      valid = verifyAppRole(authResp, appRoles.user);
+      if (!valid) redirectToLogin();
+      return valid;
+    } else {
+      redirectToLogin();
+      return valid;
+    }
+  } catch (e) {
     redirectToLogin();
-    return of(false);
-  }));
+    return valid;
+  }
 };
