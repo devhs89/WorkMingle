@@ -13,4 +13,5 @@ const jobApplicationSchema = new Schema({
   userId: {type: Schema.Types.ObjectId, ref: 'AppUser'}
 });
 
-module.exports = mongoose.model('JobApplication', jobApplicationSchema, 'job-applications');
+const JobApplication = mongoose.model('JobApplication', jobApplicationSchema, 'job-applications');
+module.exports = JobApplication;

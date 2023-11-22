@@ -1,4 +1,6 @@
 const JobAdvert = require("../models/job-advert");
+const JobApplication = require("../models/job-application");
+const fs = require("fs");
 
 const allJobs = async (req, res) => {
   try {
@@ -78,18 +80,51 @@ const showJob = async (req, res) => {
 const applyJob = async (req, res) => {
   try {
     const userId = req.userId;
-    console.log(userId);
-    const files = req.files;
-    console.log(files);
-    const {jobId, firstName, lastName} = req.body;
-    console.log(jobId);
-    console.log(firstName);
-    console.log(lastName);
-    console.log(req.body);
-    console.log(req);
-    res.json({message: 'Job application submitted successfully'});
+    const attachments = req.files;
+    const {jobAdvertId, firstName, lastName} = req.body;
+
+    if (!jobAdvertId || !firstName || !lastName) {
+      return res.status(400).json({error: 'Missing required fields'});
+    }
+
+    if (!attachments) {
+      return res.status(400).json({error: 'Missing attachments'});
+    }
+
+    const resume = attachments['resume'][0];
+    const coverLetter = attachments['coverLetter'] ? attachments['coverLetter'][0] : null;
+
+    if (!fs.existsSync(resume.path)) {
+      return res.status(400).json({error: 'Missing resume'});
+    }
+
+    if (coverLetter && !fs.existsSync(coverLetter.path)) {
+      return res.status(400).json({error: 'Missing cover letter'});
+    }
+
+    const job = await JobAdvert.findById(jobAdvertId).exec();
+    if (!job) {
+      return res.status(400).json({error: 'Job advert not found'});
+    }
+
+    const jobApplication = {
+      jobAdvertId: jobAdvertId,
+      userId: userId,
+      firstName: firstName,
+      lastName: lastName,
+      resume: resume.path,
+      coverLetter: coverLetter ? coverLetter.path : null,
+    };
+
+    const result = await JobApplication.create(jobApplication);
+    console.log(result);
+
+    if (!result) {
+      return res.status(400).json({message: 'Error creating job application'});
+    }
+    res.status(200).json({message: 'Job application submitted successfully'});
   } catch (error) {
-    res.status(500).json({error: 'Error creating job application'});
+    res.status(500).json({message: 'Error creating job application'});
   }
 };
 
