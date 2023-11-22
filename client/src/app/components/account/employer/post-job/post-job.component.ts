@@ -34,7 +34,7 @@ export class PostJobComponent implements OnInit {
   onPjSubmit() {
     if (this.jobForm.valid) {
       const jobData = this.jobForm.value;
-      this.employerFeaturesService.postJob(jobData).subscribe({
+      this.employerFeaturesService.postJob(dummyData2[2]).subscribe({
         next: (resp) => {
           this.jobForm.reset();
           this.jobFormDirective.resetForm();

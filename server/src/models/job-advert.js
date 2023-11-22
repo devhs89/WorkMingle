@@ -6,7 +6,7 @@ const jobAdvertSchema = new Schema({
   }, company: {
     type: String, required: true
   }, location: {
-    type: String, required: true
+    type: String, required: true, index: true
   }, description: {
     type: String, required: true
   }, datePosted: {
@@ -32,7 +32,7 @@ const jobAdvertSchema = new Schema({
   }, salary: {
     type: String,
   }, employerId: {
-    type: Schema.Types.ObjectId, ref: 'Employer',
+    type: Schema.Types.ObjectId, ref: 'Employer', index: true
   },
 });
 

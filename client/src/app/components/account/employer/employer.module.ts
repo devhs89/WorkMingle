@@ -6,6 +6,10 @@ import {MatUiModule} from "../../../modules/mat-ui/mat-ui.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {PostJobComponent} from "./post-job/post-job.component";
+import {MatTableModule} from "@angular/material/table";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSortModule} from "@angular/material/sort";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 const routes: Routes = [
   {path: 'post-job', component: PostJobComponent},
@@ -23,7 +27,11 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MatUiModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatPaginatorModule
   ]
 })
 export class EmployerModule {

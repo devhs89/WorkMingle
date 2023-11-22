@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const employerSchema = new Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'AppUser', unique: true},
+  userId: {type: Schema.Types.ObjectId, ref: 'AppUser', unique: true, index: true},
   businessName: {type: String, required: true, unique: true},
   industry: {type: String, required: true},
   streetAddress: {type: String, required: true},
@@ -14,5 +14,6 @@ const employerSchema = new Schema({
   workPhone: {type: String},
   description: {type: String},
 });
+
 const Employer = mongoose.model('Employer', employerSchema);
 module.exports = Employer;

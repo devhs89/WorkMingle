@@ -4,12 +4,14 @@ const JobAdvert = require("../models/job-advert");
 const postedJobs = async (req, res) => {
   try {
     const userId = req.userId;
+    const {page, limit} = req.body;
 
     const employer = await Employer.findOne({userId: userId}).exec();
     if (!employer) return res.status(404).json({message: "Employer not found"});
 
-    const jobPosts = await JobAdvert.find({employerId: employer._id}).exec();
-    return res.status(200).json(jobPosts);
+    const jobPosts = await JobAdvert.find({employerId: employer._id}, null, {skip: page * limit, limit: limit}).exec();
+    const totalJobPosts = await JobAdvert.countDocuments({employerId: employer._id}).exec();
+    return res.status(200).json({docCount: totalJobPosts, results: jobPosts});
   } catch (e) {
     res.status(500).json({message: e.message});
   }

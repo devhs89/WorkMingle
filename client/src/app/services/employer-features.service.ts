@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {JobAdvertInterface} from "../interfaces/job-advert.interface";
+import {JobAdvertInterface, JobAdvertResponseInterface} from "../interfaces/job-advert.interface";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -7,10 +7,22 @@ import {HttpClient} from "@angular/common/http";
 })
 export class EmployerFeaturesService {
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private _httpClient: HttpClient) {
+  }
+
+  postedJobs() {
+    return this._httpClient.post<JobAdvertResponseInterface>('/api/employer/posted-jobs', {});
   }
 
   postJob(jobData: JobAdvertInterface) {
-    return this.httpClient.post<JobAdvertInterface>('/api/employer/post-job', jobData);
+    return this._httpClient.post<JobAdvertInterface>('/api/employer/post-job', jobData);
+  }
+
+  updateJob(jobData: JobAdvertInterface) {
+    return this._httpClient.post<JobAdvertInterface>('/api/employer/update-job', jobData);
+  }
+
+  deleteJob(jobAdvertId: string) {
+    return this._httpClient.post('/api/employer/delete-job', {jobAdvertId: jobAdvertId});
   }
 }
