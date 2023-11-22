@@ -19,6 +19,9 @@ import {MatUiModule} from "./modules/mat-ui/mat-ui.module";
 import {MatMenuModule} from "@angular/material/menu";
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import { JobDetailComponent } from './components/jobs/job-detail/job-detail.component';
+import {MatChipsModule} from "@angular/material/chips";
+import { JobApplicationComponent } from './components/jobs/job-application/job-application.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +33,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     PageNotFoundComponent,
     ToastComponent,
     JobsListComponent,
+    JobDetailComponent,
+    JobApplicationComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +46,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     FontAwesomeModule,
     MatUiModule,
     MatMenuModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatChipsModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: GenericInterceptor, multi: true},

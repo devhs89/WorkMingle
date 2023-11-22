@@ -173,6 +173,8 @@ e2e/*.map
 **/node_modules
 **/dist
 **/*.log
+**/logs
 **/*.env
 **/.idea
 **/.vscode
+**/uploads

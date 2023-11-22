@@ -57,8 +57,11 @@
               <mat-divider></mat-divider>
             </mat-card-content>
             <mat-card-actions class="justify-content-between mx-2">
-              <button mat-flat-button>Apply</button>
-              <a mat-flat-button routerLink="/job-advert/{{dex}}">Learn More</a>
+              <button mat-flat-button color="primary" routerLink="/jobs/apply"
+                      [queryParams]="{id: job._id}">
+                Apply
+              </button>
+              <a mat-flat-button routerLink="/jobs/show" [queryParams]="{id: job._id}">Learn More</a>
             </mat-card-actions>
           </mat-card>
         </div>

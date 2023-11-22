@@ -12,7 +12,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'design', availablePositions: 2,
     experience: 'intermediate',
-    education: 'university',
     skills: ['UI/UX Design', 'Prototyping'],
     salary: '90,000'
   },
@@ -40,7 +39,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'information technology', availablePositions: 5,
     experience: 'intermediate',
-    education: 'university',
     skills: ['JavaScript', 'React', 'Node.js'],
     salary: '110,000'
   },
@@ -68,7 +66,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'information technology', availablePositions: 12,
     experience: 'intermediate',
-    education: 'college',
     skills: ['SQL', 'Tableau'],
     salary: '85,000'
   },
@@ -83,7 +80,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'human resources', availablePositions: 2,
     experience: 'intermediate',
-    education: 'university',
     salary: '75,000'
   },
   {
@@ -97,7 +93,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'design', availablePositions: 3,
     experience: 'intermediate',
-    education: 'university',
     skills: ['Adobe Creative Suite', 'Illustration'],
     salary: '90,000'
   },
@@ -112,7 +107,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'finance', availablePositions: 1,
     experience: 'intermediate',
-    education: 'university',
     skills: ['Financial Modeling', 'Excel'],
     salary: '95,000'
   },
@@ -140,7 +134,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'engineering', availablePositions: 1,
     experience: 'senior',
-    education: 'university',
     skills: ['AutoCAD', 'Project Management'],
     salary: '110,000'
   },
@@ -155,7 +148,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'healthcare', availablePositions: 1,
     experience: 'intermediate',
-    education: 'university',
     skills: ['Nursing', 'Patient Care'],
     salary: '80,000'
   },
@@ -184,7 +176,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'marketing', availablePositions: 2,
     experience: 'entry',
-    education: 'college',
     skills: ['Digital Marketing', 'Social Media Management'],
     salary: '70,000'
   },
@@ -199,7 +190,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'information technology', availablePositions: 1,
     experience: 'intermediate',
-    education: 'university',
     skills: ['JavaScript', 'React', 'Node.js'],
     salary: '90,000'
   },
@@ -214,7 +204,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'design', availablePositions: 1,
     experience: 'intermediate',
-    education: 'college',
     skills: ['Adobe Creative Suite', 'Graphic Design'],
     salary: '75,000'
   },
@@ -229,7 +218,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'human resources', availablePositions: 3,
     experience: 'senior',
-    education: 'university',
     skills: ['Talent Acquisition', 'Employee Relations'],
     salary: '100,000'
   },
@@ -258,7 +246,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'information technology', availablePositions: 2,
     experience: 'senior',
-    education: 'university',
     skills: ['Python', 'Machine Learning', 'Data Analysis'],
     salary: '110,000'
   },
@@ -300,7 +287,6 @@ export const dummyData2: JobAdvertInterface[] = [
     jobType: 'full-time',
     industry: 'legal', availablePositions: 1,
     experience: 'senior',
-    education: 'university',
     skills: ['Legal Advice', 'Contract Review'],
     salary: '120,000'
   },
