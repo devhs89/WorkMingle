@@ -70,7 +70,7 @@ export class OnboardComponent implements OnInit {
       this.accountService.registerEmployer(formData).subscribe({
         next: (authResp) => {
           if (authResp.token) {
-            this.router.navigate(['/employer/dashboard']).then(() =>
+            this.router.navigate(['/employer/features/dashboard']).then(() =>
               this.toasterService.openSnackbar({message: 'Employer account created successfully.', type: 'success'}));
           } else {
             this.toasterService.openSnackbar({
