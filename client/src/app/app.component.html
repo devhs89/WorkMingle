@@ -35,10 +35,10 @@
       <mat-list-item routerLink="/home">Home</mat-list-item>
       <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
       <mat-divider class="mx-1"></mat-divider>
-      <ng-container *ngIf="allowAccessTo(appRoles.user); else notLoggedIn">
+      <ng-container *ngIf="allowAccessTo(appRoles.user); else xSmallNotLoggedIn">
         <mat-list-item routerLink="/profile">Profile</mat-list-item>
       </ng-container>
-      <ng-template #notLoggedIn>
+      <ng-template #xSmallNotLoggedIn>
         <mat-list-item routerLink="/login">Login</mat-list-item>
         <mat-list-item routerLink="/register">Register</mat-list-item>
       </ng-template>
