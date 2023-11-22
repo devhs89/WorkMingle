@@ -11,6 +11,7 @@ import {faLocationDot} from "@fortawesome/free-solid-svg-icons/faLocationDot";
 import {faCircleDollarToSlot} from "@fortawesome/free-solid-svg-icons/faCircleDollarToSlot";
 import {faBuilding} from "@fortawesome/free-solid-svg-icons/faBuilding";
 import {faHourglassHalf} from "@fortawesome/free-solid-svg-icons/faHourglassHalf";
+import {ToasterService} from "../../../services/toaster.service";
 
 @Component({
   selector: 'app-job-application',
@@ -28,7 +29,7 @@ export class JobApplicationComponent implements OnInit {
   selectedCoverLetterName: string | undefined = undefined;
   selectedResumeName: string | undefined = undefined;
 
-  constructor(pageTitleService: PageTitleService, private activatedRoute: ActivatedRoute, private accountService: AccountService, private jobsService: JobsService) {
+  constructor(pageTitleService: PageTitleService, private activatedRoute: ActivatedRoute, private accountService: AccountService, private jobsService: JobsService, private toasterService: ToasterService) {
     pageTitleService.setWindowTitle('Job Apply');
     pageTitleService.setPageTitle('Submit Your Application');
   }
@@ -42,7 +43,6 @@ export class JobApplicationComponent implements OnInit {
 
   getUserDetails() {
     this.accountService.getUserProfile().subscribe((appUser) => {
-      console.log(appUser);
       this.userDetails = appUser;
       this.jobApplicationForm.patchValue(appUser);
     });
@@ -52,26 +52,41 @@ export class JobApplicationComponent implements OnInit {
     const id = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!id) return;
     this.jobsService.showJob({jobId: id}).subscribe((job) => {
-      console.log(job);
       this.jobDetails = job;
     });
   }
 
   onJafSubmit() {
-    if (!this.jobApplicationForm.valid || !this.jobDetails?._id || !this.selectedResumeArrayBuffer) return;
+    if (!this.jobApplicationForm.valid) {
+      this.toasterService.openSnackbar({
+        message: 'Please fill all the required fields',
+        type: 'error'
+      });
+      return;
+    }
+    if (!this.jobDetails?._id) {
+      this.toasterService.openSnackbar({
+        message: 'Job details not found',
+        type: 'error'
+      });
+      return;
+    }
+    if (!this.selectedResumeArrayBuffer) {
+      this.toasterService.openSnackbar({
+        message: 'Please select a resume',
+        type: 'error'
+      });
+      return;
+    }
     const formData = this.jobApplicationForm.value;
-    console.log(formData);
     const {firstName, lastName} = formData;
     const payload = {
       jobAdvertId: this.jobDetails._id,
       firstName,
       lastName,
-      // coverLetter: this.selectedCoverLetterArrayBuffer ? this.selectedCoverLetterArrayBuffer : null,
-      // resume: this.selectedResumeArrayBuffer
       coverLetter: this.coverLetterFileInput?.nativeElement.files[0] ?? null,
       resume: this.resumeFileInput?.nativeElement.files[0]
     };
-    console.log(payload);
     this.jobsService.applyJob(payload).subscribe((response) => {
       console.log(response);
     });
@@ -107,12 +122,35 @@ export class JobApplicationComponent implements OnInit {
   async onFileSelected(selectedFile: File) {
     try {
       const fileExtension = selectedFile.name.split('.').pop();
-      if (!fileExtension || !['pdf', 'doc', 'docx'].includes(fileExtension)) return null;
-      if (selectedFile.size > 1024 * 1024 * 5) return null;
+      if (!fileExtension || !['pdf', 'doc', 'docx'].includes(fileExtension)) {
+        this.toasterService.openSnackbar({
+          message: 'Only PDF, DOC and DOCX files are allowed',
+          type: 'error'
+        });
+        return null;
+      }
+      if (selectedFile.size > 1024 * 1024) {
+        this.toasterService.openSnackbar({
+          message: 'File size must be less than 1MB',
+          type: 'error'
+        });
+        return null;
+      }
       const fileBuffer = await selectedFile.arrayBuffer();
       const fileBlob = new Blob([fileBuffer], {type: selectedFile.type});
-      return fileBlob ? {fileBlob, fileName: selectedFile.name} : null;
+      if (!fileBlob) {
+        this.toasterService.openSnackbar({
+          message: 'Something went wrong. Please contact support team if the problem persists',
+          type: 'error'
+        });
+        return null;
+      }
+      return {fileBlob, fileName: selectedFile.name};
     } catch (e) {
+      this.toasterService.openSnackbar({
+        message: 'Something went wrong. Please contact support team if the problem persists',
+        type: 'error'
+      });
       return null;
     }
   }

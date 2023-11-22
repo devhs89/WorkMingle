@@ -20,7 +20,7 @@ const fileHandler = (req, res, next) => {
   });
 
   const upload = multer({
-    storage: storageSetup, limits: {fileSize: 5 * 1024 * 1024}, fileFilter: (req, file, cb) => {
+    storage: storageSetup, limits: {fileSize: 1024 * 1024}, fileFilter: (req, file, cb) => {
       const fileTypes = /pdf|doc|docx/;
       const extName = fileTypes.test(path.extname(file.originalname).toLowerCase());
       if (extName) {
