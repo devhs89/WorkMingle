@@ -23,8 +23,8 @@ export class JobApplicationComponent implements OnInit {
   jobDetails: JobAdvertInterface | undefined;
   @ViewChild('coverLetterFileInput') coverLetterFileInput: ElementRef | undefined;
   @ViewChild('resumeFileInput') resumeFileInput: ElementRef | undefined;
-  selectedCoverLetterArrayBuffer: ArrayBuffer | undefined | null = undefined;
-  selectedResumeArrayBuffer: ArrayBuffer | undefined | null = undefined;
+  selectedCoverLetterArrayBuffer: Blob | undefined | null = undefined;
+  selectedResumeArrayBuffer: Blob | undefined | null = undefined;
   selectedCoverLetterName: string | undefined = undefined;
   selectedResumeName: string | undefined = undefined;
 
@@ -63,11 +63,13 @@ export class JobApplicationComponent implements OnInit {
     console.log(formData);
     const {firstName, lastName} = formData;
     const payload = {
-      jobId: this.jobDetails._id,
+      jobAdvertId: this.jobDetails._id,
       firstName,
       lastName,
-      coverLetter: this.selectedCoverLetterArrayBuffer ? this.selectedCoverLetterArrayBuffer as ArrayBuffer : null,
-      resume: this.selectedResumeArrayBuffer as ArrayBuffer
+      // coverLetter: this.selectedCoverLetterArrayBuffer ? this.selectedCoverLetterArrayBuffer : null,
+      // resume: this.selectedResumeArrayBuffer
+      coverLetter: this.coverLetterFileInput?.nativeElement.files[0] ?? null,
+      resume: this.resumeFileInput?.nativeElement.files[0]
     };
     console.log(payload);
     this.jobsService.applyJob(payload).subscribe((response) => {
@@ -89,17 +91,17 @@ export class JobApplicationComponent implements OnInit {
   async onCoverLetterFileSelected() {
     if (!this.coverLetterFileInput) return;
     const result = await this.onFileSelected(this.coverLetterFileInput.nativeElement.files[0]);
-    if (!result || !result.fileBuffer) return;
+    if (!result || !result.fileBlob) return;
     this.selectedCoverLetterName = result.fileName;
-    this.selectedCoverLetterArrayBuffer = result.fileBuffer;
+    this.selectedCoverLetterArrayBuffer = result.fileBlob;
   }
 
   async onResumeFileSelected() {
     if (!this.resumeFileInput) return;
     const result = await this.onFileSelected(this.resumeFileInput.nativeElement.files[0]);
-    if (!result || !result.fileBuffer) return;
+    if (!result || !result.fileBlob) return;
     this.selectedResumeName = result.fileName;
-    this.selectedResumeArrayBuffer = result.fileBuffer;
+    this.selectedResumeArrayBuffer = result.fileBlob;
   }
 
   async onFileSelected(selectedFile: File) {
@@ -108,7 +110,8 @@ export class JobApplicationComponent implements OnInit {
       if (!fileExtension || !['pdf', 'doc', 'docx'].includes(fileExtension)) return null;
       if (selectedFile.size > 1024 * 1024 * 5) return null;
       const fileBuffer = await selectedFile.arrayBuffer();
-      return fileBuffer ? {fileBuffer, fileName: selectedFile.name} : null;
+      const fileBlob = new Blob([fileBuffer], {type: selectedFile.type});
+      return fileBlob ? {fileBlob, fileName: selectedFile.name} : null;
     } catch (e) {
       return null;
     }

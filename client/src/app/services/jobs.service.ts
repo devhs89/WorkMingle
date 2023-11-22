@@ -36,13 +36,19 @@ export class JobsService {
     return this.httpClient.post<JobAdvertInterface>('/api/job/show', {id: jobId});
   }
 
-  applyJob({jobId, firstName, lastName, resume, coverLetter}: {
-    jobId: string,
+  applyJob({jobAdvertId, firstName, lastName, resume, coverLetter}: {
+    jobAdvertId: string,
     firstName: string,
     lastName: string,
-    resume: ArrayBuffer | string
-    coverLetter: ArrayBuffer | string | null
+    resume: File
+    coverLetter: File | null
   }): Observable<any> {
-    return this.httpClient.post('/api/job/apply', {jobId, firstName, lastName, coverLetter, resume});
+    const formData = new FormData();
+    formData.append('jobAdvertId', jobAdvertId);
+    formData.append('firstName', firstName);
+    formData.append('lastName', lastName);
+    formData.append('resume', resume);
+    if (coverLetter) formData.append('coverLetter', coverLetter);
+    return this.httpClient.post('/api/job/apply', formData, {headers: {'Content-Type': 'multipart/form-data'}});
   }
 }

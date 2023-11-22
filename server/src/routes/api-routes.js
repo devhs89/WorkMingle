@@ -4,7 +4,8 @@ const {
 } = require("../controllers/account-controller");
 const {authenticateUser, authenticateEmployer} = require("../middlewares/auth-middleware");
 const {postJob, postedJobs, updateJob, deleteJob} = require("../controllers/employer-controller");
-const {allJobs, searchJobs, showJob} = require("../controllers/jobs-controller");
+const {allJobs, searchJobs, showJob, applyJob} = require("../controllers/jobs-controller");
+const fileHandler = require("../middlewares/file-handler-middleware");
 const router = express.Router();
 
 // Registration route
@@ -21,6 +22,9 @@ router.post('/jobs/search', searchJobs);
 
 // Show job route
 router.post('/job/show', showJob);
+
+// Show job route
+router.post('/job/apply', authenticateUser, fileHandler, applyJob);
 
 // Profile route with authentication middleware
 router.post('/account/profile', authenticateUser, profile);

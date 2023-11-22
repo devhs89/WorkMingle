@@ -75,4 +75,22 @@ const showJob = async (req, res) => {
   }
 };
 
-module.exports = {allJobs, searchJobs, showJob};
+const applyJob = async (req, res) => {
+  try {
+    const userId = req.userId;
+    console.log(userId);
+    const files = req.files;
+    console.log(files);
+    const {jobId, firstName, lastName} = req.body;
+    console.log(jobId);
+    console.log(firstName);
+    console.log(lastName);
+    console.log(req.body);
+    console.log(req);
+    res.json({message: 'Job application submitted successfully'});
+  } catch (error) {
+    res.status(500).json({error: 'Error creating job application'});
+  }
+};
+
+module.exports = {allJobs, searchJobs, showJob, applyJob};

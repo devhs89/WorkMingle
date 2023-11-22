@@ -21,6 +21,9 @@ try {
   // Parse request payload to JSON
   app.use(bodyParser.json());
 
+  // Parse request payload to URL encoded data
+  app.use(bodyParser.urlencoded({extended: true}));
+
   // Add authentication middleware to handle authentication routes
   app.use('/api', apiRoutes);
 
