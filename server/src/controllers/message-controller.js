@@ -14,13 +14,12 @@ const sendMessage = async (req, res) => {
 
     console.log(newMessage);
     
-    const savedMessage = await newMessage.save();
+   // const savedMessage = await newMessage.save();
+   // await addMessageToUser(senderUser._id, savedMessage._id);
+   // await addMessageToUser(receiverUser._id, savedMessage._id);
 
-    await addMessageToUser(sender, savedMessage._id);
-    await addMessageToUser(receiver, savedMessage._id);
 
-
-    res.json({ message: 'Message sent successfully', data: savedMessage });
+    res.json({ message: 'Message sent successfully', data: newMessage });
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error: error.message });
   }
@@ -28,3 +27,4 @@ const sendMessage = async (req, res) => {
 
 
 module.exports = { sendMessage };
+
