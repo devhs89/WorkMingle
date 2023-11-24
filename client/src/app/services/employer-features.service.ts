@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {JobAdvertInterface, JobAdvertResponseInterface} from "../interfaces/job-advert.interface";
 import {HttpClient} from "@angular/common/http";
+import {SortDirection} from "@angular/material/sort";
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +11,18 @@ export class EmployerFeaturesService {
   constructor(private _httpClient: HttpClient) {
   }
 
-  postedJobs() {
-    return this._httpClient.post<JobAdvertResponseInterface>('/api/employer/posted-jobs', {});
+  postedJobs({sortColumn, sortDir, pageLimit, pageIndex}: {
+    sortColumn: string,
+    sortDir: SortDirection,
+    pageLimit: number,
+    pageIndex: number
+  }) {
+    return this._httpClient.post<JobAdvertResponseInterface>('/api/employer/posted-jobs', {
+      sortColumn,
+      sortDir,
+      pageLimit,
+      pageIndex
+    });
   }
 
   postJob(jobData: JobAdvertInterface) {

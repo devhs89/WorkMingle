@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  allowAccessTo(appRole: string): boolean {
+  isAppRole(appRole: string): boolean {
     let valid = false;
     this.accountService.authResponse$.pipe(take(1)).subscribe({
       next: (resp) => {

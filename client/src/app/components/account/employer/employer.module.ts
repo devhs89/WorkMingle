@@ -13,6 +13,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 
 const routes: Routes = [
   {path: 'post-job', component: PostJobComponent},
+  {path: 'edit-job', component: PostJobComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
 ];

@@ -32,8 +32,8 @@ export class JobsService {
     }) as Observable<JobAdvertResponseInterface>;
   }
 
-  showJob({jobId}: { jobId: string }): Observable<JobAdvertInterface> {
-    return this.httpClient.post<JobAdvertInterface>('/api/job/show', {id: jobId});
+  showJob({jobAdvertId}: { jobAdvertId: string }): Observable<JobAdvertInterface> {
+    return this.httpClient.post<JobAdvertInterface>('/api/job/show', {id: jobAdvertId});
   }
 
   applyJob({jobAdvertId, firstName, lastName, resume, coverLetter}: {

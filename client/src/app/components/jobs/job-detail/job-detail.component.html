@@ -1,6 +1,18 @@
 <div class="container justify-content-center">
   <div class="row justify-content-center">
     <div class="col-lg-10 col-xl-7 col-xxl-5">
+      <div class="d-flex justify-content-between align-items-baseline w-100 mb-2 mx-1"
+           *ngIf="isAppRole(appRoles.employer)">
+        <div class="d-flex gap-2">
+          <button mat-raised-button color="primary" (click)="onEditJobHandler()">Edit</button>
+          <button mat-raised-button color="warn" (click)="onDeleteJobHolder()">Delete</button>
+        </div>
+        <div>
+          <button mat-button class="text-decoration-underline" routerLink="/employer/features/dashboard">Back to
+            Dashboard
+          </button>
+        </div>
+      </div>
       <mat-card class="mb-2 p-2" *ngIf="jobDetail; else serverError">
         <mat-card-header>
           <mat-card-subtitle>

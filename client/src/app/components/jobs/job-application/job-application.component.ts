@@ -51,7 +51,7 @@ export class JobApplicationComponent implements OnInit {
   getJobDetails() {
     const id = this.activatedRoute.snapshot.queryParamMap.get('id');
     if (!id) return;
-    this.jobsService.showJob({jobId: id}).subscribe((job) => {
+    this.jobsService.showJob({jobAdvertId: id}).subscribe((job) => {
       this.jobDetails = job;
     });
   }

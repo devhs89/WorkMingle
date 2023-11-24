@@ -4,12 +4,20 @@ const JobAdvert = require("../models/job-advert");
 const postedJobs = async (req, res) => {
   try {
     const userId = req.userId;
-    const {page, limit} = req.body;
+    let {sortColumn, sortDir, pageLimit, pageIndex} = req.body;
+    console.log(req.body);
+
+    if (!sortColumn || !sortDir || !pageLimit || pageIndex < 0) return res.status(400).json({message: "Missing required parameters"});
+    sortColumn = ['title', 'location', 'jobType', 'availablePositions', 'dateExpires'].includes(sortColumn) ? sortColumn : 'datePosted';
+    sortDir = ['asc', 'desc'].includes(sortDir) ? sortDir : 'desc';
+    pageLimit = [5, 10, 25, 50].includes(pageLimit) ? pageLimit : 10;
 
     const employer = await Employer.findOne({userId: userId}).exec();
     if (!employer) return res.status(404).json({message: "Employer not found"});
 
-    const jobPosts = await JobAdvert.find({employerId: employer._id}, null, {skip: page * limit, limit: limit}).exec();
+    const jobPosts = await JobAdvert.find({employerId: employer._id}, null, {
+      skip: pageIndex * pageLimit, limit: pageLimit
+    }).sort({[sortColumn]: sortDir}).exec();
     const totalJobPosts = await JobAdvert.countDocuments({employerId: employer._id}).exec();
     return res.status(200).json({docCount: totalJobPosts, results: jobPosts});
   } catch (e) {
@@ -94,10 +102,10 @@ const updateJob = async (req, res) => {
 
 const deleteJob = async (req, res) => {
   try {
-    const jobToDelete = req.body;
-    if (!jobToDelete._id) return res.status(400).json({message: "Job post ID is required"});
+    const _id = req.body.jobAdvertId;
+    if (!_id) return res.status(400).json({message: "Job post ID is required"});
 
-    const jobPost = await JobAdvert.findById(jobToDelete._id).exec();
+    const jobPost = await JobAdvert.findById(_id).exec();
     if (!jobPost) return res.status(404).json({message: "Job post not found"});
 
     await JobAdvert.deleteOne(jobPost._id).exec();
