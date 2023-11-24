@@ -13,6 +13,8 @@ const employerSchema = new Schema({
   workEmail: {type: String, required: true, unique: true},
   workPhone: {type: String},
   description: {type: String},
+  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
+
 });
 const Employer = mongoose.model('Employer', employerSchema);
 module.exports = Employer;

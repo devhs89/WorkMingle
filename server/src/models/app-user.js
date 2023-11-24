@@ -21,6 +21,7 @@ const AppUserSchema = new Schema({
   }, termsAndConditions: {
     type: String, required: true, pattern: 'true'
   }, roles: [{type: Schema.Types.String, ref: 'AppRole'}],
+  messages: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Message' }],
 });
 
 const AppUser = mongoose.model('AppUser', AppUserSchema);

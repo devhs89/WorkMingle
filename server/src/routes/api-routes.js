@@ -7,9 +7,14 @@ const {postJob, postedJobs, updateJob, deleteJob} = require("../controllers/empl
 const {allJobs, searchJobs, showJob, applyJob} = require("../controllers/jobs-controller");
 const fileHandler = require("../middlewares/file-handler-middleware");
 const router = express.Router();
+const {sendMessage} = require('../controllers/message-controller');
+
 
 // Registration route
 router.post('/account/register', register);
+
+// Message route
+router.post('/send', sendMessage);
 
 // Login route
 router.post('/account/login', login);

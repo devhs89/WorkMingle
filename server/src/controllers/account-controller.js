@@ -5,7 +5,7 @@ const {writeJwtToken} = require("../util/auth-token");
 const appRoles = require("../constants/app-roles");
 const Employer = require("../models/employer");
 const saltRounds = 10;
-
+const { addMessageToUser } = require('./employer-controller');
 // Registration endpoint
 const register = async (req, res) => {
   // Destructure the payload from req.body
@@ -143,6 +143,7 @@ const updateProfile = async (req, res) => {
   // Return a success response
   return res.json({...updatedProfile._doc, password: undefined});
 };
+
 
 
 module.exports = {register, login, onboardEmployer, profile, updateProfile};

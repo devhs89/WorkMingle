@@ -1,6 +1,6 @@
+const AppUser = require("../models/app-user");
 const Employer = require("../models/employer");
 const JobAdvert = require("../models/job-advert");
-
 const postedJobs = async (req, res) => {
   try {
     const userId = req.userId;
@@ -105,4 +105,19 @@ const deleteJob = async (req, res) => {
   }
 };
 
+const addMessageToUser = async (userId, messageId) => {
+  try {
+    const user = await AppUser.findByIdAndUpdate(
+      userId,
+      { $push: { messages: messageId } },
+      { new: true }
+    );
+
+    return user;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+module.exports = { addMessageToUser };
 module.exports = {postedJobs, postJob, updateJob, deleteJob};
