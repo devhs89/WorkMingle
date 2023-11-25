@@ -21,6 +21,7 @@ const dbInit = async () => {
     console.log('Connected to MongoDB');
   });
 
+  // Disable auto indexing
   db.set('autoIndex', false);
 
   // Seed application roles

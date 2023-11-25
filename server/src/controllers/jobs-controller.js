@@ -117,7 +117,6 @@ const applyJob = async (req, res) => {
     };
 
     const result = await JobApplication.create(jobApplication);
-    console.log(result);
 
     if (!result) {
       return res.status(400).json({message: 'Error creating job application'});

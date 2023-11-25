@@ -3,11 +3,14 @@
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2"
        *ngIf="!(xSmallMediaObservable$ | async)?.matches">
     <button mat-button routerLink="/home" routerLinkActive="nav-item-active">Home</button>
+    <button mat-button routerLink="/employer/features/dashboard" routerLinkActive="nav-item-active"
+            *ngIf="isAppRole(appRoles.employer)">Dashboard
+    </button>
     <button mat-button routerLink="/jobs" routerLinkActive="nav-item-active">Jobs</button>
   </div>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
-    <ng-container *ngIf="allowAccessTo(appRoles.user); else notLoggedIn">
+    <ng-container *ngIf="isAppRole(appRoles.user); else notLoggedIn">
       <button mat-icon-button routerLink="/profile" routerLinkActive="nav-item-active">
         <fa-icon [icon]="faCircleUser"></fa-icon>
       </button>
@@ -33,12 +36,13 @@
                class="mat-sidenav" #matSidenav>
     <mat-nav-list>
       <mat-list-item routerLink="/home">Home</mat-list-item>
+      <mat-list-item routerLink="/employer/features/dashboard" *ngIf="isAppRole(appRoles.employer)">Dashboard
+      </mat-list-item>
       <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
       <mat-divider class="mx-1"></mat-divider>
-      <ng-container *ngIf="allowAccessTo(appRoles.user); else notLoggedIn">
-        <mat-list-item routerLink="/profile">Profile</mat-list-item>
-      </ng-container>
-      <ng-template #notLoggedIn>
+      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.user); else xSmallNotLoggedIn">Profile
+      </mat-list-item>
+      <ng-template #xSmallNotLoggedIn>
         <mat-list-item routerLink="/login">Login</mat-list-item>
         <mat-list-item routerLink="/register">Register</mat-list-item>
       </ng-template>

@@ -6,9 +6,16 @@ import {MatUiModule} from "../../../modules/mat-ui/mat-ui.module";
 import {ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {PostJobComponent} from "./post-job/post-job.component";
+import {MatTableModule} from "@angular/material/table";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatSortModule} from "@angular/material/sort";
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSelectModule} from "@angular/material/select";
+import {MatChipsModule} from "@angular/material/chips";
 
 const routes: Routes = [
   {path: 'post-job', component: PostJobComponent},
+  {path: 'edit-job', component: PostJobComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'}
 ];
@@ -23,7 +30,13 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MatUiModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatSelectModule,
+    MatChipsModule
   ]
 })
 export class EmployerModule {

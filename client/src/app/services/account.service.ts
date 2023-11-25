@@ -41,7 +41,7 @@ export class AccountService implements OnInit {
   }
 
   registerEmployer(appEmployer: AppEmployerInterface) {
-    return this.httpClient.post<AuthResponseInterface>('/api/account/employer/register', appEmployer)
+    return this.httpClient.post<AuthResponseInterface>('/api/account/onboard-employer', appEmployer)
       .pipe(tap((authResp) => this._createAuthSession(authResp)));
   }
 
