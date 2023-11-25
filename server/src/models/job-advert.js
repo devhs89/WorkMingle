@@ -14,19 +14,26 @@ const jobAdvertSchema = new Schema({
   }, dateExpires: {
     type: String, required: true, regexp: /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z?$/
   }, jobType: {
-    type: String,
-    required: true,
-    enum: ['full-time', 'part-time', 'contract', 'temporary', 'internship', 'co-op', 'volunteer', 'seasonal', 'other']
+    type: [String], required: true, validate: {
+      validator: function (v) {
+        const validJobTypes = ['full-time', 'part-time', 'contract', 'temporary', 'internship', 'co-op', 'volunteer', 'seasonal', 'other'];
+        if (v.length <= 0) return false;
+        for (let i = 0; i < v.length; i++) {
+          if (!validJobTypes.includes(v[i])) return false;
+        }
+        return true;
+      }, message: 'Invalid job type(s).'
+    },
   }, industry: {
     type: String,
     required: true,
     enum: ['accounting', 'administration', 'advertising', 'agriculture', 'automotive', 'banking', 'biotechnology', 'business', 'construction', 'customer service', 'design', 'distribution', 'education', 'electronics', 'energy', 'engineering', 'facilities', 'finance', 'food services', 'government', 'healthcare', 'hospitality', 'human resources', 'information technology', 'insurance', 'inventory', 'legal', 'logistics', 'management', 'manufacturing', 'marketing', 'media', 'nursing', 'operations', 'pharmaceutical', 'production', 'project management', 'public relations', 'purchasing', 'quality assurance', 'real estate', 'research', 'retail', 'sales', 'science', 'security', 'skilled trade', 'social services', 'strategy', 'supply chain', 'telecommunications', 'training', 'transportation', 'utilities', 'warehouse', 'other']
-  }, availablePositions: {
+  }, vacancies: {
     type: Number, required: true
   }, experience: {
-    type: String, required: true, enum: ['none', 'entry', 'intermediate', 'senior', 'executive']
+    type: String, required: true, enum: ['none', 'entry-level', 'intermediate', 'senior', 'executive']
   }, education: {
-    type: String, enum: ['none', 'high school', 'college', 'university']
+    type: String, enum: ['', 'none', 'high school', 'college', 'university']
   }, skills: {
     type: [String]
   }, salary: {

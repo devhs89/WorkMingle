@@ -30,7 +30,7 @@ export class EmployerFeaturesService {
   }
 
   updateJob(jobData: JobAdvertInterface) {
-    return this._httpClient.post<JobAdvertInterface>('/api/employer/update-job', jobData);
+    return this._httpClient.put<JobAdvertInterface>('/api/employer/update-job', jobData);
   }
 
   deleteJob(jobAdvertId: string) {

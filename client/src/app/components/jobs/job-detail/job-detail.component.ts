@@ -75,7 +75,7 @@ export class JobDetailComponent implements OnInit {
     if (!this.jobAdvertId) return;
     this.employerFeaturesService.deleteJob(this.jobAdvertId).pipe(take(1))
       .subscribe({
-        next: () => this.router.navigate(['jobs']).then(() => {
+        next: () => this.router.navigate(['employer', 'features', 'dashboard']).then(() => {
             this.toasterService.openSnackbar({message: `${this.jobDetail?.title} job has been deleted`, type: 'success'});
           }
         ),

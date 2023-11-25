@@ -41,10 +41,12 @@
                 [icon]="faHourglassHalf"></fa-icon> Expires on {{parseDate(jobDetail.dateExpires)}}</span>
             </div>
           </mat-card-subtitle>
+
           <div class="job-detail-description">
             <div class="fs-6 fw-medium mt-2 mb-1">Job Description</div>
             <div class="">{{jobDetail.description}}</div>
           </div>
+
           <div class="job-detail-skills" *ngIf="jobDetail.skills && jobDetail.skills.length">
             <h6 class="mt-2">Skills Required</h6>
             <div class="d-flex flex-wrap">

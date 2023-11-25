@@ -5,9 +5,9 @@ export interface JobAdvertInterface {
   description: string
   datePosted: string,
   dateExpires: string,
-  jobType: string,
+  jobType: string[],
   industry: string,
-  availablePositions: number,
+  vacancies: number,
   experience: string,
   skills?: string[],
   salary?: string;

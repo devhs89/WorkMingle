@@ -42,7 +42,7 @@ router.post('/employer/posted-jobs', authenticateEmployer, postedJobs);
 router.post('/employer/post-job', authenticateEmployer, postJob);
 
 // Update job route with employer authentication middleware
-router.post('/employer/update-job', authenticateEmployer, updateJob);
+router.put('/employer/update-job', authenticateEmployer, updateJob);
 
 // Delete job route with employer authentication middleware
 router.post('/employer/delete-job', authenticateEmployer, deleteJob);

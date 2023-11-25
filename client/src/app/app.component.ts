@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {MediaBreakpointService} from "./services/media-breakpoint.service";
 import {Breakpoints, BreakpointState} from "@angular/cdk/layout";
-import {Observable, take} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {PageTitleService} from "./services/page-title.service";
 import {AccountService} from "./services/account.service";
 import {faCopyright} from "@fortawesome/free-regular-svg-icons/faCopyright";
@@ -18,8 +18,10 @@ import {appRoles} from "./constants/app-roles.constant";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   protected xSmallMediaObservable$: Observable<BreakpointState> | null = null;
+  authResponseSubscription: Subscription | null = null;
+  subscriptions: Subscription[] = [];
 
   constructor(protected pageTitleService: PageTitleService, breakpointsService: MediaBreakpointService, protected accountService: AccountService, protected router: Router) {
     this.xSmallMediaObservable$ = breakpointsService.matchBreakpoint(Breakpoints.XSmall);
@@ -30,11 +32,12 @@ export class AppComponent implements OnInit {
 
   isAppRole(appRole: string): boolean {
     let valid = false;
-    this.accountService.authResponse$.pipe(take(1)).subscribe({
+    this.authResponseSubscription = this.accountService.authResponse$.subscribe({
       next: (resp) => {
         if (resp) valid = verifyAppRole(resp, appRole);
       }
     });
+    this.subscriptions.push(this.authResponseSubscription);
     return valid;
   }
 
@@ -47,4 +50,8 @@ export class AppComponent implements OnInit {
   protected readonly faRightFromBracket = faRightFromBracket;
   protected readonly faRightToBracket = faRightToBracket;
   protected readonly appRoles = appRoles;
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
 }

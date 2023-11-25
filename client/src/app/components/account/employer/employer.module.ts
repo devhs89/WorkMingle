@@ -10,6 +10,8 @@ import {MatTableModule} from "@angular/material/table";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatSortModule} from "@angular/material/sort";
 import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatSelectModule} from "@angular/material/select";
+import {MatChipsModule} from "@angular/material/chips";
 
 const routes: Routes = [
   {path: 'post-job', component: PostJobComponent},
@@ -32,7 +34,9 @@ const routes: Routes = [
     MatTableModule,
     MatProgressSpinnerModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    MatChipsModule
   ]
 })
 export class EmployerModule {
