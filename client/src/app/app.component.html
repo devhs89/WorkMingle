@@ -10,7 +10,10 @@
   </div>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
-    <ng-container *ngIf="isAppRole(appRoles.user); else notLoggedIn">
+    <ng-container *ngIf="isAppRole(appRoles.freeUser); else notLoggedIn">
+      <button *ngIf="!isAppRole(appRoles.paidUser)" color="accent" mat-raised-button routerLink="/subscription/order">
+        Subscribe
+      </button>
       <button mat-icon-button routerLink="/profile" routerLinkActive="nav-item-active">
         <fa-icon [icon]="faCircleUser"></fa-icon>
       </button>
@@ -40,7 +43,7 @@
       </mat-list-item>
       <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
       <mat-divider class="mx-1"></mat-divider>
-      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.user); else xSmallNotLoggedIn">Profile
+      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.freeUser); else xSmallNotLoggedIn">Profile
       </mat-list-item>
       <ng-template #xSmallNotLoggedIn>
         <mat-list-item routerLink="/login">Login</mat-list-item>
@@ -57,7 +60,7 @@
             <mat-icon>menu</mat-icon>
           </button>
         </div>
-        <div class="mx-1 mx-sm-2 header-page-title">{{(pageTitleService.pageTitle$ | async)}}</div>
+        <div class="mx-1 mx-sm-2 header-page-title">{{ (pageTitleService.pageTitle$ | async) }}</div>
       </div>
     </header>
     <div class="flex-grow-1 py-5">

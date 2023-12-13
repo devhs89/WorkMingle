@@ -1,5 +1,5 @@
 export const appRoles = {
   admin: 'admin',
-  user: 'user',
-  employer: 'employer',
+  freeUser: 'freeUser',
+  employer: 'employer', paidUser: 'paidUser'
 };

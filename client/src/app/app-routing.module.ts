@@ -11,6 +11,8 @@ import {OnboardComponent} from "./components/account/employer/onboard/onboard.co
 import {JobsListComponent} from "./components/jobs/jobs-list/jobs-list.component";
 import {JobDetailComponent} from './components/jobs/job-detail/job-detail.component';
 import {JobApplicationComponent} from "./components/jobs/job-application/job-application.component";
+import {OrderConfirmationComponent} from "./components/subscription/order-confirmation/order-confirmation.component";
+import {OrderPreviewComponent} from "./components/subscription/order-preview/order-preview.component";
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
@@ -33,6 +35,13 @@ const routes: Routes = [
         canMatch: [authorizationGuard],
         loadChildren: () => import('./components/account/employer/employer.module').then((m) => m.EmployerModule)
       }
+    ]
+  },
+  {
+    path: 'subscription', canActivate: [authenticationGuard], children: [
+      {path: 'order', component: OrderPreviewComponent},
+      {path: 'confirm', component: OrderConfirmationComponent},
+      {path: '', component: OrderPreviewComponent, pathMatch: 'full'}
     ]
   },
   {path: '', redirectTo: 'home', pathMatch: 'full'},
