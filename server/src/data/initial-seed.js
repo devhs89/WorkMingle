@@ -4,11 +4,11 @@ const logWithWinston = require("../util/winston-logger");
 
 // Seed application roles
 const seedAppRoles = async () => {
-  const roles = [AppRoles.admin, AppRoles.user, AppRoles.employer];
+  const roles = Object.values(AppRoles).map((role) => role);
 
   try {
     const rolesCount = await AppRole.countDocuments({});
-    if (+rolesCount > 0) {
+    if (+rolesCount === roles.length) {
       console.log('App roles already seeded');
       return;
     }

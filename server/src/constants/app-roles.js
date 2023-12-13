@@ -1,11 +1,13 @@
 const appRoles = {
   admin: {
-    name: 'Admin', normalizedName: 'ADMIN',
-  }, user: {
-    name: 'User', normalizedName: 'USER',
+    name: 'admin', normalizedName: 'ADMIN',
+  }, freeUser: {
+    name: 'freeUser', normalizedName: 'FREEUSER',
   }, employer: {
     name: 'Employer', normalizedName: 'EMPLOYER',
-  }
+  }, paidUser: {
+    name: 'paidUser', normalizedName: 'PAIDUSER',
+  },
 };
 
 module.exports = appRoles;
