@@ -18,7 +18,7 @@ const register = async (req, res) => {
   if (userExists) return res.status(400).json({message: 'Email already in use'});
 
   // Get the user role
-  const userRole = await AppRole.findOne({normalizedName: appRoles.freeUser.normalizedName}).exec();
+  const userRole = await AppRole.findOne({normalizedName: appRoles.basicUser.normalizedName}).exec();
   if (!userRole) return res.status(500).json({message: 'Internal server error'});
 
   // Hash the password

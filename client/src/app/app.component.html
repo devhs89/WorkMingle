@@ -10,7 +10,7 @@
   </div>
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
-    <ng-container *ngIf="isAppRole(appRoles.freeUser); else notLoggedIn">
+    <ng-container *ngIf="isAppRole(appRoles.basicUser); else notLoggedIn">
       <button *ngIf="!isAppRole(appRoles.paidUser)" color="accent" mat-raised-button routerLink="/subscription/order">
         Subscribe
       </button>
@@ -43,7 +43,7 @@
       </mat-list-item>
       <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
       <mat-divider class="mx-1"></mat-divider>
-      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.freeUser); else xSmallNotLoggedIn">Profile
+      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.basicUser); else xSmallNotLoggedIn">Profile
       </mat-list-item>
       <ng-template #xSmallNotLoggedIn>
         <mat-list-item routerLink="/login">Login</mat-list-item>
