@@ -5,7 +5,6 @@ const postedJobs = async (req, res) => {
   try {
     const userId = req.userId;
     let {sortColumn, sortDir, pageLimit, pageIndex} = req.body;
-    console.log(req.body);
 
     if (!sortColumn || !sortDir || !pageLimit || pageIndex < 0) return res.status(400).json({message: "Missing required parameters"});
     sortColumn = ['title', 'location', 'jobType', 'availablePositions', 'dateExpires'].includes(sortColumn) ? sortColumn : 'datePosted';

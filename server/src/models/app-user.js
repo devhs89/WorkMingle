@@ -17,7 +17,11 @@ const AppUserSchema = new Schema({
   }, city: {
     type: String
   }, postcode: {
-    type: String
+    type: String,
+  }, memberId: {
+    type: String, unique: true, sparse: true
+  }, activeMember: {
+    type: Boolean, default: false, required: true
   }, termsAndConditions: {
     type: String, required: true, pattern: 'true'
   }, roles: [{type: Schema.Types.String, ref: 'AppRole'}],

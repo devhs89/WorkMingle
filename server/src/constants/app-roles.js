@@ -1,8 +1,8 @@
 const appRoles = {
   admin: {
-    name: 'Admin', normalizedName: 'ADMIN',
-  }, user: {
-    name: 'User', normalizedName: 'USER',
+    name: 'admin', normalizedName: 'ADMIN',
+  }, basicUser: {
+    name: 'basicUser', normalizedName: 'BASICUSER',
   }, employer: {
     name: 'Employer', normalizedName: 'EMPLOYER',
   }

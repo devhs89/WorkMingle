@@ -24,20 +24,6 @@ export class OnboardComponent implements OnInit {
   workPhoneCtrl = new FormControl('');
   descriptionCtrl = new FormControl('');
 
-  dummyData = {
-    "businessName": "ABC Corporation",
-    "industry": "Information Technology",
-    "streetAddress": "123 Main Street",
-    "city": "Example City",
-    "postalCode": "12345",
-    "country": "Example Country",
-    "website": "https://www.abccorp.com",
-    "workEmail": "contact@abccorp.com",
-    "workPhone": "123-456-7890",
-    "description": "ABC Corporation is a leading IT company."
-  };
-
-
   constructor(pageTitleService: PageTitleService, private router: Router, private fb: FormBuilder, private toasterService: ToasterService, private accountService: AccountService) {
     pageTitleService.setWindowTitle('Onboard');
     pageTitleService.setPageTitle('Register as an Employer');
@@ -46,7 +32,6 @@ export class OnboardComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.employerForm.patchValue(this.dummyData);
   }
 
   createForm() {

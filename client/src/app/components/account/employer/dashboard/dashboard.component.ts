@@ -59,7 +59,6 @@ export class DashboardComponent implements AfterViewInit {
   }
 
   jobRowClickHandler(jobAdvertId: string) {
-    console.log(jobAdvertId);
     this.router.navigate(['/jobs/show'], {queryParams: {id: jobAdvertId}});
   }
 }

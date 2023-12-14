@@ -20,7 +20,7 @@ export const authenticationGuard: CanActivateFn = async () => {
   try {
     const authResp = await firstValueFrom(accountService.authResponse$);
     if (authResp) {
-      valid = verifyAppRole(authResp, appRoles.user);
+      valid = verifyAppRole(authResp, appRoles.basicUser);
       if (!valid) redirectToLogin();
       return valid;
     } else {

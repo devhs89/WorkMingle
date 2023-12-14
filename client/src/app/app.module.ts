@@ -22,6 +22,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { JobDetailComponent } from './components/jobs/job-detail/job-detail.component';
 import {MatChipsModule} from "@angular/material/chips";
 import { JobApplicationComponent } from './components/jobs/job-application/job-application.component';
+import { OrderConfirmationComponent } from './components/subscription/order-confirmation/order-confirmation.component';
+import { OrderPreviewComponent } from './components/subscription/order-preview/order-preview.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { JobApplicationComponent } from './components/jobs/job-application/job-a
     JobsListComponent,
     JobDetailComponent,
     JobApplicationComponent,
+    OrderConfirmationComponent,
+    OrderPreviewComponent,
   ],
   imports: [
     BrowserModule,

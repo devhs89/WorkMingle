@@ -3,7 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {PageTitleService} from "../../../../services/page-title.service";
 import {EmployerFeaturesService} from "../../../../services/employer-features.service";
 import {ToasterService} from "../../../../services/toaster.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {JobsService} from "../../../../services/jobs.service";
 import {take} from "rxjs";
 import {JobTypeEnum} from "../../../../interfaces/job-type.enum";
@@ -11,7 +11,6 @@ import {JobIndustryEnum} from "../../../../interfaces/job-industry.enum";
 import {JobExperienceEnum} from "../../../../interfaces/job-experience.enum";
 import {JobEducationEnum} from "../../../../interfaces/job-education.enum";
 import {MatChipInputEvent} from "@angular/material/chips";
-import {dummyJobs} from "../../../../constants/temp.constant";
 import {JobAdvertInterface} from "../../../../interfaces/job-advert.interface";
 
 @Component({
@@ -37,7 +36,7 @@ export class PostJobComponent implements OnInit {
   salaryCtrl: FormControl = new FormControl('', [Validators.pattern(/^[\d,_]+$/)]);
   skillsArray: string[] = [];
 
-  constructor(private formBuilder: FormBuilder, private pageService: PageTitleService, private jobsService: JobsService, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute) {
+  constructor(private formBuilder: FormBuilder, private pageService: PageTitleService, private jobsService: JobsService, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService, private activatedRoute: ActivatedRoute, private router: Router) {
     pageService.setWindowTitle('Post Job');
     pageService.setPageTitle('Advertise a Job');
     this.jobForm = this.formBuilder.group({
@@ -118,8 +117,6 @@ export class PostJobComponent implements OnInit {
       jobType: [JobTypeEnum.fullTime],
       vacancies: 1,
     });
-    // For testing purposes
-    this.jobForm.patchValue(dummyJobs[5]);
   }
 
   protected readonly Object = Object;
@@ -137,5 +134,12 @@ export class PostJobComponent implements OnInit {
     const value = (ev.value || '').trim();
     if (value) this.skillsArray.push(value);
     ev.chipInput!.clear();
+  }
+
+  backBtnHandler() {
+    if (this.editJobAdvert?._id) {
+      return this.router.navigate(['jobs', 'show'], {queryParams: {id: this.editJobAdvert._id}});
+    }
+    return this.router.navigate(['jobs']);
   }
 }

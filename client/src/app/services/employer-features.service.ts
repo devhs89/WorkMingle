@@ -26,6 +26,8 @@ export class EmployerFeaturesService {
   }
 
   postJob(jobData: JobAdvertInterface) {
+    jobData.datePosted = new Date().toISOString();
+    jobData.dateExpires = new Date(new Date().setDate(new Date().getDate() + 30)).toISOString();
     return this._httpClient.post<JobAdvertInterface>('/api/employer/post-job', jobData);
   }
 

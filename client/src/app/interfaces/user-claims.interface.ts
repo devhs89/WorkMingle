@@ -4,4 +4,6 @@ export interface UserClaimsInterface extends JwtPayload {
   userId?: string;
   email?: string;
   roles?: string[];
+  memberId?: string;
+  activeMember?: boolean;
 }

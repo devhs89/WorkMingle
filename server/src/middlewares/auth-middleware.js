@@ -1,11 +1,11 @@
 const {readJwtToken, verifyJwtToken} = require("../util/auth-token");
-const {employer, user} = require("../constants/app-roles");
+const {employer, basicUser} = require("../constants/app-roles");
 
 // Middleware to authenticate user
 const authenticateUser = (req, res, next) => {
   try {
     // Check if the token is valid and has user role
-    _performVerification({req, res, roleToCheck: user.normalizedName});
+    _performVerification({req, res, roleToCheck: basicUser.normalizedName});
     next();
   } catch (err) {
     return res.status(401).json({message: 'Invalid token'});

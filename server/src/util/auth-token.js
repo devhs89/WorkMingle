@@ -15,8 +15,12 @@ const writeJwtToken = ({user, expireAt = null}) => {
   // Set the expiry time
   expireAt = expireAt && Number.isInteger(expireAt) ? issuedAt + expireAt : issuedAt + 3600 * 24;
 
+  // Set the payload
+  const claims = {userId: user._id, roles: user.roles, activeMember: user.activeMember, iat: issuedAt, exp: expireAt};
+  if (user.memberId) claims.memberId = user.memberId;
+
   // Create a JWT token
-  return jwt.sign({userId: user._id, roles: user.roles, iat: issuedAt, exp: expireAt}, secretKey);
+  return jwt.sign(claims, secretKey);
 };
 
 const verifyJwtToken = ({token}) => {
