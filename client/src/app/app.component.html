@@ -11,7 +11,7 @@
   <span class="flex-grow-1"></span>
   <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
     <ng-container *ngIf="isAppRole(appRoles.basicUser); else notLoggedIn">
-      <button *ngIf="!isAppRole(appRoles.paidUser)" color="accent" mat-raised-button routerLink="/subscription/order">
+      <button *ngIf="!isActiveMember()" color="accent" mat-raised-button routerLink="/subscription/order">
         Subscribe
       </button>
       <button mat-icon-button routerLink="/profile" routerLinkActive="nav-item-active">

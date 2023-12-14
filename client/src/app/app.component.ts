@@ -10,7 +10,7 @@ import {faRightFromBracket} from "@fortawesome/free-solid-svg-icons/faRightFromB
 import {Router} from "@angular/router";
 import {faRightToBracket} from "@fortawesome/free-solid-svg-icons/faRightToBracket";
 import {RedirectOptionsEnum} from "./constants/redirect-options.enum";
-import {verifyAppRole} from "./helpers/verify-auth-token.helper";
+import {verifyActiveMember, verifyAppRole} from "./helpers/verify-auth-token.helper";
 import {appRoles} from "./constants/app-roles.constant";
 
 @Component({
@@ -41,6 +41,17 @@ export class AppComponent implements OnInit, OnDestroy {
     return valid;
   }
 
+  isActiveMember(): boolean {
+    let valid = false;
+    this.authResponseSubscription = this.accountService.authResponse$.subscribe({
+      next: (resp) => {
+        if (resp) valid = verifyActiveMember(resp);
+      }
+    });
+    this.subscriptions.push(this.authResponseSubscription);
+    return valid;
+  }
+
   logoutHandler() {
     this.accountService.logoutUser(RedirectOptionsEnum.HOME);
   }
@@ -54,4 +65,6 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
+
+  protected readonly verifyActiveMember = verifyActiveMember;
 }

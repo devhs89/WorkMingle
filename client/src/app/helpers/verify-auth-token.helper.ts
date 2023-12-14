@@ -1,6 +1,7 @@
 import {AuthResponseInterface} from "../interfaces/auth-response.interface";
 import {jwtDecode} from "jwt-decode";
 import {UserClaimsInterface} from "../interfaces/user-claims.interface";
+import {appRoles} from "../constants/app-roles.constant";
 
 const decodeAuthToken = (authResp: AuthResponseInterface): UserClaimsInterface | null => {
   try {
@@ -30,6 +31,17 @@ export const verifyAppRole = (authResp: AuthResponseInterface, appRole: string) 
     if (!verifyAuthTokenExpiration(decoded.exp)) return false;
     if (!decoded.roles || decoded.roles.length < 1) return false;
     return confirmRole(decoded.roles, appRole);
+  } catch (e) {
+    return false;
+  }
+};
+
+export const verifyActiveMember = (authResp: AuthResponseInterface) => {
+  try {
+    const verifyUser = verifyAppRole(authResp, appRoles.basicUser);
+    if (!verifyUser) return false;
+    const decoded: UserClaimsInterface | null = decodeAuthToken(authResp);
+    return decoded?.activeMember ?? false;
   } catch (e) {
     return false;
   }

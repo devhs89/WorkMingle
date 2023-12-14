@@ -3,7 +3,7 @@ import {PageTitleService} from "../../../services/page-title.service";
 import {AccountService} from "../../../services/account.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {JobsService} from "../../../services/jobs.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {JobAdvertInterface} from "../../../interfaces/job-advert.interface";
 import {AppUserInterface} from "../../../interfaces/app-user.interface";
 import {faBriefcaseClock} from "@fortawesome/free-solid-svg-icons/faBriefcaseClock";
@@ -29,7 +29,7 @@ export class JobApplicationComponent implements OnInit {
   selectedCoverLetterName: string | undefined = undefined;
   selectedResumeName: string | undefined = undefined;
 
-  constructor(pageTitleService: PageTitleService, private activatedRoute: ActivatedRoute, private accountService: AccountService, private jobsService: JobsService, private toasterService: ToasterService) {
+  constructor(pageTitleService: PageTitleService, private router: Router, private activatedRoute: ActivatedRoute, private accountService: AccountService, private jobsService: JobsService, private toasterService: ToasterService) {
     pageTitleService.setWindowTitle('Job Apply');
     pageTitleService.setPageTitle('Submit Your Application');
   }
@@ -87,8 +87,14 @@ export class JobApplicationComponent implements OnInit {
       coverLetter: this.coverLetterFileInput?.nativeElement.files[0] ?? null,
       resume: this.resumeFileInput?.nativeElement.files[0]
     };
-    this.jobsService.applyJob(payload).subscribe((response) => {
-      console.log(response);
+    this.jobsService.applyJob(payload).subscribe({
+      next: () => this.router.navigate(['/jobs']).then(() => this.toasterService.openSnackbar({
+        message: 'Job application submitted successfully',
+        type: 'success'
+      })), error: () => this.toasterService.openSnackbar({
+        message: 'Something went wrong. Please contact support team if the problem persists',
+        type: 'error'
+      })
     });
   }
 
