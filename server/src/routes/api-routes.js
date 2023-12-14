@@ -6,7 +6,7 @@ const {authenticateUser, authenticateEmployer} = require("../middlewares/auth-mi
 const {postJob, postedJobs, updateJob, deleteJob} = require("../controllers/employer-controller");
 const {allJobs, searchJobs, showJob, applyJob} = require("../controllers/jobs-controller");
 const fileHandler = require("../middlewares/file-handler-middleware");
-const {createCheckoutSession} = require("../controllers/subscription-controller");
+const {createCheckoutSession} = require("../controllers/membership-controller");
 const router = express.Router();
 
 // Registration route
