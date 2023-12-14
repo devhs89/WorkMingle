@@ -147,7 +147,7 @@
                 <mat-label>Skills</mat-label>
                 <mat-chip-grid #skillsChipGrid aria-label="Enter keywords" formControlName="skills">
                   <mat-chip-row *ngFor="let keyword of skillsArray" (removed)="removeSkill(keyword)">
-                    {{keyword}}
+                    {{ keyword }}
                     <button matChipRemove aria-label="remove skill">
                       <mat-icon>cancel</mat-icon>
                     </button>
@@ -158,9 +158,11 @@
               </mat-form-field>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 d-flex justify-content-between">
               <button mat-raised-button color="primary"
-                      type="submit">{{isEditTemplate ? 'Submit Changes' : 'Post'}}</button>
+                      type="submit">{{ isEditTemplate ? 'Submit Changes' : 'Post' }}
+              </button>
+              <a mat-button type="button" (click)="backBtnHandler()">{{ isEditTemplate ? 'Back' : 'Jobs' }}</a>
             </div>
           </form>
         </mat-card-content>

@@ -15,6 +15,7 @@ import {verifyAppRole} from "../../../helpers/verify-auth-token.helper";
 import {appRoles} from "../../../constants/app-roles.constant";
 import {EmployerFeaturesService} from "../../../services/employer-features.service";
 import {ToasterService} from "../../../services/toaster.service";
+import {PageTitleService} from "../../../services/page-title.service";
 
 @Component({
   selector: 'app-job-detail',
@@ -23,14 +24,14 @@ import {ToasterService} from "../../../services/toaster.service";
 })
 export class JobDetailComponent implements OnInit {
   private jobAdvertId: string | null = null;
-  private currentRoute: string | null = null;
   protected jobDetail: JobAdvertInterface | null = null;
 
-  constructor(private activatedRoute: ActivatedRoute, private jobsService: JobsService, protected accountService: AccountService, private router: Router, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService) {
+  constructor(private pageTitleService: PageTitleService, private activatedRoute: ActivatedRoute, private jobsService: JobsService, protected accountService: AccountService, private router: Router, private employerFeaturesService: EmployerFeaturesService, private toasterService: ToasterService) {
+    pageTitleService.setWindowTitle('Job Detail');
+    pageTitleService.setPageTitle('Job Detail');
   }
 
   ngOnInit(): void {
-    this.currentRoute = this.activatedRoute.snapshot.url[0].path;
     this.jobAdvertId = this.activatedRoute.snapshot.queryParamMap.get('id');
     this.getJobDetail(this.jobAdvertId);
   }
@@ -40,6 +41,7 @@ export class JobDetailComponent implements OnInit {
     this.jobsService.showJob({jobAdvertId: id})
       .subscribe((job) => {
         this.jobDetail = job;
+        this.pageTitleService.setPageTitle(`${job.title} Job Detail`);
       });
   }
 
