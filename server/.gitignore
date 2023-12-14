@@ -1,10 +1,7 @@
-# Created by https://www.toptal.com/developers/gitignore/api/mean
-# Edit at https://www.toptal.com/developers/gitignore?templates=mean
+# Created by https://www.toptal.com/developers/gitignore/api/node
+# Edit at https://www.toptal.com/developers/gitignore?templates=node
 
-### MEAN ###
-# MEAN Stack Base
-
-### MEAN.Node Stack ###
+### Node ###
 # Logs
 logs
 *.log
@@ -135,49 +132,13 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-### MEAN.Anglar Stack ###
-## Angular ##
-# compiled output
-dist/
-tmp/
-app/**/*.js
-app/**/*.js.map
+### Node Patch ###
+# Serverless Webpack directories
+.webpack/
 
-# dependencies
-bower_components/
+# Optional stylelint cache
 
-# IDEs and editors
-.idea/
-.vscode/
+# SvelteKit build / generate output
+.svelte-kit
 
-# misc
-.sass-cache/
-connect.lock/
-coverage/
-libpeerconnection.log/
-npm-debug.log
-testem.log
-typings/
-.angular/
-
-# e2e
-e2e/*.js
-e2e/*.map
-
-# System Files
-.DS_Store/
-
-# End of https://www.toptal.com/developers/gitignore/api/mean
-
-# Modified by devhs89
-**/node_modules
-**/dist
-**/*.log
-**/logs
-**/*.env
-**/.idea
-**/.vscode
-**/uploads
-**/publish
-**/release
-**/wwwroot
+# End of https://www.toptal.com/developers/gitignore/api/node

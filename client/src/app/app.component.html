@@ -1,0 +1,80 @@
+<mat-toolbar color="primary" class="mat-elevation-z6 mat-toolbar fixed-top fs-5-5">
+  <button mat-button class="app-brand fs-5" color="accent" routerLink="/">WorkMingle</button>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu mx-2"
+       *ngIf="!(xSmallMediaObservable$ | async)?.matches">
+    <button mat-button routerLink="/home" routerLinkActive="nav-item-active">Home</button>
+    <button mat-button routerLink="/employer/features/dashboard" routerLinkActive="nav-item-active"
+            *ngIf="isAppRole(appRoles.employer)">Dashboard
+    </button>
+    <button mat-button routerLink="/jobs" routerLinkActive="nav-item-active">Jobs</button>
+  </div>
+  <span class="flex-grow-1"></span>
+  <div class="d-flex align-items-center justify-content-center gap-1 navbar-menu">
+    <ng-container *ngIf="isAppRole(appRoles.basicUser); else notLoggedIn">
+      <button *ngIf="!isActiveMember()" color="accent" mat-raised-button routerLink="/subscription/order">
+        Subscribe
+      </button>
+      <button mat-icon-button routerLink="/profile" routerLinkActive="nav-item-active">
+        <fa-icon [icon]="faCircleUser"></fa-icon>
+      </button>
+      <button mat-icon-button (click)="logoutHandler()" routerLinkActive="nav-item-active">
+        <fa-icon [icon]="faRightFromBracket"></fa-icon>
+      </button>
+    </ng-container>
+    <ng-template #notLoggedIn>
+      <button mat-icon-button routerLink="/login" routerLinkActive="nav-item-active"
+              *ngIf="(xSmallMediaObservable$ | async)?.matches; else wordedNavManu">
+        <fa-icon [icon]="faRightToBracket"></fa-icon>
+      </button>
+    </ng-template>
+    <ng-template #wordedNavManu>
+      <button mat-button routerLink="/login" routerLinkActive="nav-item-active">Login</button>
+      <button mat-button routerLink="/register" routerLinkActive="nav-item-active">Register</button>
+    </ng-template>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="mat-sidenav-container text-bg-light">
+  <mat-sidenav [fixedTopGap]="(xSmallMediaObservable$ | async)?.matches ? 56 : 64" fixedInViewport="true"
+               class="mat-sidenav" #matSidenav>
+    <mat-nav-list>
+      <mat-list-item routerLink="/home">Home</mat-list-item>
+      <mat-list-item routerLink="/employer/features/dashboard" *ngIf="isAppRole(appRoles.employer)">Dashboard
+      </mat-list-item>
+      <mat-list-item routerLink="/jobs">Jobs</mat-list-item>
+      <mat-divider class="mx-1"></mat-divider>
+      <mat-list-item routerLink="/profile" *ngIf="isAppRole(appRoles.basicUser); else xSmallNotLoggedIn">Profile
+      </mat-list-item>
+      <ng-template #xSmallNotLoggedIn>
+        <mat-list-item routerLink="/login">Login</mat-list-item>
+        <mat-list-item routerLink="/register">Register</mat-list-item>
+      </ng-template>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="d-flex flex-column mat-sidenav-content">
+    <header class="text-bg-primary container-fluid">
+      <div class="d-flex align-items-center sub-navbar">
+        <div *ngIf="(xSmallMediaObservable$ | async)?.matches">
+          <button mat-icon-button (click)="matSidenav.toggle()" class="header-mat-icon-toggle-btn">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </div>
+        <div class="mx-1 mx-sm-2 header-page-title">{{ (pageTitleService.pageTitle$ | async) }}</div>
+      </div>
+    </header>
+    <div class="flex-grow-1 py-5">
+      <router-outlet></router-outlet>
+    </div>
+    <footer class="container-fluid text-bg-primary mat-elevation-z6">
+      <div class="d-flex align-items-center justify-content-center my-3">
+        <div class="text-center">
+          <div>WorkMingle</div>
+          <div class="font-monospace text-light-emphasis"><small>
+            <fa-icon [icon]="faCopyright"></fa-icon>
+            2021 WorkMingle</small></div>
+        </div>
+      </div>
+    </footer>
+  </mat-sidenav-content>
+</mat-sidenav-container>

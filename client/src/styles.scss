@@ -1,0 +1,52 @@
+@import "../scss/custom-variables";
+
+html, body {
+  height: 100% !important;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif !important;
+}
+
+div.sub-navbar {
+  min-height: 48px;
+}
+
+mat-error {
+  font-size: 0.8rem !important;
+}
+
+.nav-item-active {
+  box-shadow: rgba(0, 0, 0, 0.25) 0 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.fs-5-5 {
+  font-size: 1.2rem !important;
+}
+
+.fs-6-5 {
+  font-size: 0.875rem !important;
+}
+
+.toast-success > div {
+  background-color: $green-50 !important;
+}
+
+.toast-success * {
+  color: $green-500 !important;
+}
+
+.toast-error > div {
+  background-color: $red-100 !important;
+}
+
+.toast-error * {
+  color: $red-A700 !important;
+}
+
+@media (min-width: map-get($grid-breakpoints, "sm")) {
+  .mat-mdc-paginator-container {
+    justify-content: space-between !important;
+  }
+}
