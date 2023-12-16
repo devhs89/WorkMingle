@@ -1,5 +1,16 @@
 import {JobAdvertInterface} from "../interfaces/job-advert.interface";
 
+export const dummyUser = {
+  email: 'alice.smith@example.com',
+  password: 'Xyz12345$',
+  firstName: 'Alice',
+  lastName: 'Smith',
+  country: 'Canada',
+  state: 'Ontario',
+  city: 'Toronto',
+  postcode: 'M5V 2R9',
+};
+
 export const dummyJobs: JobAdvertInterface[] = [
   {
     title: 'UX Designer',
