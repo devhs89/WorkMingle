@@ -23,14 +23,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.registrationForm = this.fb.group({
-      email: ['alice.smith@example.com', [Validators.required, Validators.email]],
-      password: ['Xyz12345$', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/)]],
-      firstName: ['Alice', Validators.required],
-      lastName: ['Smith', Validators.required],
-      country: ['Canada', Validators.required],
-      state: ['Ontario'],
-      city: ['Toronto'],
-      postcode: ['M5V 2R9'],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!]).*$/)]],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      country: ['', Validators.required],
+      state: [''],
+      city: [''],
+      postcode: [''],
       termsAndConditions: [false, Validators.requiredTrue]
     });
   }

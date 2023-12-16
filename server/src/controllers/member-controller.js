@@ -12,3 +12,5 @@ const findCustomer = async (req, res) => {
   if (customers.data.length <= 0) return res.status(404).send("Customer not found");
   res.send(customers.data[0]);
 };
+
+module.exports = {findCustomer}

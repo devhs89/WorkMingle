@@ -7,6 +7,7 @@ const {postJob, postedJobs, updateJob, deleteJob} = require("../controllers/empl
 const {allJobs, searchJobs, showJob, applyJob} = require("../controllers/jobs-controller");
 const fileHandler = require("../middlewares/file-handler-middleware");
 const {createCheckoutSession} = require("../controllers/membership-controller");
+const {findCustomer} = require("../controllers/member-controller");
 const router = express.Router();
 
 // Registration route
@@ -50,5 +51,8 @@ router.post('/employer/delete-job', authenticateEmployer, deleteJob);
 
 // Create checkout session route with user authentication middleware
 router.post('/payment/create-checkout-session', authenticateUser, createCheckoutSession);
+
+// Find customer route with user authentication middleware
+router.post('/member/show', authenticateUser, findCustomer);
 
 module.exports = router;
