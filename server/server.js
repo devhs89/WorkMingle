@@ -1,19 +1,20 @@
 const express = require("express");
-const ignore = require('dotenv').config();
+const path = require("path");
+const ignore = require('dotenv').config({path: path.join(__dirname, '.env')});
 const bodyParser = require('body-parser');
 const logWithWinston = require("./src/util/winston-logger");
 const dbInit = require('./src/data/db-init');
 const apiRoutes = require('./src/routes/api-routes');
 
+// Get the environment
+const env = process.env.NODE_ENV;
+if (!env || new RegExp('^(production|development|test)$').test(env) === false) {
+  throw new Error('NODE_ENV must be set to either \"production\", \"development\" or \"test\".');
+}
+
 try {
   // Create a new Express application.
   const app = express();
-
-  // Get the environment
-  const env = process.env.NODE_ENV;
-  if (!env || new RegExp('^(production|development|test)$').test(env) === false) {
-    throw new Error('NODE_ENV must be set to either \"production\", \"development\" or \"test\".');
-  }
 
   // Get the listening port
   const port = process.env.PORT || 3000;
